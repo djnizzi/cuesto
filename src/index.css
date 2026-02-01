@@ -167,6 +167,38 @@ input::placeholder {
   transform: translateX(-50%) translateY(-4px);
 }
 
+/* Tooltip Left Position */
+[data-tooltip-left] {
+  position: relative;
+  cursor: pointer;
+}
+
+[data-tooltip-left]::before {
+  content: attr(data-tooltip-left);
+  position: absolute;
+  top: 50%;
+  right: 125%;
+  transform: translateY(-50%);
+  background-color: var(--color-brand-orange);
+  color: #000000;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+
+[data-tooltip-left]:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(-4px);
+}
+
 /* Progress Bar Styles */
 .progress-container {
   width: 100%;

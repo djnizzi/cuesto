@@ -62,6 +62,12 @@ export interface Translations {
     helpDiscogsPost: string;
     helpMusicBrainzPre: string;
     helpMusicBrainzPost: string;
+    modalTitleTracklist: string;
+    searchOnTracklist: string;
+    visitTracklist: string; // fallback if no search
+    helpTracklist: string;
+    pullFromBrowser: string;
+    importFromFile: string;
 
     // Modals
     deleteTrack: string;
@@ -181,6 +187,12 @@ const translations: Record<Language, Translations> = {
         helpDiscogsPost: ', and copy the release code from a release page (master releases won\'t work). it is possible to interpolate start times and durations from a release, if it has track durations, with the selected audio file\'s total duration.',
         helpMusicBrainzPre: 'search a release on',
         helpMusicBrainzPost: 'and copy the disc ID, if any, from the second tab',
+        modalTitleTracklist: 'import metadata and tracks from 1001tracklists',
+        searchOnTracklist: 'search on 1001tracklists.com',
+        visitTracklist: 'search on 1001tracklists.com',
+        helpTracklist: 'find the tracklist on 1001Tracklists and use the button in the browser to import the metadata',
+        pullFromBrowser: 'pull from browser',
+        importFromFile: 'import from file',
 
         deleteTrack: 'delete track',
         deleteTrackConfirm: 'are you sure you want to delete track',
@@ -291,6 +303,12 @@ const translations: Record<Language, Translations> = {
         helpDiscogsPost: ', und release-code kopieren (keine master-releases). interpolation ist möglich, wenn track-dauern vorhanden sind.',
         helpMusicBrainzPre: 'release suchen bei',
         helpMusicBrainzPost: 'und disc ID vom zweiten tab kopieren',
+        modalTitleTracklist: 'metadaten und tracks von 1001tracklists importieren',
+        searchOnTracklist: 'besuche 1001tracklists.com',
+        visitTracklist: 'besuche 1001tracklists.com',
+        helpTracklist: 'finde die trackliste auf 1001tracklists und nutze die schaltfläche im browser, um die metadaten zu importieren',
+        pullFromBrowser: 'aus browser laden',
+        importFromFile: 'aus datei importieren',
 
         deleteTrack: 'track löschen',
         deleteTrackConfirm: 'möchten sie track wirklich löschen',
@@ -401,6 +419,12 @@ const translations: Record<Language, Translations> = {
         helpDiscogsPost: ', y copiar el código de la página (no master). es posible interpolar tiempos si hay duraciones.',
         helpMusicBrainzPre: 'buscar lanzamiento en',
         helpMusicBrainzPost: 'y copiar el disc ID de la segunda pestaña',
+        modalTitleTracklist: 'importar metadatos y pistas de 1001tracklists',
+        searchOnTracklist: 'buscar en 1001tracklists.com',
+        visitTracklist: 'buscar en 1001tracklists.com',
+        helpTracklist: 'busca la lista de canciones en 1001tracklists y usa el botón del navegador para importar los metadatos',
+        pullFromBrowser: 'extraer del navegador',
+        importFromFile: 'importar desde archivo',
 
         deleteTrack: 'eliminar pista',
         deleteTrackConfirm: '¿está seguro de que desea eliminar la pista',
@@ -511,6 +535,12 @@ const translations: Record<Language, Translations> = {
         helpDiscogsPost: ', et copier le code (pas master). interpolation possible si durées présentes.',
         helpMusicBrainzPre: 'chercher version sur',
         helpMusicBrainzPost: 'et copier le disc ID du deuxième onglet',
+        modalTitleTracklist: 'importer métadonnées et pistes de 1001tracklists',
+        searchOnTracklist: 'rechercher sur 1001tracklists.com',
+        visitTracklist: 'rechercher sur 1001tracklists.com',
+        helpTracklist: 'trouve la tracklist sur 1001tracklists et utilise le bouton du navigateur pour importer les métadonnées',
+        pullFromBrowser: 'extraire du navigateur',
+        importFromFile: 'importer depuis un fichier',
 
         deleteTrack: 'supprimer',
         deleteTrackConfirm: 'êtes-vous sûr de vouloir supprimer la piste',
@@ -621,6 +651,12 @@ const translations: Record<Language, Translations> = {
         helpDiscogsPost: ', e copia il codice dalla pagina release (no master release). è possibile interpolare i tempi se presenti su Discogs.',
         helpMusicBrainzPre: 'cerca release su',
         helpMusicBrainzPost: 'e copia il disc ID, se presente, dal secondo tab',
+        modalTitleTracklist: 'importa metadati e tracce da 1001tracklists',
+        searchOnTracklist: 'cerca su 1001tracklists.com',
+        visitTracklist: 'cerca su 1001tracklists.com',
+        helpTracklist: 'trova la tracklist su 1001tracklists e usa il pulsante nel browser per importare i metadati',
+        pullFromBrowser: 'estrai dal browser',
+        importFromFile: 'importa da file',
 
         deleteTrack: 'elimina',
         deleteTrackConfirm: 'sei sicuro di voler eliminare la traccia',

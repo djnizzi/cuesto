@@ -475,6 +475,20 @@ ipcMain.handle('browser:get-status', (event) => {
   return getBrowserStatus(view);
 });
 
+ipcMain.handle('browser:get-html', async (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (!win) return null;
+  const view = (win as any).browserView;
+  if (!view) return null;
+  try {
+    const html = await view.webContents.executeJavaScript('document.documentElement.outerHTML');
+    return html;
+  } catch (e) {
+    console.error('Failed to get browser HTML', e);
+    return null;
+  }
+});
+
 ipcMain.on('browser:go-back', (event) => {
   const win = BrowserWindow.fromWebContents(event.sender);
   const view = win ? (win as any).browserView : null;
@@ -488,6 +502,32 @@ ipcMain.on('browser:go-forward', (event) => {
   const view = win ? (win as any).browserView : null;
   if (view && view.webContents.canGoForward()) {
     view.webContents.goForward();
+  }
+});
+
+ipcMain.on('browser:trigger-import-1001', async (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (!win) return;
+  const view = (win as any).browserView;
+  if (!view) return;
+
+  try {
+    const html = await view.webContents.executeJavaScript('document.documentElement.outerHTML');
+
+    // Find the main window (the one that opened this search window, or just the first one)
+    // Actually, we usually only have one main window 'win'.
+    // But this 'win' is the search window. We need to find the parent or use the global 'win'.
+
+    // Let's use the first browser window that isn't this one.
+    const allWindows = BrowserWindow.getAllWindows();
+    const mainWindow = allWindows.find(w => w !== win && !w.isDestroyed());
+
+    if (mainWindow) {
+      mainWindow.focus();
+      mainWindow.webContents.send('1001tracklists:import-html', html);
+    }
+  } catch (e) {
+    console.error('Failed to trigger 1001tracklists import', e);
   }
 });
 

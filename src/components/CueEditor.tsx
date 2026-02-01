@@ -15,6 +15,7 @@ import { SplitProgressModal } from './SplitProgressModal';
 import { AlertModal } from './AlertModal';
 import { LanguageSelector } from './LanguageSelector';
 import { SettingsModal } from './SettingsModal';
+import { TracklistModal, TracklistOptions } from './TracklistModal';
 import { Language, getCurrentLanguage, getTranslations } from '../lib/i18n';
 import { useTheme } from '../lib/themeContext';
 
@@ -59,6 +60,8 @@ export const CueEditor: React.FC = () => {
     const [isGnuDbModalOpen, setIsGnuDbModalOpen] = useState(false);
     const [isDiscogsModalOpen, setIsDiscogsModalOpen] = useState(false);
     const [isMusicBrainzModalOpen, setIsMusicBrainzModalOpen] = useState(false);
+    const [isTracklistModalOpen, setIsTracklistModalOpen] = useState(false);
+    const [importHtml, setImportHtml] = useState<string | null>(null);
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
     const [appVersion, setAppVersion] = useState('1.0.15');
     const [fullAudioPath, setFullAudioPath] = useState<string | null>(null);
@@ -182,6 +185,23 @@ export const CueEditor: React.FC = () => {
                 setIsSplitModalOpen(false); // Close the progress modal on error
                 setSplitProgress(null);
                 showAlert(t.splittingError, error);
+            });
+
+            (window as any).ipcRenderer.on('1001tracklists:import-html', (_: any, html: string) => {
+                try {
+                    const parsed = parse1001Tracklist(html);
+                    handleTracklistSuccess(parsed, {
+                        header: false,
+                        trackTitles: true,
+                        trackPerformers: true,
+                        timings: true
+                    });
+                    setImportHtml(null);
+                    setIsTracklistModalOpen(false);
+                } catch (e: any) {
+                    console.error('Failed to auto-import 1001tracklists', e);
+                    showAlert(t.importFailed, e.message);
+                }
             });
         }
 
@@ -348,30 +368,7 @@ export const CueEditor: React.FC = () => {
 
     const handleImport = async (source: string) => {
         if (source === '1001tracklists') {
-            try {
-                // Reuse the same dialog:openFile but we need to tell it to filter for HTML?
-                // The current dialog:openFile filters for CUE.
-                // We should probably modify main process to accept filters or add a new 'dialog:openHtml' handler.
-                // Or we can just ask user to pick file and use a generic openFile?
-                // Let's call a new IPC method for clarity: 'dialog:openHtml'
-                // But since I cannot modify main.ts easily without restarting or reloading... 
-                // Wait, I CAN modify main.ts. I should.
-
-                const result = await (window as any).ipcRenderer.invoke('dialog:openHtml');
-                if (result) {
-                    const { content } = result;
-                    const parsed = parse1001Tracklist(content);
-                    setCue(prev => ({
-                        ...parsed,
-                        // Keep existing file/title if valid? No, usually import overwrites.
-                        // Maybe preserve file name if it was already set?
-                        file: prev.file || parsed.file
-                    }));
-                }
-            } catch (e) {
-                console.error('Import failed', e);
-                showAlert(t.importFailed, `Failed to import from 1001tracklists: ${(e as any).message || e}`);
-            }
+            setIsTracklistModalOpen(true);
         } else if (source === 'gnudb') {
             setIsGnuDbModalOpen(true);
         } else if (source === 'discogs') {
@@ -406,6 +403,33 @@ export const CueEditor: React.FC = () => {
             console.log('Import source not implemented:', source);
             showAlert(t.importNotImplemented, `Import from '${source}' is not yet implemented.`);
         }
+    };
+
+    const handleTracklistSuccess = (parsed: CueSheet, options: TracklistOptions) => {
+        setCue(prev => {
+            const newCue = { ...prev };
+
+            if (options.header) {
+                newCue.performer = parsed.performer || prev.performer;
+                newCue.title = parsed.title || prev.title;
+                newCue.date = parsed.date || prev.date;
+                newCue.genre = parsed.genre || prev.genre;
+            }
+
+            if (options.trackTitles || options.trackPerformers || options.timings) {
+                newCue.tracks = parsed.tracks.map((pTrack, i) => {
+                    const prevTrack = prev.tracks[i];
+                    return {
+                        number: pTrack.number,
+                        title: (options.trackTitles || !prevTrack?.title) ? pTrack.title : (prevTrack?.title || pTrack.title),
+                        performer: (options.trackPerformers || !prevTrack?.performer) ? pTrack.performer : (prevTrack?.performer || pTrack.performer),
+                        index01: (options.timings || prevTrack?.index01 === undefined) ? pTrack.index01 : (prevTrack?.index01 || pTrack.index01)
+                    };
+                });
+            }
+
+            return newCue;
+        });
     };
 
     const handleMusicBrainzSuccess = (data: MusicBrainzResult, options: MusicBrainzOptions) => {
@@ -786,6 +810,19 @@ export const CueEditor: React.FC = () => {
                 t={t}
                 albumTitle={cue.title}
                 performer={cue.performer}
+            />
+
+            <TracklistModal
+                isOpen={isTracklistModalOpen}
+                onClose={() => {
+                    setIsTracklistModalOpen(false);
+                    setImportHtml(null);
+                }}
+                onSuccess={handleTracklistSuccess}
+                t={t}
+                albumTitle={cue.title}
+                performer={cue.performer}
+                initialHtml={importHtml || undefined}
             />
 
             <SplitProgressModal
