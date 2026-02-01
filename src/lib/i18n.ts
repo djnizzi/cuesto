@@ -109,6 +109,20 @@ export interface Translations {
     settings: string;
     lightMode: string;
     darkMode: string;
+
+    // New labels
+    searchingFor: string;
+    searchOnDiscogs: string;
+    searchOnMusicBrainz: string;
+    visitDiscogs: string;
+    visitMusicBrainz: string;
+    visitGnuDb: string;
+    useDiscId: string;
+    useReleaseCode: string;
+    useGnuCdId: string;
+    copy: string;
+    copyLink: string;
+    openInNewWindow: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -207,6 +221,19 @@ const translations: Record<Language, Translations> = {
         settings: 'settings',
         lightMode: 'light mode',
         darkMode: 'dark mode',
+
+        searchingFor: 'searching for',
+        searchOnDiscogs: 'search on discogs.com',
+        searchOnMusicBrainz: 'search on musicbrainz.org',
+        visitDiscogs: 'search on discogs.com',
+        visitMusicBrainz: 'search on musicbrainz.org',
+        visitGnuDb: 'search on gnudb.org',
+        useDiscId: 'use this disc id',
+        useReleaseCode: 'use this release code',
+        useGnuCdId: 'use this gnucdid',
+        copy: 'copy',
+        copyLink: 'copy link',
+        openInNewWindow: 'open in new window',
     },
 
     de: {
@@ -304,6 +331,19 @@ const translations: Record<Language, Translations> = {
         settings: 'einstellungen',
         lightMode: 'hellmodus',
         darkMode: 'dunkelmodus',
+
+        searchingFor: 'suche nach',
+        searchOnDiscogs: 'besuche discogs.com',
+        searchOnMusicBrainz: 'besuche musicbrainz.org',
+        visitDiscogs: 'besuche discogs.com',
+        visitMusicBrainz: 'besuche musicbrainz.org',
+        visitGnuDb: 'besuche gnudb.org',
+        useDiscId: 'diese disc-id verwenden',
+        useReleaseCode: 'diesen release-code verwenden',
+        useGnuCdId: 'diese gnucdid verwenden',
+        copy: 'kopieren',
+        copyLink: 'link kopieren',
+        openInNewWindow: 'in neuem fenster öffnen',
     },
 
     es: {
@@ -401,6 +441,19 @@ const translations: Record<Language, Translations> = {
         settings: 'ajustes',
         lightMode: 'modo claro',
         darkMode: 'modo oscuro',
+
+        searchingFor: 'buscando',
+        searchOnDiscogs: 'buscar en discogs.com',
+        searchOnMusicBrainz: 'buscar en musicbrainz.org',
+        visitDiscogs: 'buscar en discogs.com',
+        visitMusicBrainz: 'buscar en musicbrainz.org',
+        visitGnuDb: 'buscar en gnudb.org',
+        useDiscId: 'usar este disc id',
+        useReleaseCode: 'usar este código de release',
+        useGnuCdId: 'usar este gnucdid',
+        copy: 'copiar',
+        copyLink: 'copiar enlace',
+        openInNewWindow: 'abrir en una ventana nueva',
     },
 
     fr: {
@@ -464,10 +517,10 @@ const translations: Record<Language, Translations> = {
         clearAllConfirm: 'êtes-vous sûr de vouloir effacer toutes les données ? cela réinitialisera toute la feuille CUE et la liste des pistes. toutes les modifications non enregistrées seront perdues.',
 
         error: 'erreur',
-        errorOpeningFile: 'Impossible d\'ouvrir le fichier',
-        errorSelectingAudio: 'Impossible de sélectionner le fichier audio',
-        errorSaving: 'Impossible d\'enregistrer le fichier',
-        errorSaveAs: 'Impossible d\'enregistrer le fichier',
+        errorOpeningFile: 'impossible d\'ouvrir le fichier',
+        errorSelectingAudio: 'impossible de sélectionner le fichier audio',
+        errorSaving: 'impossible d\'enregistrer le fichier',
+        errorSaveAs: 'impossible d\'enregistrer le fichier',
         importFailed: 'échec de l\'importation',
         importNotImplemented: 'importation non implémentée',
         audacityImportFailed: 'échec de l\'importation Audacity',
@@ -498,6 +551,19 @@ const translations: Record<Language, Translations> = {
         settings: 'paramètres',
         lightMode: 'mode clair',
         darkMode: 'mode sombre',
+
+        searchingFor: 'recherche de',
+        searchOnDiscogs: 'rechercher sur discogs.com',
+        searchOnMusicBrainz: 'rechercher sur musicbrainz.org',
+        visitDiscogs: 'rechercher sur discogs.com',
+        visitMusicBrainz: 'rechercher sur musicbrainz.org',
+        visitGnuDb: 'rechercher sur gnudb.org',
+        useDiscId: 'utiliser ce disc id',
+        useReleaseCode: 'utiliser ce code de release',
+        useGnuCdId: 'utiliser ce gnucdid',
+        copy: 'copier',
+        copyLink: 'copier le lien',
+        openInNewWindow: 'ouvrir dans une nouvelle fenêtre',
     },
 
     it: {
@@ -595,6 +661,19 @@ const translations: Record<Language, Translations> = {
         settings: 'impostazioni',
         lightMode: 'modalità chiara',
         darkMode: 'modalità scura',
+
+        searchingFor: 'ricerca di',
+        searchOnDiscogs: 'cerca su discogs.com',
+        searchOnMusicBrainz: 'cerca su musicbrainz.org',
+        visitDiscogs: 'cerca su discogs.com',
+        visitMusicBrainz: 'cerca su musicbrainz.org',
+        visitGnuDb: 'cerca su gnudb.org',
+        useDiscId: 'usa questo disc id',
+        useReleaseCode: 'usa questo codice release',
+        useGnuCdId: 'usa questo gnucdid',
+        copy: 'copia',
+        copyLink: 'copia link',
+        openInNewWindow: 'apri in una nuova finestra',
     },
 };
 

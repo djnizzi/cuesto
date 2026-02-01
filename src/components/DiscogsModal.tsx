@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchDiscogsMetadata, DiscogsResult, DiscogsOptions } from '../lib/discogs';
 import { Translations } from '../lib/i18n';
 
@@ -8,13 +8,27 @@ interface DiscogsModalProps {
     onSuccess: (result: DiscogsResult, options: DiscogsOptions) => void;
     totalDuration?: number;
     t: Translations;
+    albumTitle?: string;
+    performer?: string;
 }
 
-export const DiscogsModal: React.FC<DiscogsModalProps> = ({ isOpen, onClose, onSuccess, totalDuration, t }) => {
+export const DiscogsModal: React.FC<DiscogsModalProps> = ({ isOpen, onClose, onSuccess, totalDuration, t, albumTitle, performer }) => {
     const [releaseCode, setReleaseCode] = useState('');
     const [discNumber, setDiscNumber] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!isOpen || !(window as any).ipcRenderer) return;
+
+        (window as any).ipcRenderer.on('discogs:set-releasecode', (_: any, code: string) => {
+            setReleaseCode(code);
+        });
+
+        return () => {
+            (window as any).ipcRenderer.removeAllListeners('discogs:set-releasecode');
+        };
+    }, [isOpen]);
 
     const [options, setOptions] = useState<DiscogsOptions>({
         header: false,
@@ -75,17 +89,30 @@ export const DiscogsModal: React.FC<DiscogsModalProps> = ({ isOpen, onClose, onS
                     {t.modalTitleDiscogs}
                 </h2>
 
+                {/* Searching info */}
+                {(albumTitle || performer) && (
+                    <div className="text-brand-text/60 text-modal-small font-light italic">
+                        <span className="text-brand-text font-normal">{performer || 'Unknown Artist'}</span> - <span className="text-brand-text font-normal">{albumTitle || 'Unknown Album'}</span>
+                    </div>
+                )}
+
+                {/* Intelligent Link */}
+                <div className="mb-[-8px]">
+                    <a
+                        href={(albumTitle || performer) ? `https://www.discogs.com/search?q=${encodeURIComponent(`${performer || ''} ${albumTitle || ''}`.trim())}&type=all` : "https://www.discogs.com/"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-brand-orange hover:underline font-semibold text-modal-body flex items-center gap-2"
+                    >
+                        <img src="images/discogs.svg" alt="discogs" className="w-[23.78px] h-[24px]" />
+                        {(albumTitle || performer) ? t.searchOnDiscogs : t.visitDiscogs}
+                    </a>
+                </div>
+
                 {/* Help Text */}
                 <p className="text-brand-text text-modal-body font-light leading-relaxed">
                     {t.helpDiscogsPre}{' '}
-                    <a
-                        href="https://discogs.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-brand-orange hover:underline font-semibold"
-                    >
-                        Discogs
-                    </a>
+                    Discogs
                     {t.helpDiscogsPost}
                 </p>
 

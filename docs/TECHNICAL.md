@@ -22,10 +22,13 @@ CUEsto is a modern, Electron-based desktop application for editing CUE sheets. I
 - **`viewer:get-content`**: Used by the viewer window to retrieve the CUE content stored in the main process.
 - **`getAppVersion`**: Returns the current application version from `package.json`.
 - **`gnudb:fetchMetadata`**: Facilitates context-specific CD lookup from `gnudb.org`.
-- **`discogs:fetchMetadata`**: Retrieves release data directly from the Discogs API. Requires a `DISCOGS_TOKEN` in `electron/credentials.ts`.
+- **`musicbrainz:fetchMetadata`**: Retrieves detailed release metadata (including barcode/label) from MusicBrainz.
+- **`discogs:fetchMetadata`**: Retrieves release data directly from the Discogs API. Requires a `DISCOGS_TOKEN`.
 - **`browser:get-status`**: Returns the current status (canGoBack, canGoForward, title, url) of the active `WebContentsView`.
 - **`browser:go-back` / `browser:go-forward`**: Triggers navigation in the target browser view.
-- **`browser:status-updated` (Event)**: Pushed from main to renderer whenever navigation or title changes occur in the embedded view.
+- **`browser:status-updated` (Event)**: Pushed from main to renderer whenever navigation or title changes occur.
+- **`app:sync-language`**: Notifies the main process of the current renderer language to keep context menus synchronized.
+- **`musicbrainz:set-discid` / `discogs:set-releasecode` / `gnudb:set-cdid` (Events)**: Pushed from main to renderer when a ID is extracted from the internal browser via context menu.
 - **`audio:split`**: Initiates the FFmpeg splitting process.
 - **`audio:split-progress` / `-complete` / `-error` (Events)**: Progress updates and status for the audio splitting operation.
 - **`shell:open-folder`**: Opens an absolute path in the system's file explorer.
@@ -36,6 +39,7 @@ CUEsto is a modern, Electron-based desktop application for editing CUE sheets. I
 - **`BrowserShell.tsx`**: A specialized view for the internal search browser. It provides a navigation header and syncs its state with the main process's `WebContentsView`.
 - **`GnuDbModal.tsx`**: A dedicated modal for GnuDB integration. It manages internal state for selective overwrite options and handles link redirection to the custom browser.
 - **`DiscogsModal.tsx`**: A dedicated modal for Discogs integration. It supports selective overwrite and features an advanced **Interpolation** mode for track timings.
+- **`MusicBrainzModal.tsx`**: A dedicated modal for MusicBrainz integration. Supports detailed metadata capture including Barcode, Label, and Catalog Number.
 - **`ConfirmModal.tsx`**: A reusable, styled confirmation modal for sensitive actions like clearing the editor.
 - **`AlertModal.tsx`**: A generic modal for displaying errors or warnings.
 - **`SplitProgressModal.tsx`**: Displays the real-time progress of the FFmpeg splitting operation.

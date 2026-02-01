@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchMusicBrainzMetadata, MusicBrainzResult } from '../lib/musicbrainz';
 import { DiscogsOptions as MusicBrainzOptions } from '../lib/discogs'; // Reuse the options structure
 import { Translations } from '../lib/i18n';
@@ -8,12 +8,26 @@ interface MusicBrainzModalProps {
     onClose: () => void;
     onSuccess: (result: MusicBrainzResult, options: MusicBrainzOptions) => void;
     t: Translations;
+    albumTitle?: string;
+    performer?: string;
 }
 
-export const MusicBrainzModal: React.FC<MusicBrainzModalProps> = ({ isOpen, onClose, onSuccess, t }) => {
+export const MusicBrainzModal: React.FC<MusicBrainzModalProps> = ({ isOpen, onClose, onSuccess, t, albumTitle, performer }) => {
     const [discId, setDiscId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!isOpen || !(window as any).ipcRenderer) return;
+
+        (window as any).ipcRenderer.on('musicbrainz:set-discid', (_: any, id: string) => {
+            setDiscId(id);
+        });
+
+        return () => {
+            (window as any).ipcRenderer.removeAllListeners('musicbrainz:set-discid');
+        };
+    }, [isOpen]);
 
     const [options, setOptions] = useState<MusicBrainzOptions>({
         header: false,
@@ -70,17 +84,30 @@ export const MusicBrainzModal: React.FC<MusicBrainzModalProps> = ({ isOpen, onCl
                     {t.modalTitleMusicBrainz}
                 </h2>
 
+                {/* Searching info */}
+                {(albumTitle || performer) && (
+                    <div className="text-brand-text/60 text-modal-small font-light italic">
+                        <span className="text-brand-text font-normal">{performer || 'Unknown Artist'}</span> - <span className="text-brand-text font-normal">{albumTitle || 'Unknown Album'}</span>
+                    </div>
+                )}
+
+                {/* Intelligent Link */}
+                <div className="mb-[-8px]">
+                    <a
+                        href={albumTitle ? `https://musicbrainz.org/search?query=${encodeURIComponent(albumTitle)}&type=release&method=indexed` : "https://musicbrainz.org/"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-brand-orange hover:underline font-semibold text-modal-body flex items-center gap-2"
+                    >
+                        <img src="images/musicbrainz.svg" alt="musicbrainz" className="w-[21.69px] h-[24px]" />
+                        {albumTitle ? t.searchOnMusicBrainz : t.visitMusicBrainz}
+                    </a>
+                </div>
+
                 {/* Help Text */}
                 <p className="text-brand-text text-modal-body font-light leading-relaxed">
                     {t.helpMusicBrainzPre}{' '}
-                    <a
-                        href="https://musicbrainz.org"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-brand-orange hover:underline font-semibold"
-                    >
-                        MusicBrainz
-                    </a>
+                    MusicBrainz
                     {' '}{t.helpMusicBrainzPost}
                 </p>
 

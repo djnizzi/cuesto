@@ -60,12 +60,18 @@ export const CueEditor: React.FC = () => {
     const [isDiscogsModalOpen, setIsDiscogsModalOpen] = useState(false);
     const [isMusicBrainzModalOpen, setIsMusicBrainzModalOpen] = useState(false);
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-    const [appVersion, setAppVersion] = useState('1.0.14');
+    const [appVersion, setAppVersion] = useState('1.0.15');
     const [fullAudioPath, setFullAudioPath] = useState<string | null>(null);
     const [hasAttemptedSplit, setHasAttemptedSplit] = useState(false);
     const [splitProgress, setSplitProgress] = useState<{ progress: number, currentTrack: number, totalTracks: number, fileName: string } | null>(null);
     const [currentLanguage, setCurrentLanguage] = useState<Language>(getCurrentLanguage());
     const t = getTranslations(currentLanguage);
+
+    React.useEffect(() => {
+        if ((window as any).ipcRenderer) {
+            (window as any).ipcRenderer.send('app:sync-language', currentLanguage);
+        }
+    }, [currentLanguage]);
 
     const handleLanguageChange = (lang: Language) => {
         setCurrentLanguage(lang);
@@ -759,6 +765,8 @@ export const CueEditor: React.FC = () => {
                 onClose={() => setIsGnuDbModalOpen(false)}
                 onSuccess={handleGnuDbSuccess}
                 t={t}
+                albumTitle={cue.title}
+                performer={cue.performer}
             />
 
             <DiscogsModal
@@ -767,6 +775,8 @@ export const CueEditor: React.FC = () => {
                 onSuccess={handleDiscogsSuccess}
                 totalDuration={cue.totalDuration}
                 t={t}
+                albumTitle={cue.title}
+                performer={cue.performer}
             />
 
             <MusicBrainzModal
@@ -774,6 +784,8 @@ export const CueEditor: React.FC = () => {
                 onClose={() => setIsMusicBrainzModalOpen(false)}
                 onSuccess={handleMusicBrainzSuccess}
                 t={t}
+                albumTitle={cue.title}
+                performer={cue.performer}
             />
 
             <SplitProgressModal

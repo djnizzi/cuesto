@@ -104,50 +104,50 @@ ipcMain.handle('dialog:openAudioFile', async () => {
       const common = metadata.common;
 
 
-const formatArtists = (artists: any): string => {
-  if (!artists) return '';
-  // Native values are often returned as an array of objects or strings
-  if (Array.isArray(artists)) {
-    return artists.map(a => (typeof a === 'object' ? a.value : a)).join('; ');
-  }
-  return typeof artists === 'object' ? artists.value : artists;
-};
-
-const getAllNativeAlbumArtists = (metadata: mm.IAudioMetadata): string => {
-  const albumArtists: string[] = [];
-
-  // Define relevant tag IDs per format
-  const tagMap: Record<string, string[]> = {
-    'ID3v2.3': ['TPE2'],
-    'ID3v2.4': ['TPE2'],
-    'ID3v2.2': ['TP2'],
-    'vorbis': ['ALBUMARTIST', 'ALBUM ARTIST'],
-    'iTunes': ['aART']
-  };
-
-  // Iterate through available native formats
-  for (const [format, tags] of Object.entries(metadata.native)) {
-    const relevantIds = tagMap[format];
-    if (relevantIds) {
-      tags.forEach(tag => {
-        if (relevantIds.includes(tag.id)) {
-          const value = formatArtists(tag.value);
-          if (value) albumArtists.push(value);
+      const formatArtists = (artists: any): string => {
+        if (!artists) return '';
+        // Native values are often returned as an array of objects or strings
+        if (Array.isArray(artists)) {
+          return artists.map(a => (typeof a === 'object' ? a.value : a)).join('; ');
         }
-      });
-    }
-  }
+        return typeof artists === 'object' ? artists.value : artists;
+      };
 
-  // Deduplicate and join
-  return [...new Set(albumArtists)].join('; ');
-};
+      const getAllNativeAlbumArtists = (metadata: mm.IAudioMetadata): string => {
+        const albumArtists: string[] = [];
 
-// Application logic
-const albumArtist = getAllNativeAlbumArtists(metadata).trim();
-const trackArtist = formatArtists(metadata.common.artists || metadata.common.artist).trim();
+        // Define relevant tag IDs per format
+        const tagMap: Record<string, string[]> = {
+          'ID3v2.3': ['TPE2'],
+          'ID3v2.4': ['TPE2'],
+          'ID3v2.2': ['TP2'],
+          'vorbis': ['ALBUMARTIST', 'ALBUM ARTIST'],
+          'iTunes': ['aART']
+        };
 
-// Final fallback chain
-const finalArtist = albumArtist || formatArtists(metadata.common.albumartist) || trackArtist;
+        // Iterate through available native formats
+        for (const [format, tags] of Object.entries(metadata.native)) {
+          const relevantIds = tagMap[format];
+          if (relevantIds) {
+            tags.forEach(tag => {
+              if (relevantIds.includes(tag.id)) {
+                const value = formatArtists(tag.value);
+                if (value) albumArtists.push(value);
+              }
+            });
+          }
+        }
+
+        // Deduplicate and join
+        return [...new Set(albumArtists)].join('; ');
+      };
+
+      // Application logic
+      const albumArtist = getAllNativeAlbumArtists(metadata).trim();
+      const trackArtist = formatArtists(metadata.common.artists || metadata.common.artist).trim();
+
+      // Final fallback chain
+      const finalArtist = albumArtist || formatArtists(metadata.common.albumartist) || trackArtist;
 
 
       return {
@@ -537,22 +537,94 @@ function createSearchWindow(url: string) {
   view.webContents.on('page-title-updated', syncStatus);
 
   view.webContents.on('context-menu', (_, params) => {
-    if (params.linkURL) {
-      const menu = new Menu();
+    const menu = new Menu();
+    const currentUrl = view.webContents.getURL();
+    const t = contextMenuTranslations[currentAppLanguage] || contextMenuTranslations.en;
+
+    // 1. MusicBrainz Logic
+    let discId: string | undefined;
+    if (params.linkURL && params.linkURL.includes('/cdtoc/')) {
+      discId = params.linkURL.split('/cdtoc/').pop()?.split('?')[0];
+    } else if (currentUrl.includes('musicbrainz.org/cdtoc/')) {
+      discId = currentUrl.split('/cdtoc/').pop()?.split('?')[0];
+    }
+
+    if (discId) {
       menu.append(new MenuItem({
-        label: 'Copy Link',
+        label: t.useDiscId,
+        click: () => {
+          win?.webContents.send('musicbrainz:set-discid', discId);
+        }
+      }));
+      menu.append(new MenuItem({ type: 'separator' }));
+    }
+
+    // 2. Discogs Logic
+    let releaseId: string | undefined;
+    if (params.linkURL && params.linkURL.includes('discogs.com/release/')) {
+      const parts = params.linkURL.split('/release/');
+      releaseId = parts.pop()?.split('-')[0].split('?')[0];
+    } else if (currentUrl.includes('discogs.com/release/')) {
+      const parts = currentUrl.split('/release/');
+      releaseId = parts.pop()?.split('-')[0].split('?')[0];
+    }
+
+    if (releaseId && /^\d+$/.test(releaseId)) {
+      menu.append(new MenuItem({
+        label: t.useReleaseCode,
+        click: () => {
+          win?.webContents.send('discogs:set-releasecode', `r${releaseId}`);
+        }
+      }));
+      menu.append(new MenuItem({ type: 'separator' }));
+    }
+
+    // 3. GnuDb Logic
+    let gnucdid: string | undefined;
+    // GnuDb URLs: https://gnudb.org/gnudb/rock/8c09570a
+    const gnudbRegex = /gnudb\.org\/gnudb\/[^/]+\/([a-f0-9]+)/i;
+    if (params.linkURL) {
+      const match = params.linkURL.match(gnudbRegex);
+      if (match) gnucdid = match[1];
+    }
+    if (!gnucdid) {
+      const match = currentUrl.match(gnudbRegex);
+      if (match) gnucdid = match[1];
+    }
+
+    if (gnucdid) {
+      menu.append(new MenuItem({
+        label: t.useGnuCdId,
+        click: () => {
+          win?.webContents.send('gnudb:set-cdid', gnucdid);
+        }
+      }));
+      menu.append(new MenuItem({ type: 'separator' }));
+    }
+
+    // Standard items: Only Copy
+    menu.append(new MenuItem({
+      role: 'copy',
+      label: t.copy,
+      enabled: params.editFlags.canCopy || !!params.selectionText
+    }));
+
+    if (params.linkURL) {
+      menu.append(new MenuItem({
+        label: t.copyLink,
         click: () => {
           clipboard.writeText(params.linkURL);
         }
       }));
       menu.append(new MenuItem({
-        label: 'Open in New Window',
+        label: t.openInNewWindow,
         click: () => {
           createSearchWindow(params.linkURL);
         }
       }));
-      menu.popup();
     }
+
+    menu.popup();
   });
 
   view.webContents.setWindowOpenHandler(({ url }) => {
@@ -711,6 +783,19 @@ export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
 
 let win: BrowserWindow | null
+let currentAppLanguage = 'en';
+
+const contextMenuTranslations: Record<string, any> = {
+  en: { useDiscId: 'use this disc id', useReleaseCode: 'use this release code', copy: 'copy', copyLink: 'copy link', openInNewWindow: 'open in new window' },
+  de: { useDiscId: 'diese disc-id verwenden', useReleaseCode: 'diesen release-code verwenden', copy: 'kopieren', copyLink: 'link kopieren', openInNewWindow: 'in neuem fenster öffnen' },
+  es: { useDiscId: 'usar este disc id', useReleaseCode: 'usar este código de release', copy: 'copiar', copyLink: 'copiar enlace', openInNewWindow: 'abrir en una ventana nueva' },
+  fr: { useDiscId: 'utiliser ce disc id', useReleaseCode: 'utiliser ce code de release', copy: 'copier', copyLink: 'copier le lien', openInNewWindow: 'ouvrir dans une nouvelle fenêtre' },
+  it: { useDiscId: 'usa questo disc id', useReleaseCode: 'usa questo codice release', copy: 'copia', copyLink: 'copia link', openInNewWindow: 'apri in una nuova finestra' }
+};
+
+ipcMain.on('app:sync-language', (_, lang) => {
+  currentAppLanguage = lang;
+});
 
 const gotLock = app.requestSingleInstanceLock()
 

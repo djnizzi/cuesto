@@ -43,33 +43,52 @@ CUEsto allows you to import tracklist data directly from a saved **1001tracklist
 
 ### Importing from GnuDB
 You can quickly retrieve high-quality metadata from the **GnuDB** database using a CD ID.
-1. In CUEsto, click the **GnuDB** logo.
-2. A modal window will appear.
-3. **Redirection Information**: The modal includes a link to GnuDB's search page to help you find the correct CD ID. Clicking this link opens a **Custom Internal Browser** with:
-   - **Navigation Controls**: Use the Back and Forward icons to browse GnuDB just like a standard browser.
-   - **Right-Click Actions**: Right-click any link to quickly **Copy Link** or **Open in New Window**.
+1. In CUEsto, click the **GnuDB** logo (or press the corresponding icon).
+2. A modal window will appear displaying the current **performer** and **album title** being searched.
+3. **Search Link**: The modal includes a "search on gnudb.org" link. Clicking this opens a **Custom Internal Browser**.
 4. **Selective Overwrite**: Before fetching, you can use the checkboxes to choose exactly which fields to update:
    - **Header**: Artist, Album Title, Year, Genre.
    - **Track Titles**: Updates titles for all tracks.
    - **Track Performers**: Updates performers for all tracks.
    - **Start Times/Durations**: Updates indices/timings.
-5. **Auto-Fallback**: If a field in your CUE sheet is currently empty, GnuDB will always populate it regardless of your checkbox selections. Your choices only determine whether to *overwrite* existing non-empty values.
+5. **Auto-Fallback**: If a field in your CUE sheet is currently empty, GnuDB will always populate it regardless of your checkbox selections.
 6. Enter the **GnuDB CD ID** (e.g., `860a8c86`) and click the **get metadata** icon.
 7. CUEsto will fetch the requested metadata directly into the editor.
-8. **Persistence**: When you import from GnuDB, CUEsto automatically saves the CD ID as a `REM GNUCDID` line in your CUE file. This allows the application to remember where the metadata came from if you reopen the file later.
+8. **Persistence**: When you import from GnuDB, CUEsto automatically saves the CD ID as a `REM GNUCDID` line in your CUE file.
 
 ### Importing from Discogs
 CUEsto provides a powerful integration with **Discogs**, the premier music database. 
 1. In CUEsto, click the **Discogs** logo.
-2. **Release Code**: Enter the numeric release ID (e.g., `153184`). CUEsto also accepts common formats like `r153184` or `[r153184]`.
-3. **Disc # (Optional)**: For multi-disc releases, you can specify which disc to import (e.g., `1` or `2`). If left empty, the first disc's tracks are usually imported.
-4. **Selective Overwrite**: Choose exactly what you want to import:
+2. A modal window appears showing the **performer** and **album title** CUEsto is searching for.
+3. **Search Link**: Click "search on discogs.com" to open the internal browser.
+4. **Release Code**: Enter the numeric release ID (e.g., `153184`). CUEsto also accepts common formats like `r153184`.
+5. **Disc # (Optional)**: For multi-disc releases, specify which disc to import.
+6. **Selective Overwrite**: Choose exactly what you want to import:
    - **Header**: Artist, Album Title, Year, Genre.
    - **Track Titles**: Updates titles for all imported tracks.
    - **Track Performers**: Updates performers for all imported tracks.
-   - **Start Times/Durations**: Updates indices/timings using the raw durations from Discogs.
-   - **Interpolate Start Times/Durations**: (Requires a linked audio file) This advanced feature uses your audio file's total length to adjust the Discogs track durations, providing a higher-precision estimate of track start times.
-5. **Persistence**: When you import from Discogs, CUEsto automatically saves the release ID as a `REM DISCOGS` line in your CUE file.
+   - **Start Times/Durations**: Updates indices/timings using raw durations.
+   - **Interpolate Start Times/Durations**: (Requires a linked audio file) Uses total length to adjust Discogs track durations for high-precision start times.
+7. **Persistence**: The release ID is saved as a `REM DISCOGS` line.
+
+### Importing from MusicBrainz
+You can import extremely detailed metadata (including barcode and label info) from **MusicBrainz**.
+1. In CUEsto, click the **MusicBrainz** logo.
+2. Like other modals, it shows what you are searching for and provides a "search on musicbrainz.org" link.
+3. **Disc ID**: Enter the MusicBrainz Disc ID (e.g., `qT8E_p...`).
+4. **Selective Overwrite**: Customize your import (Header, Titles, Performers, Timings) just like with other sources.
+5. **Persistence**: The Disc ID is saved as a `REM MUSICBRAINZ_DISCID` line.
+6. **Enhanced Metadata**: CUEsto automatically captures `BARCODE`, `LABEL`, and `CATALOG` number, storing them as `REM` lines.
+
+## Internal Browser and Context Menu
+CUEsto features a customized internal browser that makes finding metadata IDs effortless.
+- **Smart Extraction**: When right-clicking on specific items within GnuDB, Discogs, or MusicBrainz, CUEsto offers specialized actions:
+    - **"use this disc id"**: Automatically sends the CD TOC/Disc ID to the MusicBrainz modal.
+    - **"use this release code"**: Automatically sends the release ID (prefixed with 'r') to the Discogs modal.
+    - **"use this gnucdid"**: Automatically sends the CDID to the GnuDb modal.
+- **Navigation**: The browser header includes **Back** and **Forward** buttons.
+- **Standard Actions**: Localized right-click options for **"copy"**, **"copy link"**, and **"open in new window"**.
+- **Real-time Sync**: The browser's context menu automatically updates to match your application's current language setting.
 
 ### Importing from Audacity
 CUEsto supports importing timing and label data from **Audacity Labels** files.

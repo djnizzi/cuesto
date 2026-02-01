@@ -2,7 +2,7 @@
 > A modern, electron-based CUE sheet editor built for speed and aesthetics.
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-![Version](https://img.shields.io/badge/version-v1.0.14-green.svg)
+![Version](https://img.shields.io/badge/version-v1.0.15-green.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 
 **CUEsto** is a powerful desktop application designed to make CUE sheet editing effortless. Built with modern web technologies, it offers a sleek interface with both light and dark modes, real-time duration calculations, and intuitive metadata management.
@@ -17,6 +17,7 @@
 - 🏷️ **Enhanced Metadata**: Auto-captures and saves `BARCODE`, `LABEL`, and `CATALOG` number from MusicBrainz.
 - 🎵 **Audio Integration**: Link audio files to your CUE sheet. Automatically extract duration and metadata (performer, title, year, genre) from audio files with multi-artist support.
 - 📥 **Import Tools**: Support for importing tracklists from **GnuDB**, **1001tracklists**, **Discogs**, **MusicBrainz**, and **Audacity**.
+- 🖱️ **Contextual Power**: Internal search browser with smart extraction of Disc IDs and Release Codes via a localized right-click menu.
 - 🖥️ **Cross-Platform**: Runs on Windows, Mac, and Linux (via Electron).
 
 ## Quick Start
