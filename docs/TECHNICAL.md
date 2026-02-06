@@ -43,6 +43,7 @@ CUEsto is a modern, Electron-based desktop application for editing CUE sheets. I
 - **`ConfirmModal.tsx`**: A reusable, styled confirmation modal for sensitive actions like clearing the editor.
 - **`AlertModal.tsx`**: A generic modal for displaying errors or warnings.
 - **`SplitProgressModal.tsx`**: Displays the real-time progress of the FFmpeg splitting operation.
+- **`TextEditingModal.tsx`**: Manages batch text operations (separator replacement, splitting, swapping, and propercase normalization) across all tracks.
 - **`TrackRow.tsx`**: Represents a single track in the cue sheet. Contains inputs for title, performer, start time, and duration.
 - **`MetadataHeader.tsx`**: Displays and edits global CUE properties. Includes the audio file icon and total duration display.
 - **`TimeInput.tsx`**: A specialized input component for handling timestamp formats (MM:SS:FF). Supports a read-only mode for calculated fields.

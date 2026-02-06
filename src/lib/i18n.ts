@@ -129,6 +129,17 @@ export interface Translations {
     copy: string;
     copyLink: string;
     openInNewWindow: string;
+
+    // Text Editing
+    textEditing: string;
+    modalTitleTextEditing: string;
+    opChangeSeparator: string;
+    opSplitTitlePerformer: string;
+    opSwapTitlePerformer: string;
+    opToPropercase: string;
+    from: string;
+    to: string;
+    separator: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -246,6 +257,16 @@ const translations: Record<Language, Translations> = {
         copy: 'copy',
         copyLink: 'copy link',
         openInNewWindow: 'open in new window',
+
+        textEditing: 'text editing',
+        modalTitleTextEditing: 'text editing',
+        opChangeSeparator: 'change separator in tracks performers from',
+        opSplitTitlePerformer: 'split tracks titles to title and performers by separator',
+        opSwapTitlePerformer: 'swap track titles and performers',
+        opToPropercase: 'change to propercase',
+        from: 'from',
+        to: 'to',
+        separator: 'separator',
     },
 
     de: {
@@ -362,6 +383,16 @@ const translations: Record<Language, Translations> = {
         copy: 'kopieren',
         copyLink: 'link kopieren',
         openInNewWindow: 'in neuem fenster öffnen',
+
+        textEditing: 'textbearbeitung',
+        modalTitleTextEditing: 'textbearbeitung',
+        opChangeSeparator: 'trennzeichen bei interpreten ändern von',
+        opSplitTitlePerformer: 'titel in titel und interpreten trennen durch',
+        opSwapTitlePerformer: 'titel und interpreten tauschen',
+        opToPropercase: 'in wortanfangsgroßschreibung umwandeln',
+        from: 'von',
+        to: 'nach',
+        separator: 'trennzeichen',
     },
 
     es: {
@@ -477,7 +508,17 @@ const translations: Record<Language, Translations> = {
         useGnuCdId: 'usar este gnucdid',
         copy: 'copiar',
         copyLink: 'copiar enlace',
-        openInNewWindow: 'abrir en una ventana nueva',
+        openInNewWindow: 'abrir en una ventana nuova',
+
+        textEditing: 'edición de texto',
+        modalTitleTextEditing: 'edición de texto',
+        opChangeSeparator: 'cambiar separador en artistas de',
+        opSplitTitlePerformer: 'dividir títulos en título y artista por separador',
+        opSwapTitlePerformer: 'intercambiar títulos y artistas',
+        opToPropercase: 'cambiar a mayúsculas iniciales',
+        from: 'de',
+        to: 'a',
+        separator: 'separador',
     },
 
     fr: {
@@ -594,6 +635,16 @@ const translations: Record<Language, Translations> = {
         copy: 'copier',
         copyLink: 'copier le lien',
         openInNewWindow: 'ouvrir dans une nouvelle fenêtre',
+
+        textEditing: 'édition de texte',
+        modalTitleTextEditing: 'édition de texte',
+        opChangeSeparator: 'changer le séparateur des artistes de',
+        opSplitTitlePerformer: 'diviser les titres en titre et artiste par',
+        opSwapTitlePerformer: 'inverser titres et artistes',
+        opToPropercase: 'mettre des majuscules aux mots',
+        from: 'de',
+        to: 'à',
+        separator: 'séparateur',
     },
 
     it: {
@@ -710,6 +761,16 @@ const translations: Record<Language, Translations> = {
         copy: 'copia',
         copyLink: 'copia link',
         openInNewWindow: 'apri in una nuova finestra',
+
+        textEditing: 'editing testuale',
+        modalTitleTextEditing: 'editing testuale',
+        opChangeSeparator: 'cambia separatore negli artisti da',
+        opSplitTitlePerformer: 'dividi titoli tracce in titolo e artista dal separatore',
+        opSwapTitlePerformer: 'inverti titoli e artisti',
+        opToPropercase: 'converti in minuscolo con iniziali maiuscole',
+        from: 'da',
+        to: 'a',
+        separator: 'separatore',
     },
 };
 

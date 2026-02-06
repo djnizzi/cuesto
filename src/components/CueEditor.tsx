@@ -16,6 +16,7 @@ import { AlertModal } from './AlertModal';
 import { LanguageSelector } from './LanguageSelector';
 import { SettingsModal } from './SettingsModal';
 import { TracklistModal, TracklistOptions } from './TracklistModal';
+import { TextEditingModal } from './TextEditingModal';
 import { Language, getCurrentLanguage, getTranslations } from '../lib/i18n';
 import { useTheme } from '../lib/themeContext';
 
@@ -63,7 +64,8 @@ export const CueEditor: React.FC = () => {
     const [isTracklistModalOpen, setIsTracklistModalOpen] = useState(false);
     const [importHtml, setImportHtml] = useState<string | null>(null);
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-    const [appVersion, setAppVersion] = useState('1.0.15');
+    const [isTextEditingModalOpen, setIsTextEditingModalOpen] = useState(false);
+    const [appVersion, setAppVersion] = useState('1.0.18');
     const [fullAudioPath, setFullAudioPath] = useState<string | null>(null);
     const [hasAttemptedSplit, setHasAttemptedSplit] = useState(false);
     const [splitProgress, setSplitProgress] = useState<{ progress: number, currentTrack: number, totalTracks: number, fileName: string } | null>(null);
@@ -432,6 +434,13 @@ export const CueEditor: React.FC = () => {
         });
     };
 
+    const handleTextEditingSuccess = (updatedTracks: CueTrack[]) => {
+        setCue(prev => ({
+            ...prev,
+            tracks: updatedTracks
+        }));
+    };
+
     const handleMusicBrainzSuccess = (data: MusicBrainzResult, options: MusicBrainzOptions) => {
         const mbCue = musicbrainzToCue(data);
 
@@ -720,6 +729,7 @@ export const CueEditor: React.FC = () => {
                 </div>
 
                 <div className="flex justify-end gap-6 mt-8">
+
                     <button
                         onClick={handleAddRow}
                         className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
@@ -728,12 +738,13 @@ export const CueEditor: React.FC = () => {
                         <img src="icons/add.svg" alt={t.addRow} className="size-6" />
                     </button>
                     <button
-                        onClick={handleViewCue}
+                        onClick={() => setIsTextEditingModalOpen(true)}
                         className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
-                        data-tooltip={t.viewCue}
+                        data-tooltip={t.textEditing}
                     >
-                        <img src="icons/code.svg" alt={t.viewCue} className="size-6" />
+                        <img src="icons/edit.svg" alt={t.textEditing} className="size-6" />
                     </button>
+
                     <button
                         onClick={handleClear}
                         className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
@@ -764,7 +775,13 @@ export const CueEditor: React.FC = () => {
                     >
                         <img src="icons/split.svg" alt={t.splitAudio} className="size-6" />
                     </button>
-
+                    <button
+                        onClick={handleViewCue}
+                        className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
+                        data-tooltip={t.viewCue}
+                    >
+                        <img src="icons/code.svg" alt={t.viewCue} className="size-6" />
+                    </button>
                     <LanguageSelector
                         onLanguageChange={handleLanguageChange}
                         variant="icon"
@@ -853,6 +870,14 @@ export const CueEditor: React.FC = () => {
                 onCancel={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
                 confirmTooltip={confirmModal.confirmTooltip}
                 cancelTooltip={confirmModal.cancelTooltip}
+            />
+
+            <TextEditingModal
+                isOpen={isTextEditingModalOpen}
+                onClose={() => setIsTextEditingModalOpen(false)}
+                tracks={cue.tracks}
+                onApply={handleTextEditingSuccess}
+                t={t}
             />
 
             <SettingsModal

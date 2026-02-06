@@ -8,6 +8,7 @@ CUEsto is a dedicated tool for creating and editing CUE sheets with ease. Whethe
 - **Smart Time Editing**: Automatically recalculates durations when you edit start times.
 - **Metadata Management**: Easily update Album Title, Performer, File references, and more.
 - **Audio Integration**: Automatically extract duration and metadata tags (title, artist, year, genre) from your audio files. Full support for multiple artists (separated by `; `).
+- **Text Editing**: Perform batch operations across your tracklist, such as swapping fields, changing separators, or converting to propercase.
 - **Audio Splitting**: Slice large mix files into individual tracks using the bundled FFmpeg engine.
 - **Improved Browser**: Customized internal search browser for GnuDB with navigation controls (Back/Forward) and right-click support.
 - **CUE Viewer**: Inspect your raw CUE sheet with built-in syntax highlighting in a separate window.
@@ -121,6 +122,13 @@ CUEsto includes a built-in audio splitting engine based on FFmpeg. You can slice
   - Click the **add row** icon to add a new track.
   - Click the **trash icon** to remove a specific track.
   - Click the **clear** icon to reset the entire cue sheet. A confirmation modal will appear to prevent accidental data loss.
+
+### Text Editing Tools
+CUEsto provides powerful batch editing tools to normalize your track metadata. Click the **Edit (Pencil)** icon at the bottom left of the editor to open the Text Editing Modal.
+- **Change Separator**: Scan all track performers and change a specific separator (e.g., from `,` to `;`). Default values are `,` and `;`.
+- **Split Titles to Title and Performer**: If your track titles contain the performer name (e.g., "Song Name - Artist"), you can automatically split them. Specify the separator (e.g., `-`) and CUEsto will move the artist part to the Performer field.
+- **Swap Track Titles and Performers**: Quickly flip the contents of the Title and Performer fields for all tracks.
+- **Change to Propercase**: Automatically convert all track titles and performers to "Propercase" (e.g., "SONG NAME" becomes "Song Name").
 
 ### Viewing the Raw CUE Sheet
 If you want to inspect or verify the raw CUE sheet text before saving:

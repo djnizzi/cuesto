@@ -121,7 +121,7 @@ export function parseCue(content: string): CueSheet {
     return cue;
 }
 
-export function generateCue(cue: CueSheet, version: string = '1.0.14'): string {
+export function generateCue(cue: CueSheet, version: string = '1.0.18'): string {
     let output = '';
     if (cue.performer) output += `PERFORMER "${cue.performer}"\n`;
     if (cue.title) output += `TITLE "${cue.title}"\n`;
