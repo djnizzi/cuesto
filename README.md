@@ -2,12 +2,12 @@
 > A modern, electron-based CUE sheet editor built for speed and aesthetics.
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-![Version](https://img.shields.io/badge/version-v1.0.18-green.svg)
+![Version](https://img.shields.io/badge/version-v1.0.19-green.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 
 **CUEsto** is a powerful desktop application designed to make CUE sheet editing effortless. Built with modern web technologies, it offers a sleek interface with both light and dark modes, real-time duration calculations, and intuitive metadata management.
 
-**I think we are nearing release... It will be 1.1.0**
+**I think we are nearing release... It will be 1.1.0 (currently focusing on UI/UX refinements)**
 
 what is this for anyway? [Read on Wikipedia](https://en.wikipedia.org/wiki/Cue_sheet_(computing))
 

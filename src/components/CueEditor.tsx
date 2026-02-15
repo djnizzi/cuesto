@@ -27,12 +27,12 @@ const INITIAL_CUE: CueSheet = {
     title: '',
     performer: '',
     file: '',
-    tracks: [
-        { number: 1, title: '', performer: '', index01: 0 }, // 00:00:00
-        // Example duration 3:28:45 -> 12480 + 2100 + 45 = 15645 frames roughly? 
-        // 3 mins = 180s. 3:28 = 208s. 208 * 75 = 15600. .45 -> 45 frames. Total 15645.
-        // Next track start: 15645
-    ]
+    tracks: Array.from({ length: 9 }, (_, i) => ({
+        number: i + 1,
+        title: '',
+        performer: '',
+        index01: i * 13500 // 3:00:00 default duration
+    }))
 };
 
 export const CueEditor: React.FC = () => {
@@ -65,7 +65,7 @@ export const CueEditor: React.FC = () => {
     const [importHtml, setImportHtml] = useState<string | null>(null);
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
     const [isTextEditingModalOpen, setIsTextEditingModalOpen] = useState(false);
-    const [appVersion, setAppVersion] = useState('1.0.18');
+    const [appVersion, setAppVersion] = useState('1.0.19');
     const [fullAudioPath, setFullAudioPath] = useState<string | null>(null);
     const [hasAttemptedSplit, setHasAttemptedSplit] = useState(false);
     const [splitProgress, setSplitProgress] = useState<{ progress: number, currentTrack: number, totalTracks: number, fileName: string } | null>(null);
@@ -280,20 +280,17 @@ export const CueEditor: React.FC = () => {
     };
 
     const handleDeleteTrack = (index: number) => {
-        showConfirm(t.deleteTrack, `${t.deleteTrackConfirm} ${cue.tracks[index].number}?`, () => {
-            const newTracks = [...cue.tracks];
-            newTracks.splice(index, 1);
-            // Re-number
-            newTracks.forEach((track, i) => track.number = i + 1);
-            setCue(prev => ({ ...prev, tracks: newTracks }));
-            setConfirmModal(prev => ({ ...prev, isOpen: false }));
-        }, t.deleteTrack, t.cancel);
+        const newTracks = [...cue.tracks];
+        newTracks.splice(index, 1);
+        // Re-number
+        newTracks.forEach((track, i) => track.number = i + 1);
+        setCue(prev => ({ ...prev, tracks: newTracks }));
     };
 
     const handleAddRow = () => {
         setCue(prev => {
             const lastTrack = prev.tracks[prev.tracks.length - 1];
-            const newStart = lastTrack ? lastTrack.index01 + 15000 : 0; // Default add 3:20 approx?
+            const newStart = lastTrack ? lastTrack.index01 + 13500 : 0; // Default add 3:00:00
             return {
                 ...prev,
                 tracks: [
@@ -669,17 +666,101 @@ export const CueEditor: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-brand-dark text-brand-text font-sans selection:bg-brand-orange selection:text-white">
-            {/* Brand Header */}
-            <div className="flex justify-between items-center py-6 px-8 max-w-7xl mx-auto w-full relative">
-                <div className="flex-1"></div>
+        <div className="min-h-screen bg-brand-dark text-brand-text font-sans selection:bg-brand-orange selection:text-white pt-2">
+            {/* Fixed Top Bar */}
+            <div className="fixed top-0 left-0 right-0 z-50 bg-brand-dark/10 backdrop-blur-xs border-b border-brand-text/5 py-4">
+                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+                    {/* Left: Logo & File Actions */}
+                    <div className="flex items-center gap-6">
+                        <img src={`images/logo${theme === 'light' ? '-light' : ''}.png`} alt="CUEsto Logo" className="h-10 w-auto" />
+                        <div className="h-5 w-px bg-brand-text/30 mx-1"></div>
+                        <div className="flex gap-4">
+                            <button
+                                onClick={handleOpenFile}
+                                className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
+                                data-tooltip-bottom={t.openFile}
+                            >
+                                <img src="icons/open.svg" alt="open" className="size-5" />
+                            </button>
+                            <button
+                                onClick={handleSave}
+                                disabled={!currentFilePath}
+                                className={`text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all ${!currentFilePath ? 'opacity-30 cursor-not-allowed' : ''}`}
+                                data-tooltip-bottom={t.save}
+                            >
+                                <img src="icons/save.svg" alt="save" className="size-5" />
+                            </button>
+                            <button
+                                onClick={handleSaveAs}
+                                className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
+                                data-tooltip-bottom={t.saveAs}
+                            >
+                                <img src="icons/saveas.svg" alt="save as" className="size-5" />
+                            </button>
+                            <button
+                                onClick={handleClear}
+                                className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
+                                data-tooltip-bottom={t.clear}
+                            >
+                                <img src="icons/clean.svg" alt="clear" className="size-5" />
+                            </button>
+                            <button
+                                onClick={() => setIsTextEditingModalOpen(true)}
+                                className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
+                                data-tooltip-bottom={t.textEditing}
+                            >
+                                <img src="icons/edit.svg" alt="edit" className="size-5" />
+                            </button>
+                            <button
+                                onClick={handleSplitAudio}
+                                className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
+                                data-tooltip-bottom={t.splitAudio}
+                            >
+                                <img src="icons/split.svg" alt="split" className="size-5" />
+                            </button>
+                            <button
+                                onClick={handleViewCue}
+                                className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
+                                data-tooltip-bottom={t.viewCue}
+                            >
+                                <img src="icons/code.svg" alt="view cue" className="size-5" />
+                            </button>
+                        </div>
 
-                <h1 className="text-4xl font-bold flex items-center justify-center gap-2">
-                    <img src={`images/logo${theme === 'light' ? '-light' : ''}.png`} alt="CUEsto Logo" className="h-20 w-auto" />
-                </h1>
+                        <div className="h-5 w-px bg-brand-text/30 mx-1"></div>
 
-                <div className="flex-1 flex justify-end">
-                    {/* Language Selector moved to bottom bar */}
+                        {/* Imports */}
+                        <div className="flex gap-4 items-center">
+                            <span className="text-[12px] text-brand-text/60  whitespace-nowrap">{t.getDataFrom}</span>
+                            <button onClick={() => handleImport('musicbrainz')} data-tooltip-bottom={t.importFromMusicBrainz} className="hover:drop-shadow-[0_0_8_px_var(--color-brand-orange)] transition-all">
+                                <img src="images/musicbrainz.svg" alt="musicbrainz" className="h-5 w-auto" />
+                            </button>
+                            <button onClick={() => handleImport('gnudb')} data-tooltip-bottom={t.importFromGnudb} className="hover:drop-shadow-[0_0_8_px_var(--color-brand-orange)] transition-all">
+                                <img src="images/gnudb.svg" alt="gnudb" className="h-5 w-auto" />
+                            </button>
+                            <button onClick={() => handleImport('audacity')} data-tooltip-bottom={t.importAudacityLabels} className="hover:drop-shadow-[0_0_8_px_var(--color-brand-orange)] transition-all">
+                                <img src="images/audacity.svg" alt="audacity" className="h-5 w-auto" />
+                            </button>
+                            <button onClick={() => handleImport('1001tracklists')} data-tooltip-bottom={t.importFrom1001Tracklists} className="hover:drop-shadow-[0_0_8_px_var(--color-brand-orange)] transition-all">
+                                <img src="images/tracklists.svg" alt="1001tracklists" className="h-5 w-auto" />
+                            </button>
+                            <button onClick={() => handleImport('discogs')} data-tooltip-bottom={t.importFromDiscogs} className="hover:drop-shadow-[0_0_8_px_var(--color-brand-orange)] transition-all">
+                                <img src="images/discogs.svg" alt="discogs" className="h-5 w-auto" />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Right: Settings/Language */}
+                    <div className="flex items-center">
+                        <LanguageSelector
+                            onLanguageChange={handleLanguageChange}
+                            variant="icon"
+                            direction="down"
+                            tooltipDirection="down"
+                            onIconClick={() => setIsSettingsModalOpen(true)}
+                            currentLanguage={currentLanguage}
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -691,8 +772,6 @@ export const CueEditor: React.FC = () => {
                 genre={cue.genre || ''}
                 totalDuration={cue.totalDuration}
                 onUpdate={handleUpdateMetadata}
-                onImport={handleImport}
-                onOpenFile={handleOpenFile}
                 onSelectAudioFile={handleSelectAudioFile}
                 isAudioResolved={!!fullAudioPath}
                 showAudioError={hasAttemptedSplit && !fullAudioPath}
@@ -728,8 +807,7 @@ export const CueEditor: React.FC = () => {
                     ))}
                 </div>
 
-                <div className="flex justify-end gap-6 mt-8">
-
+                <div className="flex justify-end gap-6 mx-1 mt-2">
                     <button
                         onClick={handleAddRow}
                         className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
@@ -737,58 +815,6 @@ export const CueEditor: React.FC = () => {
                     >
                         <img src="icons/add.svg" alt={t.addRow} className="size-6" />
                     </button>
-                    <button
-                        onClick={() => setIsTextEditingModalOpen(true)}
-                        className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
-                        data-tooltip={t.textEditing}
-                    >
-                        <img src="icons/edit.svg" alt={t.textEditing} className="size-6" />
-                    </button>
-
-                    <button
-                        onClick={handleClear}
-                        className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
-                        data-tooltip={t.clear}
-                    >
-                        <img src="icons/clean.svg" alt={t.clear} className="size-6" />
-                    </button>
-                    {currentFilePath && (
-                        <button
-                            onClick={handleSave}
-                            className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
-                            data-tooltip={t.save}
-                        >
-                            <img src="icons/save.svg" alt={t.save} className="size-6" />
-                        </button>
-                    )}
-                    <button
-                        onClick={handleSaveAs}
-                        className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
-                        data-tooltip={t.saveAs}
-                    >
-                        <img src="icons/saveas.svg" alt={t.saveAs} className="size-6" />
-                    </button>
-                    <button
-                        onClick={handleSplitAudio}
-                        className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
-                        data-tooltip={t.splitAudio}
-                    >
-                        <img src="icons/split.svg" alt={t.splitAudio} className="size-6" />
-                    </button>
-                    <button
-                        onClick={handleViewCue}
-                        className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
-                        data-tooltip={t.viewCue}
-                    >
-                        <img src="icons/code.svg" alt={t.viewCue} className="size-6" />
-                    </button>
-                    <LanguageSelector
-                        onLanguageChange={handleLanguageChange}
-                        variant="icon"
-                        direction="up"
-                        onIconClick={() => setIsSettingsModalOpen(true)}
-                        currentLanguage={currentLanguage}
-                    />
                 </div>
 
                 {/* The SplitProgressModal will handle rendering progress */}

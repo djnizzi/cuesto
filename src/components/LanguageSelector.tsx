@@ -6,6 +6,7 @@ interface LanguageSelectorProps {
     onLanguageChange: (lang: Language) => void;
     variant?: 'default' | 'icon';
     direction?: 'up' | 'down';
+    tooltipDirection?: 'up' | 'down';
     onIconClick?: () => void;
     currentLanguage?: Language;
 }
@@ -14,6 +15,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     onLanguageChange,
     variant = 'default',
     direction = 'down',
+    tooltipDirection = 'up',
     onIconClick,
     currentLanguage
 }) => {
@@ -47,7 +49,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                     }
                 }}
                 className={`text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all flex items-center gap-2 ${variant === 'icon' ? '' : ''}`}
-                data-tooltip={t.settings}
+                {...(tooltipDirection === 'down' ? { 'data-tooltip-bottom': t.settings } : { 'data-tooltip': t.settings })}
             >
                 <img src="icons/language.svg" alt="language" className="size-6" />
                 {variant === 'default' && (

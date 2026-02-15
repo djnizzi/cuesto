@@ -34,7 +34,7 @@ CUEsto is a modern, Electron-based desktop application for editing CUE sheets. I
 - **`shell:open-folder`**: Opens an absolute path in the system's file explorer.
 
 ### Key Components
-- **`CueEditor.tsx`**: The main container component that manages the state of the CUE sheet (`CueSheet` object). It implements the selective overwrite logic for GnuDB and Discogs imports and handles the display of calculated durations.
+- **`CueEditor.tsx`**: The main container component that manages the state of the CUE sheet (`CueSheet` object). Implements the fixed **Top Bar** for global actions, selective overwrite logic for imports, and handles the display of calculated durations. Initializes with **7 tracks** at **3:00:00** intervals.
 - **`CueViewer.tsx`**: A read-only viewer for CUE content. It uses **JetBrains Mono** and implements regex-based syntax highlighting for keywords like `REM`, `TRACK`, `INDEX`, etc.
 - **`BrowserShell.tsx`**: A specialized view for the internal search browser. It provides a navigation header and syncs its state with the main process's `WebContentsView`.
 - **`GnuDbModal.tsx`**: A dedicated modal for GnuDB integration. It manages internal state for selective overwrite options and handles link redirection to the custom browser.
@@ -44,11 +44,11 @@ CUEsto is a modern, Electron-based desktop application for editing CUE sheets. I
 - **`AlertModal.tsx`**: A generic modal for displaying errors or warnings.
 - **`SplitProgressModal.tsx`**: Displays the real-time progress of the FFmpeg splitting operation.
 - **`TextEditingModal.tsx`**: Manages batch text operations (separator replacement, splitting, swapping, and propercase normalization) across all tracks.
-- **`TrackRow.tsx`**: Represents a single track in the cue sheet. Contains inputs for title, performer, start time, and duration.
-- **`MetadataHeader.tsx`**: Displays and edits global CUE properties. Includes the audio file icon and total duration display.
+- **`TrackRow.tsx`**: Represents a single track in the cue sheet. Contains inputs for title, performer, start time, and duration. Supports **instant deletion** without confirmation.
+- **`MetadataHeader.tsx`**: Displays and edits global CUE properties. Includes the audio file selector integrated within the filename field and total duration display.
 - **`TimeInput.tsx`**: A specialized input component for handling timestamp formats (MM:SS:FF). Supports a read-only mode for calculated fields.
 - **`SettingsModal.tsx`**: Manages application preferences including language selection and theme toggling (Light/Dark).
-- **`LanguageSelector.tsx`**: A specialized icon-based selector that opens the settings modal and provides localized tooltips.
+- **`LanguageSelector.tsx`**: A specialized icon-based selector in the Top Bar that opens settings. Supports dynamic tooltip positioning (`tooltipDirection`) to prevent window-edge clippings.
 
 ### Utilities
 - **`cueParser.ts`**: Handles parsing of .cue files and generation of output. Now supports `REM TOTAL DURATION`, `REM GNUCDID`, and `REM DISCOGS` for enhanced metadata persistence.
