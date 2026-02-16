@@ -23,7 +23,12 @@ CUEsto is a modern, Electron-based desktop application for editing CUE sheets. I
 - **`getAppVersion`**: Returns the current application version from `package.json`.
 - **`gnudb:fetchMetadata`**: Facilitates context-specific CD lookup from `gnudb.org`.
 - **`musicbrainz:fetchMetadata`**: Retrieves detailed release metadata (including barcode/label) from MusicBrainz.
-- **`discogs:fetchMetadata`**: Retrieves release data directly from the Discogs API. Requires a `DISCOGS_TOKEN`.
+- **`discogs:fetchMetadata`**: Retrieves release data directly from the Discogs API. Requires OAuth authentication.
+- **`discogs:getAuthStatus`**: Returns the current Discogs OAuth connection status (connected boolean, username).
+- **`discogs:startOAuth`**: Initiates the OAuth flow and returns the authorization URL.
+- **`discogs:handleOAuthCallback`**: Handles the OAuth callback and exchanges tokens.
+- **`discogs:logout`**: Clears stored OAuth tokens.
+- **`shell:openExternal`**: Opens a URL in the system's default browser.
 - **`browser:get-status`**: Returns the current status (canGoBack, canGoForward, title, url) of the active `WebContentsView`.
 - **`browser:go-back` / `browser:go-forward`**: Triggers navigation in the target browser view.
 - **`browser:status-updated` (Event)**: Pushed from main to renderer whenever navigation or title changes occur.
@@ -47,7 +52,7 @@ CUEsto is a modern, Electron-based desktop application for editing CUE sheets. I
 - **`TrackRow.tsx`**: Represents a single track in the cue sheet. Contains inputs for title, performer, start time, and duration. Supports **instant deletion** without confirmation.
 - **`MetadataHeader.tsx`**: Displays and edits global CUE properties. Includes the audio file selector integrated within the filename field and total duration display.
 - **`TimeInput.tsx`**: A specialized input component for handling timestamp formats (MM:SS:FF). Supports a read-only mode for calculated fields.
-- **`SettingsModal.tsx`**: Manages application preferences including language selection and theme toggling (Light/Dark).
+- **`SettingsModal.tsx`**: Manages application preferences including language selection, theme toggling (Light/Dark), and Discogs OAuth connection status.
 - **`LanguageSelector.tsx`**: A specialized icon-based selector in the Top Bar that opens settings. Supports dynamic tooltip positioning (`tooltipDirection`) to prevent window-edge clippings.
 
 ### Utilities

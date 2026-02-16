@@ -62,10 +62,11 @@ export const CueEditor: React.FC = () => {
     const [isDiscogsModalOpen, setIsDiscogsModalOpen] = useState(false);
     const [isMusicBrainzModalOpen, setIsMusicBrainzModalOpen] = useState(false);
     const [isTracklistModalOpen, setIsTracklistModalOpen] = useState(false);
+    const [discogsConnected, setDiscogsConnected] = useState(false);
     const [importHtml, setImportHtml] = useState<string | null>(null);
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
     const [isTextEditingModalOpen, setIsTextEditingModalOpen] = useState(false);
-    const [appVersion, setAppVersion] = useState('1.0.19');
+    const [appVersion, setAppVersion] = useState('1.0.20');
     const [fullAudioPath, setFullAudioPath] = useState<string | null>(null);
     const [hasAttemptedSplit, setHasAttemptedSplit] = useState(false);
     const [splitProgress, setSplitProgress] = useState<{ progress: number, currentTrack: number, totalTracks: number, fileName: string } | null>(null);
@@ -77,6 +78,21 @@ export const CueEditor: React.FC = () => {
             (window as any).ipcRenderer.send('app:sync-language', currentLanguage);
         }
     }, [currentLanguage]);
+
+    // Check Discogs auth status on mount
+    React.useEffect(() => {
+        const checkDiscogsAuth = async () => {
+            if ((window as any).ipcRenderer) {
+                try {
+                    const result = await (window as any).ipcRenderer.invoke('discogs:getAuthStatus');
+                    setDiscogsConnected(result.connected);
+                } catch (e) {
+                    console.error('Failed to check Discogs auth:', e);
+                }
+            }
+        };
+        checkDiscogsAuth();
+    }, []);
 
     const handleLanguageChange = (lang: Language) => {
         setCurrentLanguage(lang);
@@ -744,7 +760,11 @@ export const CueEditor: React.FC = () => {
                             <button onClick={() => handleImport('1001tracklists')} data-tooltip-bottom={t.importFrom1001Tracklists} className="hover:drop-shadow-[0_0_8_px_var(--color-brand-orange)] transition-all">
                                 <img src="images/tracklists.svg" alt="1001tracklists" className="h-5 w-auto" />
                             </button>
-                            <button onClick={() => handleImport('discogs')} data-tooltip-bottom={t.importFromDiscogs} className="hover:drop-shadow-[0_0_8_px_var(--color-brand-orange)] transition-all">
+                            <button
+                                onClick={() => discogsConnected ? handleImport('discogs') : setIsSettingsModalOpen(true)}
+                                data-tooltip-bottom={discogsConnected ? t.importFromDiscogs : t.connectToDiscogs}
+                                className={`transition-all ${discogsConnected ? 'hover:drop-shadow-[0_0_8_px_var(--color-brand-orange)]' : 'opacity-40 cursor-not-allowed'}`}
+                            >
                                 <img src="images/discogs.svg" alt="discogs" className="h-5 w-auto" />
                             </button>
                         </div>
@@ -911,6 +931,8 @@ export const CueEditor: React.FC = () => {
                 onClose={() => setIsSettingsModalOpen(false)}
                 onLanguageChange={handleLanguageChange}
                 currentLanguage={currentLanguage}
+                onDiscogsConnect={() => setDiscogsConnected(true)}
+                onDiscogsDisconnect={() => setDiscogsConnected(false)}
             />
         </div>
     );

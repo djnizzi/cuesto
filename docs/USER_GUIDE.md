@@ -63,6 +63,9 @@ You can quickly retrieve high-quality metadata from the **GnuDB** database using
 
 ### Importing from Discogs
 CUEsto provides a powerful integration with **Discogs**, the premier music database. 
+
+**Note**: You must connect your Discogs account before using this feature. See the [Connecting to Discogs](#connecting-to-discogs) section below.
+
 1. In CUEsto, click the **Discogs** logo.
 2. A modal window appears showing the **performer** and **album title** CUEsto is searching for.
 3. **Search Link**: Click "search on discogs.com" to open the internal browser.
@@ -152,6 +155,19 @@ You can customize your CUEsto experience through the **Settings Modal**.
 1. Click the **Language/Settings (Globe)** icon in the right side of the **Top Bar**.
 2. **Language Selection**: Choose your preferred language (English, Deutsch, Español, Français, or Italiano). All interface elements and tooltips will update immediately.
 3. **Theme Toggle**: Switch between **Light Mode** (Sun icon) and **Dark Mode** (Moon icon). Your preference is saved automatically and persists when you restart the application.
+
+### Connecting to Discogs
+To use the Discogs import feature, you must connect your Discogs account using OAuth authentication.
+1. Click the **Language/Settings (Globe)** icon in the right side of the **Top Bar**.
+2. In the Settings modal, scroll down to the **Discogs Account** section.
+3. Click the **Connect to Discogs** button.
+4. Your default web browser will open to the Discogs authorization page.
+5. Log in to your Discogs account and authorize CUEsto.
+6. Once authorized, the Discogs section will show "Connected as [your username]".
+7. You can now use the Discogs import feature in the Top Bar.
+8. To disconnect, click the **Disconnect** button in the Settings modal.
+
+**Note**: The Discogs import button in the Top Bar will be disabled (dimmed) until you connect your account.
 
 ## Tips
 - **Time Format**: Times are displayed in `MM:SS:FF` (Frames). CUE sheets use 75 frames per second.

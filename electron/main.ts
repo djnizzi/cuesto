@@ -6,7 +6,10 @@ import { spawn } from 'node:child_process'
 import { createRequire } from 'node:module'
 import * as mm from 'music-metadata'
 import { MusicBrainzApi } from 'musicbrainz-api'
-import { DISCOGS_TOKEN, APP_NAME } from './credentials'
+import OAuth from 'oauth-1.0a'
+import crypto from 'crypto'
+import Store from 'electron-store'
+import { DISCOGS_CONSUMER_KEY, DISCOGS_CONSUMER_SECRET, DISCOGS_CALLBACK_URL, APP_NAME } from './credentials'
 
 const require = createRequire(import.meta.url)
 let ffmpegPath = require('ffmpeg-static')
@@ -24,11 +27,323 @@ const mbApi = new MusicBrainzApi({
   appContactInfo: 'https://github.com/NiZDesign/cuesto'
 });
 
+// ============================================
+// Discogs OAuth Implementation
+// ============================================
+
+// Token storage (encrypted)
+const store = new Store({
+  name: 'discogs-oauth',
+  encryptionKey: 'cuesto-discogs-key-2024' // In production, use a more secure key
+});
+
+// OAuth 1.0a setup
+const oauth = new OAuth({
+  consumer: {
+    key: DISCOGS_CONSUMER_KEY,
+    secret: DISCOGS_CONSUMER_SECRET
+  },
+  signature_method: 'HMAC-SHA1',
+  hash_function(base_string, key) {
+    return crypto.createHmac('sha1', key).update(base_string).digest('base64');
+  }
+});
+
+// Initialize custom protocol for OAuth callback
+function setupOAuthProtocol() {
+  // Register custom protocol for OAuth callback
+  if (process.defaultApp) {
+    if (process.argv.length >= 2) {
+      app.setAsDefaultProtocolClient('cuesto', process.execPath, [path.resolve(process.argv[1])]);
+    }
+  } else {
+    app.setAsDefaultProtocolClient('cuesto');
+  }
+  console.log('OAuth protocol registered: cuesto://');
+}
+
+// Get stored OAuth tokens
+function getStoredTokens(): { accessToken: string; accessTokenSecret: string; username: string } | null {
+  const tokens = store.get('oauthTokens') as { accessToken: string; accessTokenSecret: string; username: string } | null;
+  return tokens || null;
+}
+
+// Save OAuth tokens
+function saveTokens(accessToken: string, accessTokenSecret: string, username: string) {
+  store.set('oauthTokens', { accessToken, accessTokenSecret, username });
+}
+
+// Clear OAuth tokens
+function clearTokens() {
+  store.delete('oauthTokens');
+}
+
+// Get authenticated user info
+async function getDiscogsUser(): Promise<{ username: string } | null> {
+  const tokens = getStoredTokens();
+  if (!tokens) return null;
+
+  try {
+    const url = 'https://api.discogs.com/oauth/identity';
+    const request = {
+      url,
+      method: 'GET'
+    };
+
+    const authHeader = oauth.toHeader(oauth.authorize(request, {
+      key: tokens.accessToken,
+      secret: tokens.accessTokenSecret
+    }));
+
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': authHeader['Authorization'],
+        'User-Agent': `${APP_NAME}/1.0`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return { username: data.username };
+    }
+    return null;
+  } catch (e) {
+    console.error('Failed to get Discogs user:', e);
+    return null;
+  }
+}
+
+// IPC Handlers for OAuth
+ipcMain.handle('discogs:getAuthStatus', async () => {
+  const tokens = getStoredTokens();
+  if (!tokens) {
+    return { connected: false };
+  }
+
+  const user = await getDiscogsUser();
+  return {
+    connected: !!user,
+    username: user?.username || tokens.username
+  };
+});
+
+ipcMain.handle('discogs:startOAuth', async () => {
+  try {
+    // Generate state for CSRF protection
+    const state = crypto.randomBytes(16).toString('hex');
+    store.set('oauthState', state);
+
+    // Step 1: Get request token
+    const requestTokenUrl = 'https://api.discogs.com/oauth/request_token';
+    const request = {
+      url: requestTokenUrl,
+      method: 'POST',
+      data: { oauth_callback: DISCOGS_CALLBACK_URL }
+    };
+
+    const authHeader = oauth.toHeader(oauth.authorize(request));
+
+    const response = await fetch(requestTokenUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': authHeader['Authorization'],
+        'User-Agent': `${APP_NAME}/1.0`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to get request token: ${response.status}`);
+    }
+
+    const body = await response.text();
+    const params = new URLSearchParams(body);
+    const oauthToken = params.get('oauth_token');
+    const oauthTokenSecret = params.get('oauth_token_secret');
+
+    if (!oauthToken || !oauthTokenSecret) {
+      throw new Error('Invalid response: missing oauth_token');
+    }
+
+    // Store temporarily
+    store.set('pendingTokenSecret', oauthTokenSecret);
+
+    // Step 2: Return authorization URL
+    const authUrl = `https://www.discogs.com/oauth/authorize?oauth_token=${oauthToken}&oauth_callback=${encodeURIComponent(DISCOGS_CALLBACK_URL)}`;
+
+    return { authUrl };
+  } catch (e: any) {
+    console.error('OAuth start error:', e);
+    return { error: e.message };
+  }
+});
+
+ipcMain.handle('discogs:handleOAuthCallback', async (_, oauthToken: string, oauthVerifier: string) => {
+  try {
+    const tokens = getStoredTokens();
+    const pendingSecret = store.get('pendingTokenSecret') as string;
+
+    if (!tokens || !pendingSecret) {
+      // Try to exchange request token for access token
+      const requestTokenUrl = 'https://api.discogs.com/oauth/access_token';
+      const request = {
+        url: requestTokenUrl,
+        method: 'POST',
+        data: {
+          oauth_verifier: oauthVerifier,
+          oauth_token: oauthToken
+        }
+      };
+
+      const authHeader = oauth.toHeader(oauth.authorize(request, {
+        key: oauthToken,
+        secret: pendingSecret
+      }));
+
+      const response = await fetch(requestTokenUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': authHeader['Authorization'],
+          'User-Agent': `${APP_NAME}/1.0`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to exchange token: ${response.status}`);
+      }
+
+      const body = await response.text();
+      const params = new URLSearchParams(body);
+      const accessToken = params.get('oauth_token');
+      const accessTokenSecret = params.get('oauth_token_secret');
+
+      if (!accessToken || !accessTokenSecret) {
+        throw new Error('Invalid response: missing access token');
+      }
+
+      // Get username
+      const user = await getDiscogsUserWithTokens(accessToken, accessTokenSecret);
+
+      // Save tokens
+      saveTokens(accessToken, accessTokenSecret, user?.username || 'Unknown');
+
+      // Clean up
+      store.delete('pendingTokenSecret');
+      store.delete('oauthState');
+
+      return { success: true, username: user?.username };
+    }
+
+    return { error: 'No pending token found' };
+  } catch (e: any) {
+    console.error('OAuth callback error:', e);
+    return { error: e.message };
+  }
+});
+
+async function getDiscogsUserWithTokens(accessToken: string, accessTokenSecret: string): Promise<{ username: string } | null> {
+  try {
+    const url = 'https://api.discogs.com/oauth/identity';
+    const request = {
+      url,
+      method: 'GET'
+    };
+
+    const authHeader = oauth.toHeader(oauth.authorize(request, {
+      key: accessToken,
+      secret: accessTokenSecret
+    }));
+
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': authHeader['Authorization'],
+        'User-Agent': `${APP_NAME}/1.0`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return { username: data.username };
+    }
+    return null;
+  } catch (e) {
+    console.error('Failed to get user with tokens:', e);
+    return null;
+  }
+}
+
+ipcMain.handle('discogs:logout', async () => {
+  clearTokens();
+  return { success: true };
+});
+
+// Updated Discogs fetch with OAuth support
+async function fetchDiscogsWithOAuth(releaseCode: string): Promise<{ result?: any; error?: string }> {
+  const tokens = getStoredTokens();
+  const userAgent = `${APP_NAME}/1.0`;
+
+  const releaseId = releaseCode.replace(/\D/g, '');
+  if (!releaseId) {
+    return { error: 'Invalid release code format. Please provide the numeric release ID.' };
+  }
+  const url = `https://api.discogs.com/releases/${releaseId}`;
+
+  try {
+    let headers: Record<string, string> = {
+      'User-Agent': userAgent
+    };
+
+    if (!tokens) {
+      return { error: 'Please connect your Discogs account in Settings to fetch metadata.' };
+    }
+
+    // Use OAuth
+    const request = {
+      url,
+      method: 'GET'
+    };
+
+    const authHeader = oauth.toHeader(oauth.authorize(request, {
+      key: tokens.accessToken,
+      secret: tokens.accessTokenSecret
+    }));
+    headers['Authorization'] = authHeader['Authorization'];
+
+    const response = await fetch(url, { headers });
+
+    if (response.ok) {
+      const data = await response.json();
+      const result = parseDiscogsData(data, releaseId);
+      if (result) {
+        return { result };
+      } else {
+        return { error: 'Failed to parse Discogs response.' };
+      }
+    }
+
+    if (response.status === 404) {
+      return { error: 'Release not found in Discogs (404).' };
+    }
+
+    return { error: `Discogs returned an error: ${response.status} ${response.statusText}` };
+  } catch (e: any) {
+    console.error(`Discogs fetch error:`, e.message);
+    return { error: `Connection error: ${e.message}` };
+  }
+}
+
+// ============================================
+// End Discogs OAuth Implementation
+// ============================================
+
 
 // Handlers
 ipcMain.handle('shell:open-folder', async (_, filePath: string) => {
   const dir = path.dirname(filePath);
   shell.openPath(dir);
+});
+
+ipcMain.handle('shell:openExternal', async (_, url: string) => {
+  await shell.openExternal(url);
 });
 
 ipcMain.handle('dialog:openFile', async () => {
@@ -338,47 +653,8 @@ ipcMain.handle('gnudb:fetchMetadata', async (_, gnucdid: string) => {
 });
 
 ipcMain.handle('discogs:fetchMetadata', async (_, releaseCode: string) => {
-  if (!DISCOGS_TOKEN) {
-    return { error: 'Discogs API token not found. Please check electron/credentials.ts.' };
-  }
-
-  const apiKey = DISCOGS_TOKEN;
-  const userAgent = `${APP_NAME || 'CUEsto'}/1.0.6`;
-
-  // Accept r12345, [r12345], 12345 etc.
-  const releaseId = releaseCode.replace(/\D/g, '');
-  if (!releaseId) {
-    return { error: 'Invalid release code format. Please provide the numeric release ID.' };
-  }
-  const url = `https://api.discogs.com/releases/${releaseId}`;
-
-  try {
-    const response = await fetch(url, {
-      headers: {
-        'Authorization': `Discogs token=${apiKey}`,
-        'User-Agent': userAgent
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      const result = parseDiscogsData(data, releaseId);
-      if (result) {
-        return { result };
-      } else {
-        return { error: 'Failed to parse Discogs response.' };
-      }
-    }
-
-    if (response.status === 404) {
-      return { error: 'Release not found in Discogs (404).' };
-    }
-
-    return { error: `Discogs returned an error: ${response.status} ${response.statusText}` };
-  } catch (e: any) {
-    console.error(`Discogs fetch error:`, e.message);
-    return { error: `Connection error: ${e.message}` };
-  }
+  // Use OAuth if available, otherwise fallback to token
+  return await fetchDiscogsWithOAuth(releaseCode);
 });
 
 ipcMain.handle('musicbrainz:fetchMetadata', async (_, discId: string) => {
@@ -955,4 +1231,59 @@ app.on('activate', () => {
   }
 })
 
-app.whenReady().then(createWindow)
+// Handle OAuth callback from custom protocol
+function handleOAuthCallback(url: string) {
+  // Parse the callback URL: cuesto://oauth/callback?oauth_token=xxx&oauth_verifier=xxx
+  try {
+    const urlObj = new URL(url);
+    const oauthToken = urlObj.searchParams.get('oauth_token');
+    const oauthVerifier = urlObj.searchParams.get('oauth_verifier');
+
+    if (oauthToken && oauthVerifier) {
+      // Notify the renderer to handle the callback
+      win?.webContents.send('discogs:oauth-callback', { oauthToken, oauthVerifier });
+    }
+  } catch (e) {
+    console.error('Failed to parse OAuth callback:', e);
+  }
+}
+
+// Register protocol handler before app is ready
+app.setAsDefaultProtocolClient('cuesto');
+
+// Handle protocol on Windows - single instance
+const gotProtocolLock = app.requestSingleInstanceLock();
+
+if (!gotProtocolLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (_, commandLine) => {
+    // Handle OAuth callback from second instance
+    const url = commandLine.find(arg => arg.startsWith('cuesto://oauth/callback'));
+    if (url) {
+      handleOAuthCallback(url);
+    }
+
+    // Handle file open
+    const filePath = commandLine.find(arg => arg.endsWith('.cue') || arg.endsWith('.txt'));
+    if (filePath) {
+      handleFileOpen(filePath);
+    }
+
+    if (win) {
+      if (win.isMinimized()) win.restore();
+      win.focus();
+    }
+  });
+}
+
+// Handle protocol on macOS
+app.on('open-url', (event, url) => {
+  event.preventDefault();
+  handleOAuthCallback(url);
+});
+
+app.whenReady().then(() => {
+  setupOAuthProtocol();
+  createWindow();
+});

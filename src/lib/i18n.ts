@@ -140,6 +140,16 @@ export interface Translations {
     from: string;
     to: string;
     separator: string;
+
+    // Discogs OAuth
+    discogsAccount: string;
+    connectToDiscogs: string;
+    disconnectFromDiscogs: string;
+    discogsConnectedAs: string;
+    discogsNotConnected: string;
+    discogsAuthenticating: string;
+    discogsAuthFailed: string;
+    discogsAuthSuccess: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -267,6 +277,16 @@ const translations: Record<Language, Translations> = {
         from: 'from',
         to: 'to',
         separator: 'separator',
+
+        // Discogs OAuth
+        discogsAccount: 'discogs account',
+        connectToDiscogs: 'connect to discogs',
+        disconnectFromDiscogs: 'disconnect from discogs',
+        discogsConnectedAs: 'connected as',
+        discogsNotConnected: 'not connected',
+        discogsAuthenticating: 'authenticating with discogs...',
+        discogsAuthFailed: 'authentication failed',
+        discogsAuthSuccess: 'authentication successful',
     },
 
     de: {
@@ -393,6 +413,16 @@ const translations: Record<Language, Translations> = {
         from: 'von',
         to: 'nach',
         separator: 'trennzeichen',
+
+        // Discogs OAuth
+        discogsAccount: 'discogs konto',
+        connectToDiscogs: 'mit discogs verbinden',
+        disconnectFromDiscogs: 'von discogs trennen',
+        discogsConnectedAs: 'verbunden als',
+        discogsNotConnected: 'nicht verbunden',
+        discogsAuthenticating: 'authenticierung mit discogs...',
+        discogsAuthFailed: 'authenticierung fehlgeschlagen',
+        discogsAuthSuccess: 'authenticierung erfolgreich',
     },
 
     es: {
@@ -519,6 +549,16 @@ const translations: Record<Language, Translations> = {
         from: 'de',
         to: 'a',
         separator: 'separador',
+
+        // Discogs OAuth
+        discogsAccount: 'cuenta discogs',
+        connectToDiscogs: 'conectar a discogs',
+        disconnectFromDiscogs: 'desconectar de discogs',
+        discogsConnectedAs: 'conectado como',
+        discogsNotConnected: 'no conectado',
+        discogsAuthenticating: 'autenticando con discogs...',
+        discogsAuthFailed: 'autenticación fallida',
+        discogsAuthSuccess: 'autenticación exitosa',
     },
 
     fr: {
@@ -645,6 +685,16 @@ const translations: Record<Language, Translations> = {
         from: 'de',
         to: 'à',
         separator: 'séparateur',
+
+        // Discogs OAuth
+        discogsAccount: 'compte discogs',
+        connectToDiscogs: 'connecter à discogs',
+        disconnectFromDiscogs: 'déconnecter de discogs',
+        discogsConnectedAs: 'connecté en tant que',
+        discogsNotConnected: 'non connecté',
+        discogsAuthenticating: 'authentification avec discogs...',
+        discogsAuthFailed: 'authentification échouée',
+        discogsAuthSuccess: 'authentification réussie',
     },
 
     it: {
@@ -771,6 +821,16 @@ const translations: Record<Language, Translations> = {
         from: 'da',
         to: 'a',
         separator: 'separatore',
+
+        // Discogs OAuth
+        discogsAccount: 'account discogs',
+        connectToDiscogs: 'collega a discogs',
+        disconnectFromDiscogs: 'dissocia da discogs',
+        discogsConnectedAs: 'collegato come',
+        discogsNotConnected: 'non collegato',
+        discogsAuthenticating: 'autenticazione con discogs...',
+        discogsAuthFailed: 'autenticazione fallita',
+        discogsAuthSuccess: 'autenticazione riuscita',
     },
 };
 
