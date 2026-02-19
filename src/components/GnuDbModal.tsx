@@ -102,7 +102,7 @@ export const GnuDbModal: React.FC<GnuDbModalProps> = ({ isOpen, onClose, onSucce
                         href="https://gnudb.org/search/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-brand-orange hover:underline font-semibold text-modal-body flex items-center gap-2"
+                        className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] font-semibold text-modal-body flex items-center gap-2"
                     >
                         <img src="images/gnudb.svg" alt="gnudb" className="w-[23.65px] h-[24px]" />
                         {t.visitGnuDb}

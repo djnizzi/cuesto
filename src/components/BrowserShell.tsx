@@ -56,10 +56,10 @@ export const BrowserShell: React.FC = () => {
     const is1001TracklistPage = url.includes('1001tracklists.com/tracklist/');
 
     return (
-        <div className="flex flex-col h-screen bg-brand-surface text-brand-text font-sans">
+        <div className="flex flex-col h-screen text-brand-text font-sans">
             {/* Navigation Header */}
-            <div className="flex items-center gap-4 px-6 py-3 border-b border-white/10 bg-brand-surface drag">
-                <div className="flex items-center gap-3 no-drag">
+            <div className="flex items-center gap-4 px-6 py-3 border-b border-white/10 drag">
+                <div className="flex backdrop-blur-xs items-center gap-3 no-drag">
                     <button
                         onClick={handleBack}
                         disabled={!canGoBack}
@@ -94,7 +94,7 @@ export const BrowserShell: React.FC = () => {
                     <button
                         onClick={handleTriggerImport}
                         disabled={!is1001TracklistPage}
-                        className={`transition-all ${is1001TracklistPage ? 'text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)]' : 'text-brand-placeholder opacity-40'}`}
+                        className={`transition-all ${is1001TracklistPage ? 'text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)]' : 'text-brand-placeholder opacity-0'}`}
                         data-tooltip-left={t.importFrom1001Tracklists}
                     >
                         <svg width="24" height="24" viewBox="3177 2031 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

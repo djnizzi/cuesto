@@ -102,7 +102,7 @@ export const DiscogsModal: React.FC<DiscogsModalProps> = ({ isOpen, onClose, onS
                         href={(albumTitle || performer) ? `https://www.discogs.com/search?q=${encodeURIComponent(`${performer || ''} ${albumTitle || ''}`.trim())}&type=all` : "https://www.discogs.com/"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-brand-orange hover:underline font-semibold text-modal-body flex items-center gap-2"
+                        className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] font-semibold text-modal-body flex items-center gap-2"
                     >
                         <img src="images/discogs.svg" alt="discogs" className="w-[23.78px] h-[24px]" />
                         {(albumTitle || performer) ? t.searchOnDiscogs : t.visitDiscogs}

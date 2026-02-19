@@ -6,23 +6,21 @@ CUEsto is a dedicated tool for creating and editing CUE sheets with ease. Whethe
 ## Features
 - **Visual Editor**: See your tracks in a clear, table-like layout.
 - **Smart Time Editing**: Automatically recalculates durations when you edit start times.
-- **Metadata Management**: Easily update Album Title, Performer, File references, and more.
+- **Metadata Management**: Update Album Title, Performer, File reference, etc. We might add more if you, the users, request them
 - **Audio Integration**: Automatically extract duration and metadata tags (title, artist, year, genre) from your audio files. Full support for multiple artists (separated by `; `).
 - **Text Editing**: Perform batch operations across your tracklist, such as swapping fields, changing separators, or converting to propercase.
 - **Audio Splitting**: Slice large mix files into individual tracks using the bundled FFmpeg engine.
-- **Improved Browser**: Customized internal search browser for GnuDB with navigation controls (Back/Forward) and right-click support.
+- **Improved Browser**: Customized internal search browser for MusicBrainz, GnuDB, Discogs and 1001tracklists with navigation controls (Back/Forward) and custom right-click actions.
 - **CUE Viewer**: Inspect your raw CUE sheet with built-in syntax highlighting in a separate window.
-- **Custom Modals**: A fully branded modal system replaces standard OS dialogs for a cohesive, premium experience.
 - **Dark & Light Modes**: Switch between a sleek dark interface or a clean light mode to suit your environment.
 - **Multilingual Support**: Fully localized interface in English, German, Spanish, French, and Italian.
-- **Top Bar Console**: A centralized, glassmorphism-styled header that persists during scrolling, containing all primary file, text editing, and Import actions.
-- **Improved Workflow**: Start with 7 default tracks, each with a standard 3-minute duration.
-- **Instant Deletion**: Delete track rows instantly without confirmation interruptions.
+- **Top Bar Console**: A centralized header that persists during scrolling, containing all primary file, text editing, and import actions.
+- **Improved Workflow**: Start with 9 default tracks, each with a standard 3-minute duration and add and delete track rows instantly.
 
 ## Getting Started
 
 ### Opening a CUE Sheet
-1. Launch CUEsto.
+1. Launch CUEsto or double click an existing .cue file and choose to open it with CUEsto.
 2. Click the **"Open File"** icon in the **Top Bar** to select an existing `.cue` file.
 3. The editor will populate with the tracks and metadata from your file.
 
@@ -38,12 +36,12 @@ Linking an audio file to your CUE sheet allows CUEsto to provide more accurate i
    - Suggest the audio filename as the default when saving.
 
 ### Importing from 1001tracklists
-CUEsto allows you to import tracklist data directly from a saved **1001tracklists.com** page.
-1. Visit a tracklist page on [1001tracklists.com](https://www.1001tracklists.com/).
-2. Save the page as an HTML file (`Right Click` -> `Save As...` -> `Webpage, HTML Only`).
-3. In CUEsto, click the **1001tracklists** logo in the **Top Bar** imports section.
-4. Select the saved HTML file.
-5. The grid will automatically populate with metadata and tracks.
+CUEsto integrates directly with **1001tracklists.com** through its built-in browser.
+1. In CUEsto, click the **1001tracklists** logo in the **Top Bar** imports section to open the internal browser.
+2. Search for and navigate to the tracklist page you want to import.
+3. Click the **import** icon in the browser's top bar.
+4. The grid will automatically populate with metadata and tracks from the page.
+5. Sometimes 1001tracklists may not provide exact timings. In these cases, CUEsto will import the track titles and performers but leave the timing fields empty for you to fill in manually. No way around it, sorry.
 
 ### Importing from GnuDB
 You can quickly retrieve high-quality metadata from the **GnuDB** database using a CD ID.
@@ -96,7 +94,6 @@ CUEsto features a customized internal browser that makes finding metadata IDs ef
     - **"use this gnucdid"**: Automatically sends the CDID to the GnuDb modal.
 - **Navigation**: The browser header includes **Back** and **Forward** buttons.
 - **Standard Actions**: Localized right-click options for **"copy"**, **"copy link"**, and **"open in new window"**.
-- **Real-time Sync**: The browser's context menu automatically updates to match your application's current language setting.
 
 ### Importing from Audacity
 CUEsto supports importing timing and label data from **Audacity Labels** files.
@@ -129,10 +126,10 @@ CUEsto includes a built-in audio splitting engine based on FFmpeg. You can slice
   - **Add Row**: Click the **add row** icon at the bottom of the tracklist to add a new track with a default 3-minute duration.
   - **Trash Icon**: Click the **trash icon** on any track to remove it instantly.
   - **Clear Editor**: Click the **clear** icon in the **Top Bar** to reset the entire cue sheet. A confirmation modal will appear to prevent accidental data loss.
-  - **Track Initialization**: The application opens with 7 default tracks pre-spaced by 3:00:00.
+  - **Track Initialization**: The application opens with 9 default tracks pre-spaced by 3:00:00.
 
 ### Text Editing Tools
-CUEsto provides powerful batch editing tools to normalize your track metadata. Click the **Edit (Pencil)** icon in the **Top Bar** to open the Text Editing Modal.
+CUEsto provides batch editing tools to normalize your track metadata. Click the **Edit** icon in the **Top Bar** to open the Text Editing Modal.
 - **Change Separator**: Scan all track performers and change a specific separator (e.g., from `,` to `;`). Default values are `,` and `;`.
 - **Split Titles to Title and Performer**: If your track titles contain the performer name (e.g., "Song Name - Artist"), you can automatically split them. Specify the separator (e.g., `-`) and CUEsto will move the artist part to the Performer field.
 - **Swap Track Titles and Performers**: Quickly flip the contents of the Title and Performer fields for all tracks.
@@ -163,7 +160,7 @@ To use the Discogs import feature, you must connect your Discogs account using O
 3. Click the **Connect to Discogs** button.
 4. Your default web browser will open to the Discogs authorization page.
 5. Log in to your Discogs account and authorize CUEsto.
-6. Once authorized, the Discogs section will show "Connected as [your username]".
+6. Once authorized, the Discogs section will show your username.
 7. You can now use the Discogs import feature in the Top Bar.
 8. To disconnect, click the **Disconnect** button in the Settings modal.
 
@@ -171,4 +168,4 @@ To use the Discogs import feature, you must connect your Discogs account using O
 
 ## Tips
 - **Time Format**: Times are displayed in `MM:SS:FF` (Frames). CUE sheets use 75 frames per second.
-- **File Reference**: Ensure the "File" field matches the actual audio file name (e.g., `mix.mp3`) so players can find the audio.
+- **File Reference**: Ensure the "File" field matches the actual audio file name (e.g., `mix.mp3`) so apps that CUE sheets can find the audio.

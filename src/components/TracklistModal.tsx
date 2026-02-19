@@ -119,7 +119,7 @@ export const TracklistModal: React.FC<TracklistModalProps> = ({ isOpen, onClose,
                         href="https://www.1001tracklists.com/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-brand-orange hover:underline font-semibold text-modal-body flex items-center gap-2"
+                        className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] font-semibold text-modal-body flex items-center gap-2"
                     >
                         <img src="images/tracklists.svg" alt="1001tracklists" className="w-[24px] h-[19.75px]" />
                         {t.visitTracklist}

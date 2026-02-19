@@ -62,7 +62,7 @@ export const MetadataHeader: React.FC<MetadataHeaderProps> = ({
                     <button
                         onClick={onSelectAudioFile}
                         className={`${isAudioResolved ? 'text-brand-orange' : (showAudioError ? 'text-red-500' : 'text-brand-orange')} hover:drop-shadow-[0_0_8px_currentColor] transition ml-1`}
-                        data-tooltip={isAudioResolved ? t.audioFileResolved : t.audioFileNotFound}
+                        data-tooltip-bottom={isAudioResolved ? t.audioFileResolved : t.audioFileNotFound}
                     >
                         <img
                             src="icons/audiofile.svg"

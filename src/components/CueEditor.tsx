@@ -16,6 +16,7 @@ import { AlertModal } from './AlertModal';
 import { LanguageSelector } from './LanguageSelector';
 import { SettingsModal } from './SettingsModal';
 import { TracklistModal, TracklistOptions } from './TracklistModal';
+import { AboutModal } from './AboutModal';
 import { TextEditingModal } from './TextEditingModal';
 import { Language, getCurrentLanguage, getTranslations } from '../lib/i18n';
 import { useTheme } from '../lib/themeContext';
@@ -66,7 +67,8 @@ export const CueEditor: React.FC = () => {
     const [importHtml, setImportHtml] = useState<string | null>(null);
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
     const [isTextEditingModalOpen, setIsTextEditingModalOpen] = useState(false);
-    const [appVersion, setAppVersion] = useState('1.0.20');
+    const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+    const [appVersion, setAppVersion] = useState('1.0.21');
     const [fullAudioPath, setFullAudioPath] = useState<string | null>(null);
     const [hasAttemptedSplit, setHasAttemptedSplit] = useState(false);
     const [splitProgress, setSplitProgress] = useState<{ progress: number, currentTrack: number, totalTracks: number, fileName: string } | null>(null);
@@ -688,7 +690,12 @@ export const CueEditor: React.FC = () => {
                 <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
                     {/* Left: Logo & File Actions */}
                     <div className="flex items-center gap-6">
-                        <img src={`images/logo${theme === 'light' ? '-light' : ''}.png`} alt="CUEsto Logo" className="h-10 w-auto" />
+                        <img
+                            src={`images/logo${theme === 'light' ? '-light' : ''}.png`}
+                            alt="CUEsto Logo"
+                            className="h-10 w-auto cursor-pointer hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
+                            onClick={() => setIsAboutModalOpen(true)}
+                        />
                         <div className="h-5 w-px bg-brand-text/30 mx-1"></div>
                         <div className="flex gap-4">
                             <button
@@ -776,7 +783,7 @@ export const CueEditor: React.FC = () => {
                             onLanguageChange={handleLanguageChange}
                             variant="icon"
                             direction="down"
-                            tooltipDirection="down"
+                            tooltipDirection="left"
                             onIconClick={() => setIsSettingsModalOpen(true)}
                             currentLanguage={currentLanguage}
                         />
@@ -933,6 +940,13 @@ export const CueEditor: React.FC = () => {
                 currentLanguage={currentLanguage}
                 onDiscogsConnect={() => setDiscogsConnected(true)}
                 onDiscogsDisconnect={() => setDiscogsConnected(false)}
+            />
+
+            <AboutModal
+                isOpen={isAboutModalOpen}
+                onClose={() => setIsAboutModalOpen(false)}
+                appVersion={appVersion}
+                t={t}
             />
         </div>
     );

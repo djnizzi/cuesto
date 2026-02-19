@@ -27,10 +27,16 @@
         "arch": [
           "x64"
         ]
+      },
+      {
+        "target": "zip",
+        "arch": [
+          "x64"
+        ]
       }
     ],
     "icon": "build/icon.ico",
-    "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
+    "artifactName": "${productName}-Windows-${version}-${arch}.${ext}"
   },
   "fileAssociations": [
     {
@@ -57,5 +63,12 @@
       "AppImage"
     ],
     "artifactName": "${productName}-Linux-${version}.${ext}"
-  }
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "djnizzi",
+      "repo": "cuesto"
+    }
+  ]
 }

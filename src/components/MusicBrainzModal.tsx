@@ -97,7 +97,7 @@ export const MusicBrainzModal: React.FC<MusicBrainzModalProps> = ({ isOpen, onCl
                         href={albumTitle ? `https://musicbrainz.org/search?query=${encodeURIComponent(albumTitle)}&type=release&method=indexed` : "https://musicbrainz.org/"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-brand-orange hover:underline font-semibold text-modal-body flex items-center gap-2"
+                        className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] font-semibold text-modal-body flex items-center gap-2"
                     >
                         <img src="images/musicbrainz.svg" alt="musicbrainz" className="w-[21.69px] h-[24px]" />
                         {albumTitle ? t.searchOnMusicBrainz : t.visitMusicBrainz}

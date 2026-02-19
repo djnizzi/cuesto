@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>CUEsto User Guide — How to Edit CUE Sheets Like a Pro</title>
+  <meta name="title" content="CUEsto User Guide — How to Edit CUE Sheets Like a Pro">
+  <meta name="description"
+    content="Complete user guide for CUEsto: learn how to open, edit, and export CUE sheets, import metadata from MusicBrainz, Discogs, GnuDB and 1001Tracklists, split audio files, and use batch text tools.">
+  <meta name="keywords"
+    content="CUEsto help, CUE sheet tutorial, cue file editor guide, how to edit cue files, MusicBrainz import, Discogs import, GnuDB, audio splitting, cue sheet user guide, CUEsto documentation">
+  <meta name="author" content="CUEsto">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <meta name="revisit-after" content="7 days">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://djnizzi.github.com/cuesto/help.html">
+
+  <!-- Google Fonts - Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../build/icon.ico">
+  <link rel="shortcut icon" href="../build/icon.ico">
+  <link rel="apple-touch-icon" href="../artwork/icon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://djnizzi.github.com/cuesto/help.html">
+  <meta property="og:title" content="CUEsto User Guide — How to Edit CUE Sheets Like a Pro">
+  <meta property="og:description"
+    content="Complete user guide for CUEsto: import metadata, split audio, edit timings, and more.">
+  <meta property="og:image" content="https://djnizzi.github.com/cuesto/artwork/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="CUEsto">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://djnizzi.github.com/cuesto/help.html">
+  <meta name="twitter:title" content="CUEsto User Guide — How to Edit CUE Sheets Like a Pro">
+  <meta name="twitter:description"
+    content="Complete user guide for CUEsto: import metadata, split audio, edit timings, and more.">
+  <meta name="twitter:image" content="https://djnizzi.github.com/cuesto/artwork/og-image.png">
+
+  <!-- Structured Data - BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://djnizzi.github.com/cuesto" },
+      { "@type": "ListItem", "position": 2, "name": "User Guide", "item": "https://djnizzi.github.com/cuesto/help.html" }
+    ]
+  }
+  </script>
+
+  <!-- Structured Data - TechArticle -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "CUEsto User Guide",
+    "description": "Complete user guide for CUEsto — the free CUE sheet editor for Windows, macOS, and Linux.",
+    "author": { "@type": "Organization", "name": "CUEsto" },
+    "publisher": { "@type": "Organization", "name": "CUEsto", "url": "https://djnizzi.github.com/cuesto" },
+    "mainEntityOfPage": "https://djnizzi.github.com/cuesto/help.html"
+  }
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #ff7400;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff9a40;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('images/cuesto_bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -1;
+    }
+
+    .page {
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(10, 10, 10, 0.38) 50%, rgba(0, 0, 0, 0.4) 100%);
+    }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 116, 0, 0.1);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #ff7400 0%, #ff9a40 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #ff7400;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    /* ── Scroll indicator ── */
+    .scroll-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff7400, #ffb380);
+      z-index: 1000;
+      transition: width 0.1s ease;
+    }
+
+    /* ── Page Hero ── */
+    .hero {
+      padding: 10rem 2rem 5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150%;
+      height: 100%;
+      background: radial-gradient(ellipse at center top, rgba(255, 116, 0, 0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 116, 0, 0.1);
+      border: 1px solid rgba(255, 116, 0, 0.3);
+      border-radius: 50px;
+      font-size: 0.875rem;
+      color: #ff7400;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease 0.1s forwards;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #ff7400 0%, #ffb380 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease 0.2s forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── TOC ── */
+    .toc-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+    }
+
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .toc-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .toc-card:hover {
+      border-color: rgba(255, 116, 0, 0.3);
+      color: #ff7400;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .toc-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Content sections ── */
+    .guide-section {
+      padding: 5rem 2rem;
+      position: relative;
+    }
+
+    .guide-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 116, 0, 0.2), transparent);
+    }
+
+    .guide-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-block;
+      color: #ff7400;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      line-height: 1.2;
+    }
+
+    /* ── Step blocks ── */
+    .steps {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #ff7400 0%, #ff9a40 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .step-body h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .step-body p,
+    .step-body ul {
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    .step-body ul {
+      padding-left: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .step-body ul li {
+      margin-bottom: 0.25rem;
+    }
+
+    /* ── Feature cards ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 18px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 116, 0, 0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 116, 0, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, rgba(255, 116, 0, 0.2) 0%, rgba(255, 116, 0, 0.05) 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+
+    .card p,
+    .card ul {
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.75;
+      font-size: 0.9rem;
+    }
+
+    .card ul {
+      padding-left: 1.1rem;
+    }
+
+    .card ul li {
+      margin-bottom: 0.2rem;
+    }
+
+    /* ── Highlight box ── */
+    .highlight-box {
+      background: rgba(255, 116, 0, 0.06);
+      border: 1px solid rgba(255, 116, 0, 0.2);
+      border-radius: 14px;
+      padding: 1.5rem 2rem;
+      margin-top: 2rem;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    .highlight-box strong {
+      color: #ff7400;
+    }
+
+    /* ── Syntax color legend ── */
+    .syntax-legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .syntax-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .syntax-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── Tips section ── */
+    .tips-list {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .tip {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .tip-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .tip p {
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .tip strong {
+      color: #fff;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 4rem 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      background-color: rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      margin-bottom: 2rem;
+    }
+
+    .footer-text {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.875rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+
+    .footer-links a {
+      color: #ff7400;
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #ffb380;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 1rem 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        padding: 0.5rem 0 1rem;
+        border-top: 1px solid rgba(255, 116, 0, 0.1);
+        margin-top: 0.75rem;
+      }
+
+      .nav-links.nav-open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 0.75rem 0;
+        font-size: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero {
+        padding: 7rem 1.5rem 3rem;
+      }
+
+      .guide-section {
+        padding: 4rem 1.5rem;
+      }
+
+      .step {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+    }
+
+    /* ── Utility ── */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    code {
+      background: rgba(255, 116, 0, 0.12);
+      color: #ffb380;
+      padding: 0.1em 0.4em;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page" itemscope itemtype="https://schema.org/WebPage">
+    <!-- Scroll Progress -->
+    <div class="scroll-indicator" id="scrollIndicator" role="progressbar" aria-label="Page scroll progress"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+      <a href="index.html" class="logo" aria-label="CUEsto Home">
+        <img src="../public/images/logo.png" alt="CUEsto Logo" height="50">
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html#features">features</a>
+        <a href="index.html#story">story</a>
+        <a href="index.html#download">download</a>
+        <a href="help.html" class="active">help</a>
+      </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu"
+        aria-expanded="false">☰</button>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="guide-title">
+      <div class="hero-badge" aria-label="Page type">
+        <span aria-hidden="true">📖</span>
+        user guide
+      </div>
+      <h1 class="hero-title" id="guide-title">
+        everything you need to know<br>about <span>CUEsto</span>
+      </h1>
+      <p class="hero-subtitle">
+        a complete walkthrough of every feature — from opening your first CUE file to importing metadata from multiple
+        sources and splitting audio tracks.
+      </p>
+    </section>
+
+    <!-- Table of Contents -->
+    <nav class="toc-section" aria-label="Guide sections">
+      <div class="toc-grid">
+        <a href="#getting-started" class="toc-card"><span class="toc-icon">🚀</span> getting started</a>
+        <a href="#linking-audio" class="toc-card"><span class="toc-icon">🎵</span> linking an audio file</a>
+        <a href="#importing-1001" class="toc-card"><span class="toc-icon">🎧</span> import from 1001tracklists</a>
+        <a href="#importing-gnudb" class="toc-card"><span class="toc-icon">💿</span> import from GnuDB</a>
+        <a href="#importing-discogs" class="toc-card"><span class="toc-icon">🔴</span> import from Discogs</a>
+        <a href="#importing-musicbrainz" class="toc-card"><span class="toc-icon">🟣</span> import from MusicBrainz</a>
+        <a href="#browser" class="toc-card"><span class="toc-icon">🌐</span> internal browser</a>
+        <a href="#audacity" class="toc-card"><span class="toc-icon">🎚️</span> import from Audacity</a>
+        <a href="#splitting" class="toc-card"><span class="toc-icon">✂️</span> splitting audio</a>
+        <a href="#editing" class="toc-card"><span class="toc-icon">✏️</span> editing tracks</a>
+        <a href="#text-tools" class="toc-card"><span class="toc-icon">🔤</span> text editing tools</a>
+        <a href="#cue-viewer" class="toc-card"><span class="toc-icon">📄</span> CUE viewer</a>
+        <a href="#settings" class="toc-card"><span class="toc-icon">⚙️</span> settings</a>
+        <a href="#discogs-connect" class="toc-card"><span class="toc-icon">🔗</span> connecting Discogs</a>
+        <a href="#tips" class="toc-card"><span class="toc-icon">💡</span> tips</a>
+      </div>
+    </nav>
+
+    <!-- Getting Started -->
+    <section class="guide-section" id="getting-started" aria-labelledby="gs-title">
+      <div class="guide-container">
+        <span class="section-label">01</span>
+        <h2 class="section-title" id="gs-title">getting started</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>launch CUEsto</h3>
+              <p>Open CUEsto from your applications folder, or double-click an existing <code>.cue</code> file and
+                choose to open it with CUEsto. The editor opens with 9 default tracks pre-spaced at 3-minute intervals
+                so you can start building immediately.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>open an existing CUE sheet</h3>
+              <p>Click the <strong>Open File</strong> icon in the <strong>Top Bar</strong> to select an existing
+                <code>.cue</code> file. The editor will populate with the tracks and metadata from your file.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-body">
+              <h3>start editing</h3>
+              <p>Click directly on any track field to edit the title, performer, start time, or duration. Changes
+                cascade automatically — editing a start time recalculates the previous track's duration.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Linking Audio -->
+    <section class="guide-section" id="linking-audio" aria-labelledby="la-title">
+      <div class="guide-container">
+        <span class="section-label">02</span>
+        <h2 class="section-title" id="la-title">linking an audio file</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">Linking an audio file to your CUE
+          sheet unlocks precise duration data and automatic metadata extraction.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>click the disc icon</h3>
+              <p>Click the <strong>Disc Icon</strong> next to the "file name" field in the header.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>select your audio file</h3>
+              <p>Choose your audio file — MP3, WAV, FLAC, and more are all supported.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-body">
+              <h3>CUEsto does the rest</h3>
+              <ul>
+                <li>Extracts and populates <strong>Title</strong>, <strong>Performer</strong>, <strong>Date</strong>,
+                  and <strong>Genre</strong> from the file's metadata tags.</li>
+                <li><strong>Multi-Artist Support</strong>: multiple artists are automatically detected and joined with
+                  <code>; </code> in the editor.
+                </li>
+                <li>Displays the precise <strong>Total Duration</strong> of the audio file.</li>
+                <li>Automatically calculates the duration of the <strong>Final Track</strong>.</li>
+                <li>Suggests the audio filename as the default when saving.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1001Tracklists -->
+    <section class="guide-section" id="importing-1001" aria-labelledby="tl-title">
+      <div class="guide-container">
+        <span class="section-label">03</span>
+        <h2 class="section-title" id="tl-title">importing from 1001tracklists</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">CUEsto integrates directly with
+          <strong style="color:#fff">1001tracklists.com</strong> through its built-in browser.
+        </p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>open the browser</h3>
+              <p>Click the <strong>1001tracklists</strong> logo in the <strong>Top Bar</strong> imports section to open
+                the internal browser.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>navigate to the tracklist</h3>
+              <p>Search for and navigate to the tracklist page you want to import.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-body">
+              <h3>click import</h3>
+              <p>Click the <strong>import</strong> icon in the browser's top bar. The grid will automatically populate
+                with metadata and tracks from the page.</p>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box">
+          <strong>Note:</strong> sometimes 1001tracklists may not provide exact timings. In these cases, CUEsto will
+          import the track titles and performers but leave the timing fields empty for you to fill in manually.
+        </div>
+      </div>
+    </section>
+
+    <!-- GnuDB -->
+    <section class="guide-section" id="importing-gnudb" aria-labelledby="gnudb-title">
+      <div class="guide-container">
+        <span class="section-label">04</span>
+        <h2 class="section-title" id="gnudb-title">importing from GnuDB</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">Retrieve high-quality metadata from
+          the <strong style="color:#fff">GnuDB</strong> database using a CD ID.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>open the GnuDB modal</h3>
+              <p>Click the <strong>GnuDB</strong> logo in the Top Bar. A modal will appear showing the current performer
+                and album title being searched.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>choose what to import</h3>
+              <p>Use the checkboxes to select exactly which fields to update: <strong>Header</strong> (Artist, Album,
+                Year, Genre), <strong>Track Titles</strong>, <strong>Track Performers</strong>, or <strong>Start
+                  Times/Durations</strong>. If a field is currently empty, GnuDB will always populate it regardless of
+                your selection.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-body">
+              <h3>enter the CD ID and fetch</h3>
+              <p>Enter the <strong>GnuDB CD ID</strong> (e.g., <code>860a8c86</code>) and click the <strong>get
+                  metadata</strong> icon. CUEsto fetches and fills the data, and saves the CD ID as a
+                <code>REM GNUCDID</code> line in your CUE file.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Discogs -->
+    <section class="guide-section" id="importing-discogs" aria-labelledby="discogs-title">
+      <div class="guide-container">
+        <span class="section-label">05</span>
+        <h2 class="section-title" id="discogs-title">importing from Discogs</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">CUEsto provides a powerful
+          integration with <strong style="color:#fff">Discogs</strong>, the premier music database. You must <a
+            href="#discogs-connect" style="color:#ff7400;text-decoration:none;">connect your account</a> before using
+          this feature.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>open the Discogs modal</h3>
+              <p>Click the <strong>Discogs</strong> logo. A modal appears showing the performer and album title CUEsto
+                is searching for.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>enter the release code</h3>
+              <p>Enter the numeric release ID (e.g., <code>153184</code>). CUEsto also accepts formats like
+                <code>r153184</code>. For multi-disc releases, specify the disc number.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-body">
+              <h3>choose what to import</h3>
+              <ul>
+                <li><strong>Header</strong>: Artist, Album Title, Year, Genre.</li>
+                <li><strong>Track Titles / Performers</strong>: updates all imported tracks.</li>
+                <li><strong>Start Times/Durations</strong>: uses raw Discogs durations.</li>
+                <li><strong>Interpolate Start Times</strong>: (requires a linked audio file) adjusts Discogs durations
+                  using total length for high-precision start times.</li>
+              </ul>
+              <p style="margin-top:0.5rem;">The release ID is saved as a <code>REM DISCOGS</code> line in your CUE file.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MusicBrainz -->
+    <section class="guide-section" id="importing-musicbrainz" aria-labelledby="mb-title">
+      <div class="guide-container">
+        <span class="section-label">06</span>
+        <h2 class="section-title" id="mb-title">importing from MusicBrainz</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">Import extremely detailed metadata —
+          including barcode and label info — from <strong style="color:#fff">MusicBrainz</strong>.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>open the MusicBrainz modal</h3>
+              <p>Click the <strong>MusicBrainz</strong> logo. The modal shows what you are searching for and provides a
+                "search on musicbrainz.org" link.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>enter the Disc ID</h3>
+              <p>Enter the MusicBrainz Disc ID (e.g., <code>qT8E_p...</code>) and choose your selective overwrite
+                options (Header, Titles, Performers, Timings).</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-body">
+              <h3>enhanced metadata</h3>
+              <p>CUEsto automatically captures <code>BARCODE</code>, <code>LABEL</code>, and <code>CATALOG</code>
+                number, storing them as <code>REM</code> lines. The Disc ID is saved as
+                <code>REM MUSICBRAINZ_DISCID</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Internal Browser -->
+    <section class="guide-section" id="browser" aria-labelledby="browser-title">
+      <div class="guide-container">
+        <span class="section-label">07</span>
+        <h2 class="section-title" id="browser-title">internal browser &amp; context menu</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">CUEsto features a customized internal
+          browser that makes finding metadata IDs effortless.</p>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">🖱️</div>
+            <h3>smart right-click actions</h3>
+            <ul>
+              <li><strong>"use this disc id"</strong> — sends the CD TOC/Disc ID to the MusicBrainz modal.</li>
+              <li><strong>"use this release code"</strong> — sends the release ID to the Discogs modal.</li>
+              <li><strong>"use this gnucdid"</strong> — sends the CDID to the GnuDB modal.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-icon">⬅️</div>
+            <h3>navigation controls</h3>
+            <p>The browser header includes <strong>Back</strong> and <strong>Forward</strong> buttons so you can browse
+              freely without losing your place.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">📋</div>
+            <h3>standard actions</h3>
+            <p>Localized right-click options for <strong>copy</strong>, <strong>copy link</strong>, and <strong>open in
+                new window</strong> are always available.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audacity -->
+    <section class="guide-section" id="audacity" aria-labelledby="audacity-title">
+      <div class="guide-container">
+        <span class="section-label">08</span>
+        <h2 class="section-title" id="audacity-title">importing from Audacity</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">CUEsto supports importing timing and
+          label data from <strong style="color:#fff">Audacity Labels</strong> files.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>export labels from Audacity</h3>
+              <p>In Audacity, go to <strong>Tracks → Add New → Label Track</strong>, then export via <strong>File →
+                  Export → Export Labels…</strong> as a <code>.txt</code> file.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>import in CUEsto</h3>
+              <p>Click the <strong>Audacity</strong> logo in the Top Bar and select the exported <code>.txt</code> file.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-body">
+              <h3>conditional update</h3>
+              <ul>
+                <li><strong>Start Times</strong>: all track timings are unconditionally updated from the Audacity file.
+                </li>
+                <li><strong>Titles/Performers</strong>: only updated if the current fields are empty — so you can
+                  re-sync timings without losing manual corrections.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Splitting Audio -->
+    <section class="guide-section" id="splitting" aria-labelledby="split-title">
+      <div class="guide-container">
+        <span class="section-label">09</span>
+        <h2 class="section-title" id="split-title">splitting audio</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">CUEsto includes a built-in audio
+          splitting engine powered by <strong style="color:#fff">FFmpeg</strong>. Slice a single large audio file into
+          individual tracks based on your CUE sheet.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>link the audio file</h3>
+              <p>Follow the steps in the <a href="#linking-audio" style="color:#ff7400;text-decoration:none;">Linking an
+                  Audio File</a> section to connect your source file.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>review timings</h3>
+              <p>Ensure your track start times and durations are correct in the grid before splitting.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-body">
+              <h3>click split</h3>
+              <p>Click the <strong>Scissors</strong> icon in the Top Bar. A dedicated modal will appear showing the
+                progress of each track being created.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">4</div>
+            <div class="step-body">
+              <h3>find your files</h3>
+              <p>Tracks are saved in the same directory as the source file using the naming convention:
+                <code>Track## - Title.ext</code>. Click the <strong>Open Folder</strong> icon to jump directly to your
+                new files in Explorer.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editing Tracks -->
+    <section class="guide-section" id="editing" aria-labelledby="edit-title">
+      <div class="guide-container">
+        <span class="section-label">10</span>
+        <h2 class="section-title" id="edit-title">editing tracks</h2>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">✏️</div>
+            <h3>title &amp; performer</h3>
+            <p>Click directly on any text field to edit the track title or performer inline.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⏱️</div>
+            <h3>start time</h3>
+            <p>Edit the start time of a track. The duration of the previous track will be automatically recalculated to
+              maintain continuity.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⏳</div>
+            <h3>duration</h3>
+            <p>Changing a track's duration shifts the start times of all subsequent tracks automatically — no manual
+              adjustments needed.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🎵</div>
+            <h3>final track duration</h3>
+            <ul>
+              <li>Calculated automatically when an audio file is linked.</li>
+              <li>Uses <code>REM TOTAL DURATION</code> if present in the CUE file.</li>
+              <li>Hidden if neither source is available, to prevent confusion.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-icon">➕</div>
+            <h3>add / remove / clear</h3>
+            <ul>
+              <li><strong>Add Row</strong>: click the add row icon at the bottom of the tracklist — new tracks default
+                to 3 minutes.</li>
+              <li><strong>Trash Icon</strong>: remove any track instantly.</li>
+              <li><strong>Clear Editor</strong>: click the clear icon in the Top Bar to reset the entire sheet (a
+                confirmation modal prevents accidents).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Text Editing Tools -->
+    <section class="guide-section" id="text-tools" aria-labelledby="text-title">
+      <div class="guide-container">
+        <span class="section-label">11</span>
+        <h2 class="section-title" id="text-title">text editing tools</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">Click the <strong
+            style="color:#fff">Edit</strong> icon in the Top Bar to open the Text Editing Modal. These batch tools
+          normalize your track metadata in one click.</p>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">🔄</div>
+            <h3>change separator</h3>
+            <p>Scan all track performers and change a specific separator across the entire tracklist — e.g., from
+              <code>,</code> to <code>;</code>.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">✂️</div>
+            <h3>split title to title &amp; performer</h3>
+            <p>If your track titles contain the performer name (e.g., <code>Song Name - Artist</code>), specify the
+              separator and CUEsto will automatically split them into the correct fields.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">↔️</div>
+            <h3>swap titles &amp; performers</h3>
+            <p>Quickly flip the contents of the Title and Performer fields for all tracks at once.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔡</div>
+            <h3>change to propercase</h3>
+            <p>Automatically convert all track titles and performers to Propercase — e.g., <code>SONG NAME</code>
+              becomes <code>Song Name</code>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CUE Viewer -->
+    <section class="guide-section" id="cue-viewer" aria-labelledby="viewer-title">
+      <div class="guide-container">
+        <span class="section-label">12</span>
+        <h2 class="section-title" id="viewer-title">viewing the raw CUE sheet</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">Inspect or verify the raw CUE sheet
+          text at any time before saving.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>open the viewer</h3>
+              <p>Click the <strong>"view cue"</strong> icon at the bottom of the editor. A new read-only window will
+                open displaying the formatted CUE content.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>syntax highlighting</h3>
+              <p>Each CUE command is color-coded for easy reading:</p>
+              <div class="syntax-legend">
+                <div class="syntax-item">
+                  <div class="syntax-dot" style="background:#4caf50"></div> Green — <code>REM</code>
+                </div>
+                <div class="syntax-item">
+                  <div class="syntax-dot" style="background:#f44336"></div> Red — <code>TRACK</code>
+                </div>
+                <div class="syntax-item">
+                  <div class="syntax-dot" style="background:#e040fb"></div> Magenta — <code>INDEX</code>
+                </div>
+                <div class="syntax-item">
+                  <div class="syntax-dot" style="background:#00bcd4"></div> Cyan — <code>PERFORMER</code>
+                </div>
+                <div class="syntax-item">
+                  <div class="syntax-dot" style="background:#ffeb3b"></div> Yellow — <code>TITLE</code>
+                </div>
+                <div class="syntax-item">
+                  <div class="syntax-dot" style="background:#2196f3"></div> Blue — <code>FILE</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section class="guide-section" id="settings" aria-labelledby="settings-title">
+      <div class="guide-container">
+        <span class="section-label">13</span>
+        <h2 class="section-title" id="settings-title">settings &amp; personalization</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">Click the <strong
+            style="color:#fff">Language/Settings (Globe)</strong> icon on the right side of the Top Bar to open the
+          Settings Modal.</p>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">🌍</div>
+            <h3>language selection</h3>
+            <p>Choose your preferred language: <strong>English</strong>, <strong>Deutsch</strong>,
+              <strong>Español</strong>, <strong>Français</strong>, or <strong>Italiano</strong>. All interface elements
+              and tooltips update immediately.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🌙</div>
+            <h3>theme toggle</h3>
+            <p>Switch between <strong>Light Mode</strong> (Sun icon) and <strong>Dark Mode</strong> (Moon icon). Your
+              preference is saved automatically and persists when you restart the application.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Connecting Discogs -->
+    <section class="guide-section" id="discogs-connect" aria-labelledby="dc-title">
+      <div class="guide-container">
+        <span class="section-label">14</span>
+        <h2 class="section-title" id="dc-title">connecting to Discogs</h2>
+        <p style="color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem;">To use the Discogs import feature,
+          connect your Discogs account using OAuth authentication. The import button in the Top Bar will be dimmed until
+          you do.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-body">
+              <h3>open settings</h3>
+              <p>Click the <strong>Language/Settings (Globe)</strong> icon in the right side of the Top Bar.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-body">
+              <h3>connect your account</h3>
+              <p>Scroll to the <strong>Discogs Account</strong> section and click <strong>Connect to Discogs</strong>.
+                Your default browser will open the Discogs authorization page.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-body">
+              <h3>authorize and return</h3>
+              <p>Log in to your Discogs account and authorize CUEsto. Once authorized, the Discogs section will show
+                your username and the import button becomes active. To disconnect, click <strong>Disconnect</strong> in
+                the Settings modal.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tips -->
+    <section class="guide-section" id="tips" aria-labelledby="tips-title">
+      <div class="guide-container">
+        <span class="section-label">15</span>
+        <h2 class="section-title" id="tips-title">tips</h2>
+        <div class="tips-list">
+          <div class="tip">
+            <span class="tip-icon">⏱️</span>
+            <p><strong>Time Format:</strong> times are displayed in <code>MM:SS:FF</code> (Frames). CUE sheets use
+              <strong>75 frames per second</strong>.
+            </p>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">📁</span>
+            <p><strong>File Reference:</strong> ensure the "File" field matches the actual audio file name (e.g.,
+              <code>mix.mp3</code>) so apps that read CUE sheets can find the audio.
+            </p>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">🔄</span>
+            <p><strong>Re-sync timings:</strong> use the Audacity import to update timings without losing your manually
+              entered track titles and performers.</p>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">💿</span>
+            <p><strong>GnuDB persistence:</strong> once you import from GnuDB, the CD ID is saved as a
+              <code>REM GNUCDID</code> line — so you can always re-fetch the same release later.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+      <div class="footer-content">
+        <img src="images/cuesto_footer.png" class="footer-logo" alt="CUEsto by NiZDesign" height="40">
+        <p class="footer-text">CUE Sheet TOolbox — free and open source.</p>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="index.html">home</a>
+          <a href="index.html#features">features</a>
+          <a href="index.html#download">download</a>
+          <a href="https://github.com/djnizzi/cuesto" target="_blank" rel="noopener noreferrer">github</a>
+        </nav>
+        <p class="footer-text" style="margin-top:1.5rem;">© <span id="year"></span> NiZDesign. all rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Scroll progress
+    const scrollIndicator = document.getElementById('scrollIndicator');
+    window.addEventListener('scroll', function () {
+      const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+      scrollIndicator.style.width = Math.min(scrollPercent, 100) + '%';
+    }, { passive: true });
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    mobileMenuBtn.addEventListener('click', function () {
+      const isOpen = navLinks.classList.toggle('nav-open');
+      mobileMenuBtn.setAttribute('aria-expanded', isOpen);
+      mobileMenuBtn.textContent = isOpen ? '✕' : '☰';
+    });
+    // Close menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        navLinks.classList.remove('nav-open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        mobileMenuBtn.textContent = '☰';
+      });
+    });
+  </script>
+</body>
+
+</html>

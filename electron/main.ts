@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain, dialog, WebContentsView, Menu, MenuItem, clipboard, shell } from 'electron'
+import { autoUpdater } from 'electron-updater'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import fs from 'node:fs/promises'
@@ -23,7 +24,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const mbApi = new MusicBrainzApi({
   appName: 'CUEsto',
-  appVersion: '1.0.12',
+  appVersion: app.getVersion(),
   appContactInfo: 'https://github.com/NiZDesign/cuesto'
 });
 
@@ -852,6 +853,17 @@ function createSearchWindow(url: string) {
   view.webContents.on('did-navigate-in-page', syncStatus);
   view.webContents.on('page-title-updated', syncStatus);
 
+  // Inject custom scrollbar styles to match the app's look
+  const scrollbarCSS = `
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #FF7400; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #ff8c33; }
+  `;
+  view.webContents.on('did-finish-load', () => {
+    view.webContents.insertCSS(scrollbarCSS);
+  });
+
   view.webContents.on('context-menu', (_, params) => {
     const menu = new Menu();
     const currentUrl = view.webContents.getURL();
@@ -1282,6 +1294,59 @@ app.on('open-url', (event, url) => {
   event.preventDefault();
   handleOAuthCallback(url);
 });
+
+// ============================================
+// Auto-Updater
+// ============================================
+
+// Don't auto-download — ask the user first
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
+
+// Forward all updater events to the renderer
+autoUpdater.on('checking-for-update', () => {
+  win?.webContents.send('updater:checking');
+});
+
+autoUpdater.on('update-available', (info) => {
+  win?.webContents.send('updater:available', { version: info.version });
+});
+
+autoUpdater.on('update-not-available', () => {
+  win?.webContents.send('updater:not-available');
+});
+
+autoUpdater.on('download-progress', (progress) => {
+  win?.webContents.send('updater:progress', { percent: Math.round(progress.percent) });
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+  win?.webContents.send('updater:downloaded', { version: info.version });
+});
+
+autoUpdater.on('error', (err) => {
+  win?.webContents.send('updater:error', { message: err.message });
+});
+
+// IPC handlers so the renderer can drive the update flow
+ipcMain.handle('updater:check', () => {
+  if (VITE_DEV_SERVER_URL) {
+    // Can't check for updates in dev mode
+    win?.webContents.send('updater:not-available');
+    return;
+  }
+  autoUpdater.checkForUpdates();
+});
+
+ipcMain.handle('updater:download', () => {
+  autoUpdater.downloadUpdate();
+});
+
+ipcMain.handle('updater:install', () => {
+  autoUpdater.quitAndInstall();
+});
+
+// ============================================
 
 app.whenReady().then(() => {
   setupOAuthProtocol();

@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>CUEsto - Free CUE Sheet Editor for Windows, macOS & Linux</title>
+  <meta name="title" content="CUEsto - Free CUE Sheet Editor for Windows, macOS & Linux">
+  <meta name="description"
+    content="CUE Sheet TOolbox - The most intuitive and powerful desktop application for creating and editing audio CUE files. Free download for Windows, macOS, and Linux. Simple enough for beginners, powerful enough for professionals.">
+  <meta name="keywords"
+    content="cue file editor, cue sheet creator, CUE file maker, audio cue editor, CD cue sheet, track timestamps, free cue editor, cue file generator, audio metadata editor, disc image cue, CUEsto, CUE Sheet TOolbox">
+  <meta name="author" content="CUEsto">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <meta name="revisit-after" content="7 days">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://djnizzi.github.com/cuesto">
+
+  <!-- Google Fonts - Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../build/icon.ico">
+  <link rel="shortcut icon" href="../build/icon.ico">
+  <link rel="apple-touch-icon" href="../artwork/icon.png">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://djnizzi.github.com/cuesto">
+  <meta property="og:title" content="CUEsto - CUE Sheet TOolbox - Free CUE Sheet Editor">
+  <meta property="og:description"
+    content="CUE Sheet TOolbox - The most intuitive and powerful desktop application for creating and editing audio CUE files. Free download for Windows, macOS, and Linux.">
+  <meta property="og:image" content="https://djnizzi.github.com/cuesto/artwork/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="CUEsto">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://djnizzi.github.com/cuesto">
+  <meta name="twitter:title" content="CUEsto - CUE Sheet TOolbox - Free CUE Sheet Editor">
+  <meta name="twitter:description"
+    content="CUE Sheet TOolbox - The most intuitive and powerful desktop application for creating and editing audio CUE files. Free download for Windows, macOS, and Linux.">
+  <meta name="twitter:image" content="https://djnizzi.github.com/cuesto/artwork/og-image.png">
+
+  <!-- Structured Data - Software Application -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "CUEsto",
+    "alternateName": "CUE Sheet TOolbox",
+    "operatingSystem": "Windows, macOS, Linux",
+    "applicationCategory": "MultimediaApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "CUE Sheet TOolbox - The most intuitive and powerful desktop application for creating and editing audio CUE files. Simple enough for beginners, powerful enough for professionals.",
+    "softwareVersion": "1.0",
+    "fileFormat": "CUE Sheet",
+    "screenshot": "https://djnizzi.github.com/cuesto/artwork/screenshot.png",
+    "author": {
+      "@type": "Organization",
+      "name": "CUEsto"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "150"
+    }
+  }
+  </script>
+
+  <!-- Structured Data - BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://djnizzi.github.com/cuesto"
+    }]
+  }
+  </script>
+
+  <!-- Structured Data - Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "CUEsto",
+    "alternateName": "CUE Sheet TOolbox",
+    "url": "https://djnizzi.github.com/cuesto",
+    "logo": "https://djnizzi.github.com/cuesto/artwork/logo-v1.png",
+    "sameAs": [
+      "https://github.com/djnizzi/cuesto"
+    ]
+  }
+  </script>
+
+  <style>
+    /* width */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #ff7400;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff9a40;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('images/cuesto_bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -1;
+    }
+
+    .landing-page {
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(10, 10, 10, 0.38) 50%, rgba(0, 0, 0, 0.4) 100%);
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 116, 0, 0.1);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #ff7400 0%, #ff9a40 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ff7400;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150%;
+      height: 100%;
+      background: radial-gradient(ellipse at center top, rgba(255, 116, 0, 0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 116, 0, 0.1);
+      border: 1px solid rgba(255, 116, 0, 0.3);
+      border-radius: 50px;
+      font-size: 0.875rem;
+      color: #ff7400;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease 0.1s forwards;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #ff7400 0%, #ffb380 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 600px;
+      margin-bottom: 3rem;
+      line-height: 1.6;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease 0.3s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #ff7400 0%, #e66800 100%);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(255, 116, 0, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 116, 0, 0.4);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 116, 0, 0.5);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Screenshot Section */
+    .screenshot-section {
+      padding: 4rem 2rem 8rem;
+      display: flex;
+      justify-content: center;
+      perspective: 1500px;
+    }
+
+    .screenshot-container {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease-out;
+    }
+
+    .screenshot-wrapper {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255, 116, 0, 0.2),
+        0 25px 80px rgba(0, 0, 0, 0.8),
+        0 0 100px rgba(255, 116, 0, 0.15);
+    }
+
+    .screenshot-glow {
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, rgba(255, 116, 0, 0.5) 0%, transparent 50%, rgba(255, 116, 0, 0.3) 100%);
+      border-radius: 22px;
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    .screenshot {
+      width: 100%;
+      aspect-ratio: 16/12;
+      background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screenshot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, transparent 49.5%, rgba(255, 116, 0, 0.1) 49.5%, rgba(255, 116, 0, 0.1) 50.5%, transparent 50.5%),
+        linear-gradient(0deg, transparent 49.5%, rgba(255, 116, 0, 0.1) 49.5%, rgba(255, 116, 0, 0.1) 50.5%, transparent 50.5%);
+      background-size: 50px 50px;
+      opacity: 0.3;
+    }
+
+    .screenshot-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      z-index: 1;
+    }
+
+    .screenshot-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #ff7400 0%, #ff9a40 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      box-shadow: 0 10px 40px rgba(255, 116, 0, 0.3);
+    }
+
+    .screenshot-text {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+    }
+
+    .screenshot-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 0.875rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(-10px);
+      }
+    }
+
+    /* Features Section */
+    .features {
+      padding: 8rem 2rem;
+      position: relative;
+    }
+
+    .features::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 116, 0, 0.3), transparent);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .section-label {
+      display: inline-block;
+      color: #ff7400;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.125rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 116, 0, 0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(255, 116, 0, 0.2);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, rgba(255, 116, 0, 0.2) 0%, rgba(255, 116, 0, 0.05) 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-desc {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.7;
+    }
+
+    /* Story Section */
+    .story {
+      padding: 8rem 2rem;
+      position: relative;
+    }
+
+    .story-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .story-content {
+      display: grid;
+      gap: 3rem;
+    }
+
+    .story-block {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .story-number {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #ff7400 0%, #ff9a40 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    .story-text h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .story-text p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    .wiki-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #ff7400;
+      text-decoration: none;
+      font-weight: 500;
+      margin-top: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .wiki-link:hover {
+      color: #ffb380;
+      gap: 0.75rem;
+    }
+
+    /* Download Section */
+    .download {
+      padding: 8rem 2rem;
+      position: relative;
+    }
+
+    .download::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 116, 0, 0.3), transparent);
+    }
+
+    .download-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .download-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .download-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .download-card:hover {
+      border-color: rgba(255, 116, 0, 0.4);
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 116, 0, 0.1);
+    }
+
+    .download-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .download-icon svg {
+      width: 48px;
+      height: 48px;
+      fill: #fff;
+      transition: fill 0.3s ease;
+    }
+
+
+    .download-title {
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .download-version {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      background: rgba(255, 116, 0, 0.1);
+      border: 1px solid rgba(255, 116, 0, 0.3);
+      border-radius: 10px;
+      color: #ff7400;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .download-card:hover .download-btn {
+      background: #ff7400;
+      color: #fff;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 4rem 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .footer-text {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.875rem;
+    }
+
+    .credits {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .credits-title {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 1rem;
+    }
+
+    .credits-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      justify-content: center;
+      list-style: none;
+    }
+
+    .credits-list li {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.75rem;
+    }
+
+    .credits-list a {
+      color: #ff7400;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .credits-list a:hover {
+      color: #ffb380;
+    }
+
+    .credits-thanks {
+      margin-top: 1rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.75rem;
+      line-height: 1.7;
+    }
+
+    .credits-thanks a {
+      color: #ff7400;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .credits-thanks a:hover {
+      color: #ffb380;
+    }
+
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff7400, #ffb380);
+      z-index: 1000;
+      transition: width 0.1s ease;
+    }
+
+    /* Screen Reader Only */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 1rem 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        padding: 0.5rem 0 1rem;
+        border-top: 1px solid rgba(255, 116, 0, 0.1);
+        margin-top: 0.75rem;
+      }
+
+      .nav-links.nav-open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 0.75rem 0;
+        font-size: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero {
+        padding: 6rem 1.5rem 3rem;
+      }
+
+      .story-block {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .features,
+      .story,
+      .download {
+        padding: 5rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="landing-page" itemscope itemtype="https://schema.org/WebPage">
+    <!-- Scroll Progress -->
+    <div class="scroll-indicator" id="scrollIndicator" role="progressbar" aria-label="Page scroll progress"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+      <a href="/" class="logo" aria-label="CUEsto Home">
+        <img src="../public/images/logo.png" alt="CUEsto Logo" height="50">
+      </a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu"
+        aria-expanded="false">☰</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#features">features</a>
+        <a href="#story">story</a>
+        <a href="#download">download</a>
+        <a href="help.html">help</a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-badge" aria-label="Announcement">
+        <span aria-hidden="true">✨</span>
+        CUE Sheet TOolbox
+      </div>
+      <h1 class="hero-title" id="hero-title">
+        create <span>CUE files</span><br>like a pro
+      </h1>
+      <p class="hero-subtitle" itemprop="description">
+        CUEsto — the most intuitive and powerful desktop application for creating and editing audio CUE
+        files.
+        simple enough for beginners, powerful enough for professionals.
+      </p>
+      <div class="hero-cta">
+        <a href="#download" class="btn-primary" role="button">
+          <span aria-hidden="true">⬇</span>
+          download now
+        </a>
+        <a href="#story" class="btn-secondary" role="button">
+          <span aria-hidden="true">→</span>
+          learn more
+        </a>
+      </div>
+    </section>
+
+    <!-- Screenshot Section -->
+    <section class="screenshot-section" aria-labelledby="screenshot-title">
+      <h2 id="screenshot-title" class="sr-only">application screenshot</h2>
+      <div class="screenshot-container" id="screenshot">
+        <div class="screenshot-glow" aria-hidden="true"></div>
+        <div class="screenshot-wrapper">
+          <div class="screenshot" role="img" aria-label="CUEsto application interface showing the CUE file editor">
+            <img src="images/cuesto_app.png" alt="CUEsto application screenshot"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features" aria-labelledby="features-title" itemscope
+      itemtype="https://schema.org/ItemList">
+      <div class="section-header">
+        <span class="section-label">features</span>
+        <h2 class="section-title" id="features-title">everything you need</h2>
+        <p class="section-subtitle">
+          packed with powerful features wrapped in a beautiful, intuitive interface
+        </p>
+      </div>
+      <div class="features-grid" role="list">
+        <article class="feature-card" role="listitem" itemscope itemtype="https://schema.org/ListItem">
+          <div class="feature-icon" aria-hidden="true">✂️</div>
+          <h3 class="feature-title" itemprop="name">audio splitting</h3>
+          <p class="feature-desc" itemprop="description">
+            slice a large mix or recording into individual tracks using the built-in FFmpeg engine.
+            tracks are saved automatically with a clean naming convention, right next to your source file.
+          </p>
+        </article>
+        <article class="feature-card" role="listitem" itemscope itemtype="https://schema.org/ListItem">
+          <div class="feature-icon" aria-hidden="true">⏱️</div>
+          <h3 class="feature-title" itemprop="name">smart time editing</h3>
+          <p class="feature-desc" itemprop="description">
+            edit any start time or duration and CUEsto automatically recalculates the rest.
+            shift an entire tracklist in seconds without touching every row manually.
+          </p>
+        </article>
+        <article class="feature-card" role="listitem" itemscope itemtype="https://schema.org/ListItem">
+          <div class="feature-icon" aria-hidden="true">🎵</div>
+          <h3 class="feature-title" itemprop="name">audio integration</h3>
+          <p class="feature-desc" itemprop="description">
+            link your audio file and CUEsto extracts title, artist, year, and genre automatically.
+            multi-artist tags are fully supported, and the final track duration is calculated for you.
+          </p>
+        </article>
+        <article class="feature-card" role="listitem" itemscope itemtype="https://schema.org/ListItem">
+          <div class="feature-icon" aria-hidden="true">🔍</div>
+          <h3 class="feature-title" itemprop="name">built-in metadata browser</h3>
+          <p class="feature-desc" itemprop="description">
+            search MusicBrainz, Discogs, GnuDB, and 1001Tracklists from a customized internal browser
+            with back/forward navigation and smart right-click actions that send ids directly to the editor.
+          </p>
+        </article>
+        <article class="feature-card" role="listitem" itemscope itemtype="https://schema.org/ListItem">
+          <div class="feature-icon" aria-hidden="true">✏️</div>
+          <h3 class="feature-title" itemprop="name">batch text tools</h3>
+          <p class="feature-desc" itemprop="description">
+            swap titles and performers, change separators, split "title — artist" fields in one click,
+            or convert everything to propercase across your entire tracklist instantly.
+          </p>
+        </article>
+        <article class="feature-card" role="listitem" itemscope itemtype="https://schema.org/ListItem">
+          <div class="feature-icon" aria-hidden="true">📄</div>
+          <h3 class="feature-title" itemprop="name">CUE viewer with syntax highlighting</h3>
+          <p class="feature-desc" itemprop="description">
+            inspect your raw CUE sheet at any time in a dedicated read-only window with full syntax
+            highlighting — metadata, tracks, timings, performers, and file references each in their own color.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story" id="story" aria-labelledby="story-title">
+      <div class="section-header">
+        <span class="section-label">the story</span>
+        <h2 class="section-title" id="story-title">why CUEsto?</h2>
+      </div>
+      <div class="story-container">
+        <div class="story-content" role="list">
+          <article class="story-block" role="listitem">
+            <div class="story-number" aria-hidden="true">1</div>
+            <div class="story-text">
+              <h3>the pain we solved</h3>
+              <p>
+                creating CUE files has always been a tedious process. you had to either manually
+                write text files with precise timestamps or use complicated, outdated software.
+                we knew there had to be a better way — a tool that was both easy to use and powerful
+                enough for professional work.
+              </p>
+            </div>
+          </article>
+          <article class="story-block" role="listitem">
+            <div class="story-number" aria-hidden="true">2</div>
+            <div class="story-text">
+              <h3>what is a CUE file?</h3>
+              <p>
+                a CUE sheet (or CUE file) is a metadata file that describes how the tracks of a
+                cd or audio file are laid out. it contains information like track titles,
+                performers, and most importantly, the precise timestamps where each track begins.
+                CUE files are essential for burning audio cds, organizing large audio recordings,
+                and ensuring seamless playback across multiple tracks.
+              </p>
+              <a href="https://en.wikipedia.org/wiki/Cue_sheet_(computing)" target="_blank" rel="noopener noreferrer"
+                class="wiki-link" aria-label="Learn more about cue sheets on Wikipedia (opens in new tab)">
+                learn more on wikipedia →
+              </a>
+            </div>
+          </article>
+          <article class="story-block" role="listitem">
+            <div class="story-number" aria-hidden="true">3</div>
+            <div class="story-text">
+              <h3>our solution</h3>
+              <p>
+                CUEsto was born from frustration with existing tools. we built an application
+                that combines the simplicity of a modern interface with the power of professional
+                features. whether you're creating a CUE file for the first time or managing
+                hundreds of audio projects, CUEsto adapts to your workflow and helps you
+                get the job done faster.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download" id="download" aria-labelledby="download-title" itemscope
+      itemtype="https://schema.org/ItemList">
+      <div class="download-container">
+        <div class="section-header">
+          <span class="section-label">download</span>
+          <h2 class="section-title" id="download-title">get started today</h2>
+          <p class="section-subtitle">
+            CUEsto is free and open source.
+          </p>
+        </div>
+        <div class="download-cards" role="list">
+          <!-- Windows -->
+          <a href="#" class="download-card" id="download-windows" role="listitem"
+            aria-label="Download CUEsto for Windows" itemprop="itemListElement" itemscope
+            itemtype="https://schema.org/ListItem">
+            <div class="download-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path
+                  d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+              </svg>
+            </div>
+            <h3 class="download-title" itemprop="name">windows</h3>
+            <p class="download-version">windows 10 / 11 (64-bit)</p>
+            <span class="download-btn" aria-hidden="true">
+              download .exe
+            </span>
+          </a>
+          <!-- macOS -->
+          <a href="#" class="download-card" id="download-macos" role="listitem" aria-label="Download CUEsto for macOS"
+            itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <div class="download-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path
+                  d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+              </svg>
+            </div>
+            <h3 class="download-title" itemprop="name">macOS</h3>
+            <p class="download-version">macOS 11+ (intel & apple silicon)</p>
+            <span class="download-btn" aria-hidden="true">
+              download .dmg
+            </span>
+          </a>
+          <!-- Linux -->
+          <a href="#" class="download-card" id="download-linux" role="listitem" aria-label="Download CUEsto for Linux"
+            itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <div class="download-icon" aria-hidden="true">
+              <img src="images/linux.svg" height="50" width="50">
+            </div>
+            <h3 class="download-title" itemprop="name">linux</h3>
+            <p class="download-version">ubuntu, debian, fedora, and more</p>
+            <span class="download-btn" aria-hidden="true">
+              download .appimage
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+      <div class="footer-content">
+        <div class="footer-logo" aria-label="CUEsto">
+          <img src="images/cuesto_footer.png" alt="CUEsto by NiZDesign" height="40">
+        </div>
+        <nav class="credits" aria-label="Open source credits">
+          <p class="credits-title">built with open source</p>
+          <ul class="credits-list">
+            <li><a href="https://www.electronjs.org" target="_blank" rel="noopener noreferrer">Electron</a></li>
+            <li><a href="https://react.dev" target="_blank" rel="noopener noreferrer">React</a></li>
+            <li><a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">Vite</a></li>
+            <li><a href="https://www.typescriptlang.org" target="_blank" rel="noopener noreferrer">TypeScript</a></li>
+            <li><a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer">Tailwind CSS</a></li>
+            <li><a href="https://www.ffmpeg.org" target="_blank" rel="noopener noreferrer">FFmpeg</a></li>
+            <li><a href="https://github.com/borewit/music-metadata" target="_blank"
+                rel="noopener noreferrer">music-metadata</a></li>
+            <li><a href="https://github.com/Borewit/musicbrainz-api" target="_blank"
+                rel="noopener noreferrer">musicbrainz-api</a></li>
+            <li><a href="https://github.com/nicolo-ribaudo/oauth-1.0a" target="_blank"
+                rel="noopener noreferrer">oauth-1.0a</a></li>
+            <li><a href="https://github.com/nicolo-ribaudo/electron-store" target="_blank"
+                rel="noopener noreferrer">electron-store</a></li>
+            <li><a href="https://www.electron.build" target="_blank" rel="noopener noreferrer">electron-builder</a></li>
+            <li>Uicons by <a href="https://www.flaticon.com/uicons" target="_blank"
+                rel="noopener noreferrer">Flaticon</a></li>
+          </ul>
+          <p class="credits-thanks">
+            forever thankful for
+            <a href="https://musicbrainz.org" target="_blank" rel="noopener noreferrer">MusicBrainz</a>,
+            <a href="https://www.discogs.com" target="_blank" rel="noopener noreferrer">Discogs</a>,
+            <a href="https://gnudb.org" target="_blank" rel="noopener noreferrer">GnuDB</a>
+            and <a href="https://www.1001tracklists.com" target="_blank" rel="noopener noreferrer">1001Tracklists</a>
+            whose eternal knowledge powers our app.
+            the app also uses the labels format by
+            <a href="https://www.audacityteam.org" target="_blank" rel="noopener noreferrer">Audacity</a>.
+          </p>
+        </nav>
+        <p class="footer-text" style="margin-top: 1.5rem;">
+          © <span id="year"></span> NiZDesign. all rights reserved.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // 3D Screenshot rotation on scroll
+    const screenshot = document.getElementById('screenshot');
+    const scrollIndicator = document.getElementById('scrollIndicator');
+
+    function updateRotation() {
+      // Update scroll progress indicator
+      const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+      scrollIndicator.style.width = Math.min(scrollPercent, 100) + '%';
+
+      // Calculate 3D rotation
+      const rect = screenshot.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const elementCenter = rect.top + rect.height / 2;
+      const windowCenter = windowHeight / 2;
+
+      // Calculate how far the element is from the center of the viewport
+      const distanceFromCenter = elementCenter - windowCenter;
+      const maxDistance = windowHeight / 2;
+
+      // Rotate based on position (-15 to 15 degrees)
+      const rotateX = (distanceFromCenter / maxDistance) * -15;
+      const rotateY = (distanceFromCenter / maxDistance) * 8;
+
+      // Apply transform
+      screenshot.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    }
+
+    // Listen for scroll events
+    window.addEventListener('scroll', updateRotation, { passive: true });
+
+    // Initial call
+    updateRotation();
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    mobileMenuBtn.addEventListener('click', function () {
+      const isOpen = navLinks.classList.toggle('nav-open');
+      mobileMenuBtn.setAttribute('aria-expanded', isOpen);
+      mobileMenuBtn.textContent = isOpen ? '✕' : '☰';
+    });
+    // Close mobile menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('nav-open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        mobileMenuBtn.textContent = '☰';
+      });
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

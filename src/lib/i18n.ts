@@ -150,6 +150,13 @@ export interface Translations {
     discogsAuthenticating: string;
     discogsAuthFailed: string;
     discogsAuthSuccess: string;
+
+    // About Modal
+    aboutTagline: string;
+    aboutVersion: string;
+    aboutCheckUpdates: string;
+    aboutHelpLink: string;
+    aboutSupport: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -287,6 +294,13 @@ const translations: Record<Language, Translations> = {
         discogsAuthenticating: 'authenticating with discogs...',
         discogsAuthFailed: 'authentication failed',
         discogsAuthSuccess: 'authentication successful',
+
+        // About Modal
+        aboutTagline: 'CUEsto is for CUE Sheet TOolbox',
+        aboutVersion: 'version',
+        aboutCheckUpdates: 'check for updates',
+        aboutHelpLink: 'need help? here\'s the guide',
+        aboutSupport: 'if you find it useful, you can buy me a coffee',
     },
 
     de: {
@@ -423,6 +437,13 @@ const translations: Record<Language, Translations> = {
         discogsAuthenticating: 'authenticierung mit discogs...',
         discogsAuthFailed: 'authenticierung fehlgeschlagen',
         discogsAuthSuccess: 'authenticierung erfolgreich',
+
+        // About Modal
+        aboutTagline: 'CUEsto steht für CUE Sheet TOolbox',
+        aboutVersion: 'version',
+        aboutCheckUpdates: 'nach updates suchen',
+        aboutHelpLink: 'hilfe benötigt? hier ist die anleitung',
+        aboutSupport: 'wenn du es nützlich findest, kannst du mir einen kaffee kaufen',
     },
 
     es: {
@@ -559,6 +580,13 @@ const translations: Record<Language, Translations> = {
         discogsAuthenticating: 'autenticando con discogs...',
         discogsAuthFailed: 'autenticación fallida',
         discogsAuthSuccess: 'autenticación exitosa',
+
+        // About Modal
+        aboutTagline: 'CUEsto significa CUE Sheet TOolbox',
+        aboutVersion: 'versión',
+        aboutCheckUpdates: 'buscar actualizaciones',
+        aboutHelpLink: '¿necesitas ayuda? aquí está la guía',
+        aboutSupport: 'si te resulta útil, puedes invitarme a un café',
     },
 
     fr: {
@@ -695,6 +723,13 @@ const translations: Record<Language, Translations> = {
         discogsAuthenticating: 'authentification avec discogs...',
         discogsAuthFailed: 'authentification échouée',
         discogsAuthSuccess: 'authentification réussie',
+
+        // About Modal
+        aboutTagline: 'CUEsto signifie CUE Sheet TOolbox',
+        aboutVersion: 'version',
+        aboutCheckUpdates: 'vérifier les mises à jour',
+        aboutHelpLink: 'besoin d\'aide ? voici le guide',
+        aboutSupport: 'si vous le trouvez utile, vous pouvez m\'offrir un café',
     },
 
     it: {
@@ -831,6 +866,13 @@ const translations: Record<Language, Translations> = {
         discogsAuthenticating: 'autenticazione con discogs...',
         discogsAuthFailed: 'autenticazione fallita',
         discogsAuthSuccess: 'autenticazione riuscita',
+
+        // About Modal
+        aboutTagline: 'CUEsto sta per CUE Sheet TOolbox',
+        aboutVersion: 'versione',
+        aboutCheckUpdates: 'controlla aggiornamenti',
+        aboutHelpLink: 'hai bisogno di aiuto? ecco la guida',
+        aboutSupport: 'se lo trovi utile, puoi offrirmi un caffè',
     },
 };
 
