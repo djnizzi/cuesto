@@ -13,7 +13,6 @@ dist-ssr
 dist-electron
 release
 *.local
-electron/credentials.ts
 
 # Editor directories and files
 .vscode/*
@@ -27,3 +26,4 @@ electron/credentials.ts
 *.sw?
 
 github.env
+.env
