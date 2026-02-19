@@ -110,6 +110,33 @@
   }
   </script>
 
+  <!-- automatic links -->
+  <script>
+    fetch('https://api.github.com/repos/djnizzi/cuesto/releases/latest')
+      .then(r => r.json())
+      .then(data => {
+        const assets = data.assets;
+        document.getElementById('version').textContent = data.tag_name;
+
+        // Windows Installer
+        const winExe = assets.find(a => a.name.includes('Windows') && a.name.endsWith('.exe'));
+        if (winExe) document.getElementById('download-win-exe').href = winExe.browser_download_url;
+
+        // Windows Portable
+        const winZip = assets.find(a => a.name.includes('Windows') && a.name.endsWith('.zip'));
+        if (winZip) document.getElementById('download-win-zip').href = winZip.browser_download_url;
+
+        // macOS
+        const mac = assets.find(a => a.name.includes('Mac') && a.name.endsWith('.dmg'));
+        if (mac) document.getElementById('download-mac').href = mac.browser_download_url;
+
+        // Linux
+        const linux = assets.find(a => a.name.includes('Linux') && a.name.endsWith('.AppImage'));
+        if (linux) document.getElementById('download-linux').href = linux.browser_download_url;
+      })
+      .catch(err => console.error('Failed to fetch release:', err));
+  </script>
+
   <style>
     /* width */
     ::-webkit-scrollbar {
@@ -716,6 +743,38 @@
       transition: all 0.3s ease;
     }
 
+    .download-btn-win {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-left: .4rem;
+      margin-right: .4rem;
+      width: 40%;
+      padding: 0.875rem 1.5rem;
+      background: rgba(255, 116, 0, 0.1);
+      border: 1px solid rgba(255, 116, 0, 0.3);
+      border-radius: 10px;
+      color: #ff7400;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .download-release {
+      font-size: 1.6rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 1rem;
+      margin-top: 1rem;
+    }
+
+
+    .download-btn-win:hover {
+      background: #ff7400;
+      color: #fff;
+    }
+
     .download-card:hover .download-btn {
       background: #ff7400;
       color: #fff;
@@ -1073,11 +1132,13 @@
             CUEsto is free and open source.
           </p>
         </div>
+        <div class="download-release">
+          <p>Version: <span id="version">Loading...</span></p>
+        </div>
         <div class="download-cards" role="list">
           <!-- Windows -->
-          <a href="#" class="download-card" id="download-windows" role="listitem"
-            aria-label="Download CUEsto for Windows" itemprop="itemListElement" itemscope
-            itemtype="https://schema.org/ListItem">
+          <div class="download-card" id="download-windows" role="listitem" aria-label="Download CUEsto for Windows"
+            itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
             <div class="download-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path
@@ -1086,12 +1147,15 @@
             </div>
             <h3 class="download-title" itemprop="name">windows</h3>
             <p class="download-version">windows 10 / 11 (64-bit)</p>
-            <span class="download-btn" aria-hidden="true">
-              download .exe
-            </span>
-          </a>
+            <a href="#" id="download-win-exe" class="download-btn-win" aria-hidden="true">
+              installer
+            </a>
+            <a href="#" id="download-win-zip" class="download-btn-win" aria-hidden="true">
+              portable
+            </a>
+          </div>
           <!-- macOS -->
-          <a href="#" class="download-card" id="download-macos" role="listitem" aria-label="Download CUEsto for macOS"
+          <a href="#" class="download-card" id="download-mac" role="listitem" aria-label="Download CUEsto for macOS"
             itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
             <div class="download-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -1101,7 +1165,7 @@
             </div>
             <h3 class="download-title" itemprop="name">macOS</h3>
             <p class="download-version">macOS 11+ (intel & apple silicon)</p>
-            <span class="download-btn" aria-hidden="true">
+            <span class="download-btn" aria-disabled="true" aria-hidden="true">
               download .dmg
             </span>
           </a>
@@ -1113,7 +1177,7 @@
             </div>
             <h3 class="download-title" itemprop="name">linux</h3>
             <p class="download-version">ubuntu, debian, fedora, and more</p>
-            <span class="download-btn" aria-hidden="true">
+            <span class="download-btn" aria-disabled="true" aria-hidden="true">
               download .appimage
             </span>
           </a>

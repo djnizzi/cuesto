@@ -68,7 +68,7 @@ export const CueEditor: React.FC = () => {
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
     const [isTextEditingModalOpen, setIsTextEditingModalOpen] = useState(false);
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
-    const [appVersion, setAppVersion] = useState('1.0.21');
+    const [appVersion, setAppVersion] = useState('1.0.22');
     const [fullAudioPath, setFullAudioPath] = useState<string | null>(null);
     const [hasAttemptedSplit, setHasAttemptedSplit] = useState(false);
     const [splitProgress, setSplitProgress] = useState<{ progress: number, currentTrack: number, totalTracks: number, fileName: string } | null>(null);

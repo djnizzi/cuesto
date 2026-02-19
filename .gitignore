@@ -25,3 +25,5 @@ electron/credentials.ts
 *.njsproj
 *.sln
 *.sw?
+
+github.env
