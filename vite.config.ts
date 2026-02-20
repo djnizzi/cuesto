@@ -6,7 +6,10 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
+  // Also fall back to process.env for CI environments where secrets are passed as env vars
   const env = loadEnv(mode, process.cwd(), '')
+  const consumerKey = env.DISCOGS_CONSUMER_KEY || process.env.DISCOGS_CONSUMER_KEY || ''
+  const consumerSecret = env.DISCOGS_CONSUMER_SECRET || process.env.DISCOGS_CONSUMER_SECRET || ''
   
   return {
     base: './',
@@ -19,8 +22,8 @@ export default defineConfig(({ mode }) => {
           vite: {
             define: {
               // Embed environment variables at build time for Electron main process
-              'process.env.DISCOGS_CONSUMER_KEY': JSON.stringify(env.DISCOGS_CONSUMER_KEY || ''),
-              'process.env.DISCOGS_CONSUMER_SECRET': JSON.stringify(env.DISCOGS_CONSUMER_SECRET || ''),
+              'process.env.DISCOGS_CONSUMER_KEY': JSON.stringify(consumerKey),
+              'process.env.DISCOGS_CONSUMER_SECRET': JSON.stringify(consumerSecret),
             },
             build: {
               rollupOptions: {
