@@ -110,33 +110,6 @@
   }
   </script>
 
-  <!-- automatic links -->
-  <script>
-    fetch('https://api.github.com/repos/djnizzi/cuesto/releases/latest')
-      .then(r => r.json())
-      .then(data => {
-        const assets = data.assets;
-        document.getElementById('version').textContent = data.tag_name;
-
-        // Windows Installer
-        const winExe = assets.find(a => a.name.includes('Windows') && a.name.endsWith('.exe'));
-        if (winExe) document.getElementById('download-win-exe').href = winExe.browser_download_url;
-
-        // Windows Portable
-        const winZip = assets.find(a => a.name.includes('Windows') && a.name.endsWith('.zip'));
-        if (winZip) document.getElementById('download-win-zip').href = winZip.browser_download_url;
-
-        // macOS
-        const mac = assets.find(a => a.name.includes('Mac') && a.name.endsWith('.dmg'));
-        if (mac) document.getElementById('download-mac').href = mac.browser_download_url;
-
-        // Linux
-        const linux = assets.find(a => a.name.includes('Linux') && a.name.endsWith('.AppImage'));
-        if (linux) document.getElementById('download-linux').href = linux.browser_download_url;
-      })
-      .catch(err => console.error('Failed to fetch release:', err));
-  </script>
-
   <style>
     /* width */
     ::-webkit-scrollbar {
@@ -1147,15 +1120,15 @@
             </div>
             <h3 class="download-title" itemprop="name">windows</h3>
             <p class="download-version">windows 10 / 11 (64-bit)</p>
-            <a href="#" id="download-win-exe" class="download-btn-win" aria-hidden="true">
+            <a href="javascript:void(0);" id="download-win-exe" class="download-btn-win" aria-hidden="true">
               installer
             </a>
-            <a href="#" id="download-win-zip" class="download-btn-win" aria-hidden="true">
+            <a href="javascript:void(0);" id="download-win-zip" class="download-btn-win" aria-hidden="true">
               portable
             </a>
           </div>
           <!-- macOS -->
-          <a href="#" class="download-card" id="download-mac" role="listitem" aria-label="Download CUEsto for macOS"
+          <a href="javascript:void(0);" class="download-card" id="download-mac" role="listitem" aria-label="Download CUEsto for macOS"
             itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
             <div class="download-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -1170,7 +1143,7 @@
             </span>
           </a>
           <!-- Linux -->
-          <a href="#" class="download-card" id="download-linux" role="listitem" aria-label="Download CUEsto for Linux"
+          <a href="javascript:void(0);" class="download-card" id="download-linux" role="listitem" aria-label="Download CUEsto for Linux"
             itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
             <div class="download-icon" aria-hidden="true">
               <img src="images/linux.svg" height="50" width="50">
@@ -1297,6 +1270,32 @@
         }
       });
     });
+  </script>
+    <!-- automatic links -->
+  <script>
+    fetch('https://api.github.com/repos/djnizzi/cuesto/releases/latest')
+      .then(r => r.json())
+      .then(data => {
+        const assets = data.assets;
+        document.getElementById('version').textContent = data.tag_name;
+
+        // Windows Installer
+        const winExe = assets.find(a => a.name.includes('Windows') && a.name.endsWith('.exe'));
+        if (winExe) document.getElementById('download-win-exe').href = winExe.browser_download_url;
+
+        // Windows Portable
+        const winZip = assets.find(a => a.name.includes('Windows') && a.name.endsWith('.zip'));
+        if (winZip) document.getElementById('download-win-zip').href = winZip.browser_download_url;
+
+        // macOS
+        const mac = assets.find(a => a.name.includes('Mac') && a.name.endsWith('.dmg'));
+        if (mac) document.getElementById('download-mac').href = mac.browser_download_url;
+
+        // Linux
+        const linux = assets.find(a => a.name.includes('Linux') && a.name.endsWith('.AppImage'));
+        if (linux) document.getElementById('download-linux').href = linux.browser_download_url;
+      })
+      .catch(err => console.error('Failed to fetch release:', err));
   </script>
 </body>
 
