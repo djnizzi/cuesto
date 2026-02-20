@@ -1,3 +1,4 @@
+import './env';
 import { app, BrowserWindow, ipcMain, dialog, WebContentsView, Menu, MenuItem, clipboard, shell } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import { fileURLToPath } from 'node:url'
@@ -1302,7 +1303,7 @@ app.on('open-url', (event, url) => {
 // Don't auto-download — ask the user first
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
-autoUpdater.allowPrerelease = true;
+// Allow prereleases? for testing: autoUpdater.allowPrerelease = true;
 
 // Forward all updater events to the renderer
 autoUpdater.on('checking-for-update', () => {

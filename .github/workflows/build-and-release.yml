@@ -24,6 +24,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Debug env
+        run: node -e "console.log('Key length:', process.env.DISCOGS_CONSUMER_KEY?.length)"
+        env:
+          DISCOGS_CONSUMER_KEY: ${{ secrets.DISCOGS_CONSUMER_KEY }}
 
       - name: Install dependencies
         run: npm install

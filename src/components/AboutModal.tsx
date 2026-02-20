@@ -109,14 +109,14 @@ export const AboutModal: React.FC<AboutModalProps> = ({
         );
       case 'checking':
         return (
-          <span className="text-brand-muted-text text-sm font-light animate-pulse">
+          <span className="text-brand-text text-sm font-light animate-pulse">
             checking…
           </span>
         );
       case 'not-available':
         return (
-          <span className="text-brand-muted-text text-sm font-light">
-            ✓ up to date
+          <span className="text-brand-text text-sm font-light">
+            up to date
           </span>
         );
       case 'available':
@@ -125,12 +125,12 @@ export const AboutModal: React.FC<AboutModalProps> = ({
             onClick={handleDownload}
             className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all text-sm font-medium"
           >
-            ↓ v{updateVersion} available
+            v{updateVersion} available
           </button>
         );
       case 'downloading':
         return (
-          <span className="text-brand-muted-text text-sm font-light">
+          <span className="text-brand-text text-sm font-light">
             downloading… {downloadPercent}%
           </span>
         );
@@ -140,7 +140,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({
             onClick={handleInstall}
             className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all text-sm font-medium"
           >
-            ↻ restart to install v{updateVersion}
+            restart to install v{updateVersion}
           </button>
         );
       case 'error':
