@@ -13,15 +13,16 @@ export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Also fall back to process.env for CI environments where secrets are passed as env vars
   const env = loadEnv(mode, process.cwd(), '')
-  const consumerKey = env.DISCOGS_CONSUMER_KEY || process.env.DISCOGS_CONSUMER_KEY || ''
-  const consumerSecret = env.DISCOGS_CONSUMER_SECRET || process.env.DISCOGS_CONSUMER_SECRET || ''
+  // Use VITE_ prefix for environment variables (required by Vite for client-side code)
+  const consumerKey = env.VITE_DISCOGS_CONSUMER_KEY || process.env.VITE_DISCOGS_CONSUMER_KEY || ''
+  const consumerSecret = env.VITE_DISCOGS_CONSUMER_SECRET || process.env.VITE_DISCOGS_CONSUMER_SECRET || ''
   
   // Debug logging for CI troubleshooting
   console.log('[vite.config] Building with credentials:')
   console.log('[vite.config] Consumer Key (first 5 chars):', consumerKey ? consumerKey.substring(0, 5) + '...' : 'EMPTY')
   console.log('[vite.config] Consumer Secret (first 5 chars):', consumerSecret ? consumerSecret.substring(0, 5) + '...' : 'EMPTY')
-  console.log('[vite.config] loadEnv result:', env.DISCOGS_CONSUMER_KEY ? 'found' : 'not found')
-  console.log('[vite.config] process.env result:', process.env.DISCOGS_CONSUMER_KEY ? 'found' : 'not found')
+  console.log('[vite.config] loadEnv result:', env.VITE_DISCOGS_CONSUMER_KEY ? 'found' : 'not found')
+  console.log('[vite.config] process.env result:', process.env.VITE_DISCOGS_CONSUMER_KEY ? 'found' : 'not found')
   
   return {
     base: './',

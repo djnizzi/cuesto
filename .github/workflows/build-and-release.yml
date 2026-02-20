@@ -25,9 +25,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Debug env
-        run: node -e "console.log('Key length:', process.env.DISCOGS_CONSUMER_KEY?.length)"
+        run: node -e "console.log('Key length:', process.env.VITE_DISCOGS_CONSUMER_KEY?.length)"
         env:
-          DISCOGS_CONSUMER_KEY: ${{ secrets.DISCOGS_CONSUMER_KEY }}
+          VITE_DISCOGS_CONSUMER_KEY: ${{ secrets.VITE_DISCOGS_CONSUMER_KEY }}
 
       - name: Install dependencies
         run: npm install
@@ -36,8 +36,8 @@ jobs:
         run: npm run build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DISCOGS_CONSUMER_KEY: ${{ secrets.DISCOGS_CONSUMER_KEY }}
-          DISCOGS_CONSUMER_SECRET: ${{ secrets.DISCOGS_CONSUMER_SECRET }}
+          VITE_DISCOGS_CONSUMER_KEY: ${{ secrets.VITE_DISCOGS_CONSUMER_KEY }}
+          VITE_DISCOGS_CONSUMER_SECRET: ${{ secrets.VITE_DISCOGS_CONSUMER_SECRET }}
 
       - name: Upload artifacts (Linux)
         if: runner.os == 'Linux'
@@ -59,4 +59,3 @@ jobs:
         with:
           name: cuesto-windows
           path: dist/
-
