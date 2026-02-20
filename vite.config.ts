@@ -2,6 +2,11 @@ import { defineConfig, loadEnv } from 'vite'
 import path from 'node:path'
 import electron from 'vite-plugin-electron/simple'
 import react from '@vitejs/plugin-react'
+import dotenv from 'dotenv'
+
+// Load .env file if it exists (for local development)
+// In CI, environment variables are already set in process.env
+dotenv.config()
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -10,6 +15,13 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const consumerKey = env.DISCOGS_CONSUMER_KEY || process.env.DISCOGS_CONSUMER_KEY || ''
   const consumerSecret = env.DISCOGS_CONSUMER_SECRET || process.env.DISCOGS_CONSUMER_SECRET || ''
+  
+  // Debug logging for CI troubleshooting
+  console.log('[vite.config] Building with credentials:')
+  console.log('[vite.config] Consumer Key (first 5 chars):', consumerKey ? consumerKey.substring(0, 5) + '...' : 'EMPTY')
+  console.log('[vite.config] Consumer Secret (first 5 chars):', consumerSecret ? consumerSecret.substring(0, 5) + '...' : 'EMPTY')
+  console.log('[vite.config] loadEnv result:', env.DISCOGS_CONSUMER_KEY ? 'found' : 'not found')
+  console.log('[vite.config] process.env result:', process.env.DISCOGS_CONSUMER_KEY ? 'found' : 'not found')
   
   return {
     base: './',
