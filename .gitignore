@@ -27,3 +27,4 @@ release
 
 github.env
 .env
+.react-doctor/*

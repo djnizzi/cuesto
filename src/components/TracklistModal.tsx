@@ -184,7 +184,12 @@ export const TracklistModal: React.FC<TracklistModalProps> = ({ isOpen, onClose,
 
             </div>
             {/* Click outside to close (only if not loading) */}
-            <div className="absolute inset-0 -z-10" onClick={isLoading ? undefined : onClose} />
+            <div 
+                className="absolute inset-0 -z-10 cursor-default" 
+                onClick={isLoading ? undefined : onClose}
+                onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
+                role="presentation"
+            />
         </div>
     );
 };
@@ -200,6 +205,11 @@ const CheckboxItem: React.FC<CheckboxItemProps> = ({ label, checked, onChange, d
     <div
         className={`flex items-center gap-3 group ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}
         onClick={disabled ? undefined : onChange}
+        onKeyDown={(e) => { if (!disabled && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onChange(); } }}
+        role="checkbox"
+        aria-checked={checked}
+        aria-disabled={disabled}
+        tabIndex={disabled ? -1 : 0}
     >
         <div className={`w-5 h-5 rounded-[4px] border border-brand-input-border flex items-center justify-center transition-all duration-200 ${checked && !disabled ? 'bg-brand-orange border-brand-orange shadow-[0_0_8px_rgba(255,116,0,0.4)]' : 'group-hover:border-brand-orange'} ${disabled ? 'bg-transparent' : ''}`}>
             {checked && (

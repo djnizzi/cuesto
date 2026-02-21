@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { isValidTimeFormat } from '../lib/timeUtils';
 
 interface TimeInputProps {
@@ -11,36 +11,21 @@ interface TimeInputProps {
 }
 
 export const TimeInput: React.FC<TimeInputProps> = ({ value, onChange, onBlur, className, placeholder, readOnly }) => {
-    const [localValue, setLocalValue] = useState(value);
-
-    useEffect(() => {
-        setLocalValue(value);
-    }, [value]);
+    // FIX: Use value prop directly (controlled component) instead of derived state
+    // This fixes react-doctor/no-derived-useState and react-doctor/no-derived-state-effect
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value;
         // Allow typing only valid chars (digits and colon)
         if (/^[0-9:]*$/.test(val)) {
-            setLocalValue(val);
+            onChange(val);
         }
     };
 
     const handleBlur = () => {
         // Validate on blur
-        // If valid, call onChange. If not, revert or keep? 
-        // Let's try to fix or just pass.
-        // For now simple pass if valid-ish.
-        if (isValidTimeFormat(localValue)) {
-            onChange(localValue);
-        } else {
-            // Maybe try to auto-format? for now, revert if completely broken, or just emit if user forcing.
-            // But parent logic depends on validity.
-            // Let's revert to last valid prop value if invalid
-            if (value !== localValue) {
-                // Check if it's correctable e.g. "75:00" -> "75:00:00"
-                // TODO: Add smart correction.
-                onChange(localValue); // Pass it up, let parent validate or calculation fail gracefully (0 frames).
-            }
+        if (isValidTimeFormat(value)) {
+            onChange(value);
         }
         if (onBlur) onBlur();
     };
@@ -54,7 +39,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({ value, onChange, onBlur, c
     return (
         <input
             type="text"
-            value={localValue}
+            value={value}
             onChange={handleChange}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}

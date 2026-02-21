@@ -22,8 +22,6 @@ export const AlertModal: React.FC<AlertModalProps> = ({ isOpen, title, message, 
             <div
                 className="bg-brand-surface p-8 rounded-modal shadow-2xl w-full max-w-[440px] border border-white/5 transition-all duration-300 relative overflow-hidden flex flex-col gap-6"
                 onKeyDown={handleKeyDown}
-                tabIndex={0}
-                autoFocus
             >
                 <h2 className="text-brand-text font-semibold text-modal-body leading-tight capitalize">
                     {title}
@@ -43,7 +41,12 @@ export const AlertModal: React.FC<AlertModalProps> = ({ isOpen, title, message, 
                     </button>
                 </div>
             </div>
-            <div className="absolute inset-0 -z-10" onClick={onClose} />
+            <div 
+                className="absolute inset-0 -z-10 cursor-default" 
+                onClick={onClose}
+                onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
+                role="presentation"
+            />
         </div>
     );
 };

@@ -34,8 +34,6 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
             <div
                 className="bg-brand-surface p-8 rounded-modal shadow-2xl w-full max-w-[440px] border border-white/5 transition-all duration-300 relative overflow-hidden flex flex-col gap-6"
                 onKeyDown={handleKeyDown}
-                tabIndex={0}
-                autoFocus
             >
                 {/* Title */}
                 <h2 className="text-brand-text font-semibold text-modal-body leading-tight">
@@ -69,7 +67,12 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 </div>
             </div>
             {/* Click outside to close */}
-            <div className="absolute inset-0 -z-10" onClick={onCancel} />
+            <div 
+                className="absolute inset-0 -z-10 cursor-default" 
+                onClick={onCancel}
+                onKeyDown={(e) => { if (e.key === 'Escape') onCancel(); }}
+                role="presentation"
+            />
         </div>
     );
 };

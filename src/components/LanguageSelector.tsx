@@ -61,8 +61,10 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                 <>
                     {/* Backdrop */}
                     <div
-                        className="fixed inset-0 z-40"
+                        className="fixed inset-0 z-40 cursor-default"
                         onClick={() => setIsOpen(false)}
+                        onKeyDown={(e) => { if (e.key === 'Escape') setIsOpen(false); }}
+                        role="presentation"
                     />
 
                     {/* Dropdown */}

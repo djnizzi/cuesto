@@ -72,7 +72,8 @@ export const CueEditor: React.FC = () => {
     const [fullAudioPath, setFullAudioPath] = useState<string | null>(null);
     const [hasAttemptedSplit, setHasAttemptedSplit] = useState(false);
     const [splitProgress, setSplitProgress] = useState<{ progress: number, currentTrack: number, totalTracks: number, fileName: string } | null>(null);
-    const [currentLanguage, setCurrentLanguage] = useState<Language>(getCurrentLanguage());
+    // FIX: Use lazy initialization to avoid calling getCurrentLanguage() on every render
+    const [currentLanguage, setCurrentLanguage] = useState<Language>(() => getCurrentLanguage());
     const t = getTranslations(currentLanguage);
 
     React.useEffect(() => {

@@ -4,6 +4,7 @@
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 ![Version](https://img.shields.io/badge/version-v1.0.23-green.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
+[![React Doctor](https://www.react.doctor/share/badge?p=CUEsto&s=95&w=19&f=10)](https://www.react.doctor/share?p=CUEsto&s=95&w=19&f=10)
 
 **CUEsto** is a powerful desktop application designed to make CUE sheet editing effortless. Built with modern web technologies, it offers a sleek interface with both light and dark modes, real-time duration calculations, and intuitive metadata management.
 

@@ -138,13 +138,19 @@ export const TextEditingModal: React.FC<TextEditingModalProps> = ({ isOpen, onCl
                         onClick={handleApply}
                         className="text-brand-orange hover:drop-shadow-[0_0_8px_var(--color-brand-orange)] transition-all"
                         data-tooltip={t.confirm}
+                        aria-label={t.confirm}
                     >
-                        <img src="icons/ok.svg" className="size-6" />
+                        <img src="icons/ok.svg" className="size-6" alt="" />
                     </button>
                 </div>
             </div>
             {/* Click outside to close */}
-            <div className="absolute inset-0 -z-10" onClick={onClose} />
+            <div 
+                className="absolute inset-0 -z-10 cursor-default" 
+                onClick={onClose}
+                onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
+                role="presentation"
+            />
         </div>
     );
 };
@@ -159,6 +165,10 @@ const RadioItem: React.FC<RadioItemProps> = ({ selected, onClick, children }) =>
     <div
         className="flex items-center gap-4 cursor-pointer group"
         onClick={onClick}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
+        role="radio"
+        aria-checked={selected}
+        tabIndex={0}
     >
         <div className={`w-4 h-4 rounded-full border-1 flex items-center justify-center transition-all duration-200 ${selected
             ? 'border-brand-orange bg-brand-orange'

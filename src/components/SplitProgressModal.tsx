@@ -82,7 +82,14 @@ export const SplitProgressModal: React.FC<SplitProgressModalProps> = ({
                 </div>
             </div>
             {/* Click outside to close (only if finished) */}
-            {isFinished && <div className="absolute inset-0 -z-10" onClick={onClose} />}
+            {isFinished && (
+                <div 
+                    className="absolute inset-0 -z-10 cursor-default" 
+                    onClick={onClose}
+                    onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
+                    role="presentation"
+                />
+            )}
         </div>
     );
 };
