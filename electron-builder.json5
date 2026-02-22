@@ -18,7 +18,13 @@
     "target": [
       "dmg"
     ],
-    "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
+    "artifactName": "${productName}-Mac-${version}-Installer.${ext}",
+    "protocols": [
+      {
+        "name": "CUEsto Protocol",
+        "schemes": ["cuesto"]
+      }
+    ]
   },
   "win": {
     "target": [
@@ -36,7 +42,13 @@
       }
     ],
     "icon": "build/icon.ico",
-    "artifactName": "${productName}-Windows-${version}-${arch}.${ext}"
+    "artifactName": "${productName}-Windows-${version}-${arch}.${ext}",
+    "protocols": [
+      {
+        "name": "CUEsto Protocol",
+        "schemes": ["cuesto"]
+      }
+    ]
   },
   "fileAssociations": [
     {
@@ -63,7 +75,13 @@
       "AppImage"
     ],
     "icon": "build/icon.png",
-    "artifactName": "${productName}-Linux-${version}.${ext}"
+    "artifactName": "${productName}-Linux-${version}.${ext}",
+    "protocols": [
+      {
+        "name": "CUEsto Protocol",
+        "schemes": ["cuesto"]
+      }
+    ]
   },
   "publish": [
     {

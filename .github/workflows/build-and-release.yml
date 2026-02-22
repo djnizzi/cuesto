@@ -30,7 +30,7 @@ jobs:
           VITE_DISCOGS_CONSUMER_KEY: ${{ secrets.VITE_DISCOGS_CONSUMER_KEY }}
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build and Package
         run: npm run build

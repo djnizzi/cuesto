@@ -2,6 +2,7 @@ import './env';
 import { app, BrowserWindow, ipcMain, dialog, WebContentsView, Menu, MenuItem, clipboard, shell } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import { fileURLToPath } from 'node:url'
+import http from 'node:http'
 import path from 'node:path'
 import fs from 'node:fs/promises'
 import { spawn } from 'node:child_process'
@@ -54,14 +55,28 @@ const oauth = new OAuth({
 // Initialize custom protocol for OAuth callback
 function setupOAuthProtocol() {
   // Register custom protocol for OAuth callback
-  if (process.defaultApp) {
-    if (process.argv.length >= 2) {
-      app.setAsDefaultProtocolClient('cuesto', process.execPath, [path.resolve(process.argv[1])]);
+  try {
+    if (process.defaultApp) {
+      if (process.argv.length >= 2) {
+        app.setAsDefaultProtocolClient('cuesto', process.execPath, [path.resolve(process.argv[1])]);
+      }
+    } else {
+      app.setAsDefaultProtocolClient('cuesto');
     }
-  } else {
-    app.setAsDefaultProtocolClient('cuesto');
+    console.log('OAuth protocol registered: cuesto://');
+    
+    // Log platform-specific info for debugging
+    if (process.platform === 'linux') {
+      console.log('[Linux] Protocol handler registered. If OAuth fails, ensure the .desktop file is properly installed.');
+      console.log('[Linux] The app should be run once from the installed location (AppImage) for protocol handler to work.');
+    }
+  } catch (error) {
+    console.error('Failed to register OAuth protocol:', error);
+    // On Linux, this might fail if already registered or permissions issues
+    if (process.platform === 'linux') {
+      console.warn('[Linux] Protocol registration failed. OAuth callback may not work.');
+    }
   }
-  console.log('OAuth protocol registered: cuesto://');
 }
 
 // Get stored OAuth tokens
@@ -335,6 +350,88 @@ async function fetchDiscogsWithOAuth(releaseCode: string): Promise<{ result?: an
 
 // ============================================
 // End Discogs OAuth Implementation
+// ============================================
+
+// ============================================
+// Local HTTP Server for OAuth Callback
+// ============================================
+const OAUTH_SERVER_PORT = 41234;
+let oauthServer: http.Server | null = null;
+
+function startOAuthServer() {
+  return new Promise<void>((resolve) => {
+    try {
+      oauthServer = http.createServer((req, res) => {
+        const url = new URL(req.url || '', `http://localhost:${OAUTH_SERVER_PORT}`);
+        
+        if (url.pathname === '/oauth/callback') {
+          const oauthToken = url.searchParams.get('oauth_token');
+          const oauthVerifier = url.searchParams.get('oauth_verifier');
+          
+          if (oauthToken && oauthVerifier) {
+            // Send success response to browser
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(`
+              <html>
+                <head>
+                  <style>
+                    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+                           display: flex; justify-content: center; align-items: center; height: 100vh; 
+                           margin: 0; background: #1a1a2e; color: #eee; }
+                    .container { text-align: center; padding: 40px; background: #16213e; border-radius: 12px; 
+                                 box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+                    .success { color: #4ade80; font-size: 48px; margin-bottom: 16px; }
+                    .success::before { content: "OK"; font-size: 32px; font-weight: bold; }
+                    p { font-size: 18px; color: #94a3b8; }
+                  </style>
+                </head>
+                <body>
+                  <div class="container">
+                    <div class="success"></div>
+                    <p>Authentication successful! You can close this window.</p>
+                  </div>
+                  <script>setTimeout(() => window.close(), 2000);</script>
+                </body>
+              </html>
+            `);
+            
+            // Notify the renderer to handle the callback
+            console.log('OAuth callback received via localhost');
+            win?.webContents.send('discogs:oauth-callback', { oauthToken, oauthVerifier });
+          } else {
+            res.writeHead(400, { 'Content-Type': 'text/html' });
+            res.end('<html><body><h1>Missing OAuth parameters</h1></body></html>');
+          }
+        } else {
+          res.writeHead(404, { 'Content-Type': 'text/html' });
+          res.end('<html><body><h1>Not Found</h1></body></html>');
+        }
+      });
+
+      oauthServer.on('error', (err: NodeJS.ErrnoException) => {
+        if (err.code === 'EADDRINUSE') {
+          console.warn(`Port ${OAUTH_SERVER_PORT} already in use, OAuth callback may not work`);
+        } else {
+          console.error('OAuth server error:', err);
+        }
+        // Don't reject, just continue without the server
+        resolve();
+      });
+
+      oauthServer.listen(OAUTH_SERVER_PORT, '127.0.0.1', () => {
+        console.log(`OAuth callback server running on http://localhost:${OAUTH_SERVER_PORT}`);
+        resolve();
+      });
+    } catch (error) {
+      console.error('Failed to start OAuth server:', error);
+      // Don't reject, just continue without the server
+      resolve();
+    }
+  });
+}
+
+// ============================================
+// End Local HTTP Server
 // ============================================
 
 
@@ -1271,10 +1368,26 @@ if (!gotProtocolLock) {
   app.quit();
 } else {
   app.on('second-instance', (_, commandLine) => {
-    // Handle OAuth callback from second instance
+    // Handle OAuth callback from second instance (cuesto:// protocol)
     const url = commandLine.find(arg => arg.startsWith('cuesto://oauth/callback'));
     if (url) {
       handleOAuthCallback(url);
+    }
+
+    // Handle OAuth callback via localhost redirect
+    const localhostUrl = commandLine.find(arg => arg.includes('localhost:41234/oauth/callback'));
+    if (localhostUrl) {
+      // Parse the localhost URL for oauth params
+      try {
+        const urlObj = new URL(localhostUrl);
+        const oauthToken = urlObj.searchParams.get('oauth_token');
+        const oauthVerifier = urlObj.searchParams.get('oauth_verifier');
+        if (oauthToken && oauthVerifier) {
+          win?.webContents.send('discogs:oauth-callback', { oauthToken, oauthVerifier });
+        }
+      } catch (e) {
+        console.error('Failed to parse localhost OAuth callback:', e);
+      }
     }
 
     // Handle file open
@@ -1350,7 +1463,10 @@ ipcMain.handle('updater:install', () => {
 
 // ============================================
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // Start the localhost OAuth server for cross-platform callback handling
+  await startOAuthServer();
+  
   setupOAuthProtocol();
   createWindow();
 });
