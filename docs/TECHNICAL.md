@@ -103,7 +103,9 @@ npm run build
 The output will be in the `release` or `dist` folder depending on configuration.
 
 ## Release Process
-Releases are tag-driven. `.github/workflows/build-and-release.yml` triggers on `push` of a tag matching `v*` and runs three jobs (ubuntu / macos / windows) on Node 24. There is **no manual "create release" step** — `electron-builder.json5` declares a `publish` block pointing at GitHub, and the workflow passes `GH_TOKEN` with `contents: write`, so electron-builder creates the Release and uploads every installer itself.
+Releases are tag-driven. `.github/workflows/build-and-release.yml` triggers on `push` of a tag matching `v*` and runs three jobs (ubuntu / macos / windows) on Node 24. There is no manual "create release" step — `electron-builder.json5` declares a `publish` block pointing at GitHub, and the workflow passes `GH_TOKEN` with `contents: write`, so electron-builder creates the Release and uploads every installer itself.
+
+> **The release is created as a DRAFT and must be published by hand.** electron-builder's GitHub publisher defaults to drafts (`gitHubPublisher.js`: `options.draft === false ? "release" : "draft"`), and it never flips a draft to published by itself. The three platform jobs run in parallel and each uploads its own assets, so **wait until all three jobs are green before publishing** — otherwise you expose an incomplete release to users and to `electron-updater`. Then click **Publish release**, add the notes, and save.
 
 ```bash
 git add -A

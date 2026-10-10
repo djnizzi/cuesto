@@ -4,6 +4,10 @@ name: Build and Release
 # ONLY step needed to start a release - electron-builder creates the GitHub
 # Release and uploads every installer itself via the "publish" block in
 # electron-builder.json5.
+#
+# NOTE: the created release is a DRAFT (electron-builder's GitHub publisher
+# defaults to draft). It is NOT published automatically. Once all three platform
+# jobs are green, open the draft and click "Publish release".
 on:
   push:
     tags:
