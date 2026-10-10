@@ -8,6 +8,7 @@ CUEsto is a dedicated tool for creating and editing CUE sheets with ease. Whethe
 - **Smart Time Editing**: Automatically recalculates durations when you edit start times.
 - **Metadata Management**: Update Album Title, Performer, File reference, etc. We might add more if you, the users, request them
 - **Audio Integration**: Automatically extract duration and metadata tags (title, artist, year, genre) from your audio files. Full support for multiple artists (separated by `; `).
+- **CDDA Redbook Compliance**: Timings are written as zero-padded `MM:SS:FF` so your CUE sheet matches the Red Book audio-CD standard, with a **CDDA** badge confirming it.
 - **Text Editing**: Perform batch operations across your tracklist, such as swapping fields, changing separators, or converting to propercase.
 - **Audio Splitting**: Slice large mix files into individual tracks using the bundled FFmpeg engine.
 - **Improved Browser**: Customized internal search browser for MusicBrainz, GnuDB, Discogs and 1001tracklists with navigation controls (Back/Forward) and custom right-click actions.
@@ -34,6 +35,17 @@ Linking an audio file to your CUE sheet allows CUEsto to provide more accurate i
    - Display the precise **Total Duration** of the audio file.
    - Automatically calculate the duration of the **Final Track**.
    - Suggest the audio filename as the default when saving.
+   - Show the **CDDA badge** if the file is Red Book compliant (see below).
+
+### Red Book (CDDA) Compliance
+The Red Book standard that defines audio CDs addresses time as `MM:SS:FF`, where the minutes field is always **two digits** and never exceeds **79**. CUEsto follows this by default.
+
+- **Zero-padded timings**: Start times and durations are written with padded minutes, e.g. `00:00:00` and `05:30:00` instead of `0:00:00` and `5:30:00`.
+- **The CDDA badge**: Once you link an audio file of **79:59 or shorter**, a **CDDA** logo appears between the duration and the disc icon in the file name field. Hover it to see the localized **"CDDA Redbook compliant"** tooltip. The badge is a live confirmation of what gets written to your file.
+- **Longer files**: The Red Book cannot describe anything beyond `79:59`. If the linked file is longer, CUEsto drops the badge and writes the minutes **unpadded** (e.g. `90:00:00`) so the value is never silently truncated or misread as something else.
+- **No audio file linked**: CUEsto still writes padded timings by default, but shows no badge, since there is no duration to judge.
+
+**Note**: Minutes longer than 99 are never truncated. A 105-minute track is still written as `105:00:00`.
 
 ### Importing from 1001tracklists
 CUEsto integrates directly with **1001tracklists.com** through its built-in browser.
@@ -168,4 +180,5 @@ To use the Discogs import feature, you must connect your Discogs account using O
 
 ## Tips
 - **Time Format**: Times are displayed in `MM:SS:FF` (Frames). CUE sheets use 75 frames per second.
+- **Red Book Times**: Minutes are zero-padded to two digits (`00:00:00`) whenever the sheet stays within the CD standard of 79:59. Link a compliant audio file to see the **CDDA** badge confirm it.
 - **File Reference**: Ensure the "File" field matches the actual audio file name (e.g., `mix.mp3`) so apps that CUE sheets can find the audio.

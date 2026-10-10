@@ -2,7 +2,7 @@
 > A modern, electron-based CUE sheet editor built for speed and aesthetics.
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-![Version](https://img.shields.io/badge/version-v1.0.24-green.svg)
+![Version](https://img.shields.io/badge/version-v1.1.0-green.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 [![React Doctor](https://www.react.doctor/share/badge?p=CUEsto&s=95&w=19&f=10)](https://www.react.doctor/share?p=CUEsto&s=95&w=19&f=10)
 
@@ -18,6 +18,7 @@ what is this for anyway? [Read on Wikipedia](https://en.wikipedia.org/wiki/Cue_s
 - ✂️ **Audio Splitting**: Slice large audio files into individual tracks directly from the CUE sheet using bundled FFmpeg.
 - 🕵️ **CUE Viewer**: Inspect your raw CUE sheet with syntax highlighting in a dedicated window.
 - ⏱️ **Metadata Persistence**: Support for custom `REM` lines, including `TOTAL DURATION`, `GNUCDID`, `DISCOGS`, and `MUSICBRAINZ_DISCID`.
+- 💿 **CDDA Redbook Compliant**: Timings are written as zero-padded `MM:SS:FF` by default, matching the Red Book audio-CD standard. A **CDDA** badge appears next to the file name whenever the linked file is 79:59 or shorter, confirming the sheet is standard-compliant.
 - 🏷️ **Enhanced Metadata**: Auto-captures and saves `BARCODE`, `LABEL`, and `CATALOG` number from MusicBrainz.
 - 🎵 **Audio Integration**: Link audio files to your CUE sheet. Automatically extract duration and metadata (performer, title, year, genre) from audio files with multi-artist support.
 - 📥 **Import Tools**: Support for importing tracklists from **GnuDB**, **1001tracklists**, **Discogs**, **MusicBrainz**, and **Audacity**.

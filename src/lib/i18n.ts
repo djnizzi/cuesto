@@ -15,6 +15,7 @@ export interface Translations {
     audioFileResolved: string;
     audioFileNotFound: string;
     newCueFile: string;
+    cddaRedbookCompliant: string;
 
     // Metadata fields
     albumTitle: string;
@@ -171,6 +172,7 @@ const translations: Record<Language, Translations> = {
         audioFileResolved: 'audio file resolved',
         audioFileNotFound: 'select audio file',
         newCueFile: 'new CUE file',
+        cddaRedbookCompliant: 'CDDA Redbook compliant',
 
         albumTitle: 'album title',
         performer: 'performer',
@@ -314,6 +316,7 @@ const translations: Record<Language, Translations> = {
         audioFileResolved: 'audiodatei gefunden',
         audioFileNotFound: 'auswählen',
         newCueFile: 'neue CUE-datei',
+        cddaRedbookCompliant: 'CDDA Redbook-konform',
 
         albumTitle: 'albumtitel',
         performer: 'interpret',
@@ -457,6 +460,7 @@ const translations: Record<Language, Translations> = {
         audioFileResolved: 'archivo de audio encontrado',
         audioFileNotFound: 'seleccionar',
         newCueFile: 'nuevo archivo CUE',
+        cddaRedbookCompliant: 'CDDA conforme a Redbook',
 
         albumTitle: 'título del álbum',
         performer: 'intérprete',
@@ -600,6 +604,7 @@ const translations: Record<Language, Translations> = {
         audioFileResolved: 'fichier audio trouvé',
         audioFileNotFound: 'sélectionner',
         newCueFile: 'nouveau fichier CUE',
+        cddaRedbookCompliant: 'CDDA conforme au Redbook',
 
         albumTitle: 'titre de l\'album',
         performer: 'interprète',
@@ -743,6 +748,7 @@ const translations: Record<Language, Translations> = {
         audioFileResolved: 'file audio trovato',
         audioFileNotFound: 'seleziona file audio',
         newCueFile: 'nuovo file CUE',
+        cddaRedbookCompliant: 'CDDA conforme al Redbook',
 
         albumTitle: 'titolo album',
         performer: 'artista',

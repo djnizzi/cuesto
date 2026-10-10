@@ -1,6 +1,23 @@
 export const FRAMES_PER_SECOND = 75;
 
 /**
+ * Longest timing addressable in the Red Book (CD-DA) standard: 79:59:74.
+ * The standard requires MM to stay within 00-79, so a disc (or file) longer
+ * than this cannot be described by a compliant MM:SS:FF value.
+ */
+export const REDBOOK_MAX_FRAMES = (79 * 60 + 59) * FRAMES_PER_SECOND + (FRAMES_PER_SECOND - 1); // 359999
+
+/**
+ * Checks whether a frame count can be expressed within the Red Book (CD-DA)
+ * 79:59:74 limit, i.e. whether zero-padding its minutes stays meaningful.
+ */
+export function isRedbookCompliant(frames: number | undefined | null): boolean {
+    if (frames === undefined || frames === null) return false;
+    if (!Number.isFinite(frames) || frames < 0) return false;
+    return frames <= REDBOOK_MAX_FRAMES;
+}
+
+/**
  * Converts a time string (MM:SS:FF) to absolute frames.
  * Relaxed parsing: Minutes can be > 99.
  */
@@ -24,10 +41,13 @@ export function timeToFrames(timeStr: string): number {
 
 /**
  * Converts absolute frames to time string (MM:SS:FF).
- * Ensures FF is always 2 digits, SS is 2 digits.
- * Minutes can be variable length.
+ * FF is always 2 digits, SS is always 2 digits.
+ * MM is zero-padded to 2 digits by default (Red Book compliant).
+ * Minutes are never truncated: 105 minutes stays "105", it is only padded up to
+ * the 2 digits the standard requires.
+ * @param padMinutes set to false for timings beyond the Red Book 79:59 limit.
  */
-export function framesToTime(frames: number): string {
+export function framesToTime(frames: number, padMinutes: boolean = true): string {
     if (frames < 0) frames = 0;
 
     const f = frames % FRAMES_PER_SECOND;
@@ -37,7 +57,7 @@ export function framesToTime(frames: number): string {
 
     const format = (n: number) => n.toString().padStart(2, '0');
 
-    return `${m}:${format(s)}:${format(f)}`;
+    return `${padMinutes ? format(m) : m}:${format(s)}:${format(f)}`;
 }
 
 /**

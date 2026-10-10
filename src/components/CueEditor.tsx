@@ -3,7 +3,7 @@ import { MetadataHeader } from './MetadataHeader';
 import { TrackRow } from './TrackRow';
 import { MusicBrainzModal } from './MusicBrainzModal';
 import { musicbrainzToCue, MusicBrainzResult } from '../lib/musicbrainz';
-import { CueSheet, CueTrack, generateCue, parseCue } from '../lib/cueParser';
+import { CueSheet, CueTrack, generateCue, parseCue, isCueRedbookCompliant } from '../lib/cueParser';
 import { timeToFrames, parseAudacityLabels } from '../lib/timeUtils';
 import { parse1001Tracklist } from '../lib/tracklistParser';
 import { GnuDbModal } from './GnuDbModal';
@@ -68,7 +68,7 @@ export const CueEditor: React.FC = () => {
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
     const [isTextEditingModalOpen, setIsTextEditingModalOpen] = useState(false);
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
-    const [appVersion, setAppVersion] = useState('1.0.22');
+    const [appVersion, setAppVersion] = useState('1.1.0');
     const [fullAudioPath, setFullAudioPath] = useState<string | null>(null);
     const [hasAttemptedSplit, setHasAttemptedSplit] = useState(false);
     const [splitProgress, setSplitProgress] = useState<{ progress: number, currentTrack: number, totalTracks: number, fileName: string } | null>(null);
@@ -684,6 +684,12 @@ export const CueEditor: React.FC = () => {
         return index === cue.tracks.length - 1 && cue.totalDuration !== undefined && cue.totalDuration > 0;
     };
 
+    // Red Book (CD-DA) badge: only meaningful once an audio file - and therefore its
+    // duration - is known. Uses the exact same predicate as generateCue(), so the
+    // badge always reflects the timings that actually get written to the file.
+    const hasKnownDuration = cue.totalDuration !== undefined && cue.totalDuration > 0;
+    const isRedbookCompliant = hasKnownDuration && isCueRedbookCompliant(cue);
+
     return (
         <div className="min-h-screen bg-brand-dark text-brand-text font-sans selection:bg-brand-orange selection:text-white pt-2">
             {/* Fixed Top Bar */}
@@ -803,6 +809,7 @@ export const CueEditor: React.FC = () => {
                 onSelectAudioFile={handleSelectAudioFile}
                 isAudioResolved={!!fullAudioPath}
                 showAudioError={hasAttemptedSplit && !fullAudioPath}
+                isRedbookCompliant={isRedbookCompliant}
                 t={t}
             />
 

@@ -1,4 +1,18 @@
 // @see - https://www.electron.build/configuration/configuration
+//
+// Code signing is opt-in and driven entirely by environment variables, so this
+// file needs no edits when certificates are added or removed. Every variable
+// below is optional; when absent the corresponding step is simply skipped and
+// the build still succeeds (unsigned).
+//
+//   CSC_LINK + CSC_KEY_PASSWORD          Windows + macOS signing certificate
+//                                       (.pfx path, or base64-encoded contents)
+//   WIN_CSC_LINK + WIN_CSC_KEY_PASSWORD  Windows-only certificate (optional)
+//   APPLE_API_KEY / _KEY_ID / _ISSUER    macOS notarization (recommended)
+//   APPLE_ID / _APP_SPECIFIC_PASSWORD / _TEAM_ID   macOS notarization (alt)
+//
+// The GitHub Actions workflow feeds these from repository secrets - see
+// .github/workflows/build-and-release.yml.
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "com.cuesto.app",
@@ -19,6 +33,16 @@
       "dmg"
     ],
     "artifactName": "${productName}-Mac-${version}-Installer.${ext}",
+    // Enables notarization ONLY when Apple credentials are present in the
+    // environment. With none of them set the step is skipped, so an unsigned
+    // build still succeeds. See docs/TECHNICAL.md -> Code Signing.
+    //
+    //   APPLE_API_KEY + APPLE_API_KEY_ID + APPLE_API_ISSUER   (recommended)
+    //   APPLE_ID + APPLE_APP_SPECIFIC_PASSWORD + APPLE_TEAM_ID
+    //
+    // NOTE: Apple REQUIRES the app to be signed before it can notarize, so set
+    // CSC_LINK as well when enabling this.
+    "notarize": true,
     "protocols": [
       {
         "name": "CUEsto Protocol",

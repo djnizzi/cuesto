@@ -13,6 +13,7 @@ interface MetadataHeaderProps {
     onSelectAudioFile: () => void;
     isAudioResolved: boolean;
     showAudioError: boolean;
+    isRedbookCompliant: boolean;
     t: Translations;
 }
 
@@ -41,6 +42,7 @@ export const MetadataHeader: React.FC<MetadataHeaderProps> = ({
     onSelectAudioFile,
     isAudioResolved,
     showAudioError,
+    isRedbookCompliant,
     t
 }) => {
     return (
@@ -57,6 +59,15 @@ export const MetadataHeader: React.FC<MetadataHeaderProps> = ({
                     {totalDuration !== undefined && totalDuration > 0 && (
                         <span className="text-brand-text text-sm font-light px-2 whitespace-nowrap">
                             {framesToTime(totalDuration)}
+                        </span>
+                    )}
+                    {isRedbookCompliant && (
+                        <span
+                            className="flex items-center shrink-0 px-2"
+                            data-tooltip-bottom={t.cddaRedbookCompliant}
+                            style={{ cursor: 'help' }}
+                        >
+                            <img src="icons/cdda.svg" alt={t.cddaRedbookCompliant} className="h-5 w-auto" />
                         </span>
                     )}
                     <button
