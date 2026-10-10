@@ -137,6 +137,14 @@ Signing is entirely opt-in and driven by environment variables, so no config fil
 
 `mac.notarize` is enabled in `electron-builder.json5`, which activates the step **only** when one of the notarization variable sets is present. Until credentials are added, macOS builds are unsigned and users must clear the Gatekeeper warning (right-click → Open).
 
+> **Never inject these into a step's `env:` directly.** In GitHub Actions, `${{ secrets.CSC_LINK }}` resolves to an **empty string** when the secret does not exist — and an empty `CSC_LINK` is not treated as "no certificate", it is treated as "a certificate was configured". electron-builder's macOS path then calls `importCertificate("")`, which resolves the empty value against the project directory and fails the job with:
+> ```
+> ⨯ /Users/runner/work/cuesto/cuesto not a file
+> ```
+> This is asymmetric inside electron-builder itself: the Windows path (`windowsSignToolManager.js`) guards with `if (cscLink == null || cscLink === "") return null`, while the macOS path (`macCodeSign.js`) has no such guard. That is why **only the macOS job fails** while Linux and Windows still succeed.
+>
+> The workflow therefore exports these variables through a `GITHUB_ENV` step that skips empty values, so "absent" stays genuinely absent instead of becoming `""`. If you ever move these into a step's `env:`, reintroduce this bug.
+
 ### Release Preflight
 `scripts/release-preflight.js` runs before every build. electron-builder tolerates *no* credentials but throws a confusing `InvalidConfigurationError` on a *partial* set, which would otherwise surface minutes into a long build. The preflight turns those into immediate, actionable failures:
 

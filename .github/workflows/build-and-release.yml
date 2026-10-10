@@ -52,6 +52,32 @@ jobs:
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
+      - name: Export signing credentials
+        # IMPORTANT: never inject these directly into a step's `env:`.
+        # `${{ secrets.X }}` resolves to an EMPTY STRING when the secret is
+        # absent, and electron-builder treats an empty CSC_LINK as "a
+        # certificate was specified". Its macOS path (macCodeSign.js) then calls
+        # importCertificate("") with no empty-guard and crashes with
+        # "<project dir> not a file", failing the whole macOS job.
+        # Writing to GITHUB_ENV only when non-empty keeps "absent" truly absent.
+        shell: bash
+        run: |
+          export_optional() {
+            if [ -n "$2" ]; then
+              echo "$1=$2" >> "$GITHUB_ENV"
+              echo "  $1: set"
+            fi
+          }
+          echo "Signing credentials found:"
+          export_optional CSC_LINK                    "${{ secrets.CSC_LINK }}"
+          export_optional CSC_KEY_PASSWORD            "${{ secrets.CSC_KEY_PASSWORD }}"
+          export_optional APPLE_API_KEY               "${{ secrets.APPLE_API_KEY }}"
+          export_optional APPLE_API_KEY_ID            "${{ secrets.APPLE_API_KEY_ID }}"
+          export_optional APPLE_API_ISSUER            "${{ secrets.APPLE_API_ISSUER }}"
+          export_optional APPLE_ID                    "${{ secrets.APPLE_ID }}"
+          export_optional APPLE_APP_SPECIFIC_PASSWORD "${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}"
+          export_optional APPLE_TEAM_ID               "${{ secrets.APPLE_TEAM_ID }}"
+
       - name: Install dependencies
         run: npm ci
 
@@ -62,17 +88,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VITE_DISCOGS_CONSUMER_KEY: ${{ secrets.VITE_DISCOGS_CONSUMER_KEY }}
           VITE_DISCOGS_CONSUMER_SECRET: ${{ secrets.VITE_DISCOGS_CONSUMER_SECRET }}
-          # Optional code signing. An unset secret resolves to an empty string,
-          # which electron-builder treats as "no certificate" and builds
-          # unsigned rather than failing.
-          CSC_LINK: ${{ secrets.CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
-          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
-          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          # CSC_* / APPLE_* arrive from the "Export signing credentials" step
+          # above, and are absent entirely when no certificate is configured.
 
       - name: Upload build artifacts
         # The real installers are already attached to the GitHub Release.
